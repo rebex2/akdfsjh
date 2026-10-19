@@ -351,7 +351,7 @@
 
   <div class="header">
     <h1>🎸 Full Catalog Editor</h1>
-    <div class="badge">rockstar · every field editable</div>
+    <div class="badge">rockstar · main category + subcategory</div>
   </div>
 
   <!-- STEP 1 -->
@@ -364,6 +364,9 @@
     <div class="hint" style="margin-bottom:12px;">
       Paste your <code>catalog.js</code> below or fetch it from GitHub.
       Click any item in Step 2 to expand and edit <strong>every field</strong>.
+      <br>
+      <strong>Main category</strong> = broad umbrella (e.g. <em>Clothing</em>).
+      <strong>Subcategory</strong> = the specific item type (e.g. <em>Baseball caps</em>).
     </div>
 
     <label for="githubUrl">GitHub URL (optional)</label>
@@ -389,7 +392,6 @@
 
     <div class="hint" style="margin-bottom:8px;">
       Click any item to expand and edit all fields. Only one item is open at a time.
-      Scroll the page to see every field.
     </div>
 
     <div id="itemListContainer" class="item-list"></div>
@@ -407,7 +409,6 @@
       <div id="generateStatus" class="status-msg"></div>
     </div>
 
-    <!-- WARNING REMINDER -->
     <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px;">
       <span class="warn-msg">⚠️ Remember: press <strong>💾 Save changes</strong> inside the item editor before generating or copying the output!</span>
     </div>
@@ -424,37 +425,377 @@
 
 <script>
   // ================================================================
-  // DROPDOWN DATA
+  // MAIN CATEGORIES — broad UMBRELLA terms (from your guidance)
   // ================================================================
-  const CATEGORY_OPTIONS = [
-    "T-Shirts & Tops",
-    "Hoodies, Sweatshirts & Outerwear",
+  const MAIN_CATEGORY_OPTIONS = [
+    "Clothing",
     "Hats & Headwear",
-    "Bags & Carry Goods",
+    "Footwear",
+    "Bags & Luggage",
+    "Jewellery & Wearable Accessories",
     "Pins, Patches & Badges",
     "Stickers & Decals",
     "Figures & Statues",
-    "Plushiest & Soft Toys, Games & Novelty Items.",
-    "Mugs, Cups & Drinkware",
-    "Home ware & Household Goods",
+    "Plushies & Soft Toys",
+    "Toys & Games",
+    "Drinkware",
+    "Homeware & Household Items",
     "Fragrance & Ambient Products",
-    "Desk Accessories & Office Supplies",
-    "Posters, Prints & Wall Art",
-    "Music & Audio Releases",
-    "Books, Guides & Printed Publications",
-    "Key chains & Small Accessories",
-    "Wallets, Money Clips & Personal Accessories.",
-    "Branded Objects & Everyday Gadgets",
-    "Sports & Outdoor Merchandise",
-    "Promotional Giveaways & Event Merchandise.",
-    "Collector's Editions & Merchandise Bundles.",
-    "In-Game Brands & Fictional Businesses",
+    "Desk Accessories & Stationery",
+    "Posters & Artwork",
+    "Books & Printed Publications",
+    "Music & Audio",
+    "Electronics & Technology Accessories",
+    "Sports & Outdoor Products",
     "Pet Products",
-    "Press Kits, Promotional Media & Ephemera",
-    "Statues",
+    "Novelty & Everyday Objects",
+    "In-Game Brands & Fictional Businesses",
+    "Promotional Giveaways & Event Merchandise",
+    "Press Kits & Promotional Materials",
+    "Collector's Editions & Merchandise Bundles",
+    "Collectible Memorabilia",
+    "Packaging & Product Inserts",
     "Other"
   ];
 
+  // ================================================================
+  // SUB CATEGORIES — the SPECIFIC item type, grouped under its umbrella
+  // (A GTA V cap = Hats & Headwear → Baseball caps)
+  // ================================================================
+  const SUB_CATEGORY_MAP = {
+    "Clothing": [
+      "T-shirts",
+      "graphic tees",
+      "long-sleeve shirts",
+      "polo shirts",
+      "tank tops",
+      "hoodies",
+      "sweatshirts",
+      "crewneck jumpers",
+      "jackets",
+      "coats",
+      "windbreakers",
+      "vests",
+      "tracksuits",
+      "trousers",
+      "jeans",
+      "shorts",
+      "skirts",
+      "dresses",
+      "underwear",
+      "socks",
+      "sleepwear",
+      "swimwear",
+      "robes",
+      "uniforms",
+      "costume clothing"
+    ],
+    "Hats & Headwear": [
+      "Baseball caps",
+      "snapback caps",
+      "fitted caps",
+      "trucker hats",
+      "beanies",
+      "bucket hats",
+      "five-panel caps",
+      "flat caps",
+      "bandanas",
+      "headbands",
+      "visors",
+      "other branded headwear"
+    ],
+    "Footwear": [
+      "Trainers",
+      "skate shoes",
+      "casual shoes",
+      "boots",
+      "sandals",
+      "slippers",
+      "flip-flops",
+      "branded shoelaces",
+      "other footwear"
+    ],
+    "Bags & Luggage": [
+      "Backpacks",
+      "tote bags",
+      "shopping bags",
+      "messenger bags",
+      "shoulder bags",
+      "duffel bags",
+      "travel bags",
+      "drawstring bags",
+      "pouches",
+      "pencil cases",
+      "wallets",
+      "purses",
+      "card holders",
+      "luggage tags",
+      "other carrying accessories"
+    ],
+    "Jewellery & Wearable Accessories": [
+      "Necklaces",
+      "pendants",
+      "bracelets",
+      "rings",
+      "earrings",
+      "watches",
+      "belt buckles",
+      "belts",
+      "cufflinks",
+      "sunglasses",
+      "glasses accessories",
+      "other wearable accessories"
+    ],
+    "Pins, Patches & Badges": [
+      "Enamel pins",
+      "metal pins",
+      "embroidered patches",
+      "sew-on patches",
+      "iron-on patches",
+      "badges",
+      "pin sets",
+      "insignia",
+      "logo badges"
+    ],
+    "Stickers & Decals": [
+      "Individual stickers",
+      "sticker sheets",
+      "sticker packs",
+      "logo decals",
+      "vehicle decals",
+      "window stickers",
+      "reflective stickers",
+      "holographic stickers",
+      "removable decals"
+    ],
+    "Figures & Statues": [
+      "Character figures",
+      "character statues",
+      "busts",
+      "miniature figures",
+      "articulated figures",
+      "vinyl figures",
+      "resin figures",
+      "display figurines",
+      "limited-edition sculptures"
+    ],
+    "Plushies & Soft Toys": [
+      "Character plushies",
+      "animal plushies",
+      "stuffed toys",
+      "soft dolls",
+      "mascot plushies",
+      "plush keychains",
+      "plush accessories"
+    ],
+    "Toys & Games": [
+      "Playing cards",
+      "domino sets",
+      "puzzles",
+      "Rubik's cubes",
+      "board games",
+      "physical novelty games",
+      "toy vehicles",
+      "miniature playsets",
+      "collectible toys"
+    ],
+    "Drinkware": [
+      "Ceramic mugs",
+      "travel mugs",
+      "reusable water bottles",
+      "tumblers",
+      "drinking glasses",
+      "cups",
+      "bottle sleeves",
+      "drink coasters",
+      "other beverage containers"
+    ],
+    "Homeware & Household Items": [
+      "Towels",
+      "beach towels",
+      "blankets",
+      "cushions",
+      "pillows",
+      "doormats",
+      "coasters",
+      "mirrors",
+      "clocks",
+      "decorative ornaments",
+      "household textiles",
+      "other home accessories"
+    ],
+    "Fragrance & Ambient Products": [
+      "Scented candles",
+      "decorative candles",
+      "room-fragrance products",
+      "other home ambience merchandise"
+    ],
+    "Desk Accessories & Stationery": [
+      "Mousepads",
+      "desk mats",
+      "notebooks",
+      "notepads",
+      "pens",
+      "pencils",
+      "bookmarks",
+      "paperweights",
+      "desk organisers",
+      "calendars",
+      "sticky notes",
+      "office stationery"
+    ],
+    "Posters & Artwork": [
+      "Posters",
+      "art prints",
+      "lithographs",
+      "framed artwork",
+      "canvas prints",
+      "character illustrations",
+      "concept art prints",
+      "promotional posters",
+      "limited-edition prints",
+      "original promotional artwork"
+    ],
+    "Books & Printed Publications": [
+      "Strategy guides",
+      "art books",
+      "companion books",
+      "lore books",
+      "illustrated books",
+      "magazines",
+      "promotional booklets",
+      "press clippings",
+      "catalogues",
+      "printed manuals",
+      "official publications"
+    ],
+    "Music & Audio": [
+      "Soundtrack vinyl records",
+      "soundtrack CDs",
+      "soundtrack collections",
+      "promotional audio CDs",
+      "music samplers",
+      "boxed soundtrack editions",
+      "other physical music releases"
+    ],
+    "Electronics & Technology Accessories": [
+      "Phone cases",
+      "tablet cases",
+      "USB accessories",
+      "computer accessories",
+      "gaming desk accessories",
+      "technology-themed collectibles",
+      "other branded technology accessories"
+    ],
+    "Sports & Outdoor Products": [
+      "Basketballs",
+      "other sports balls",
+      "beach balls",
+      "skateboards",
+      "exercise accessories",
+      "outdoor games",
+      "camping accessories",
+      "beach accessories",
+      "outdoor textiles",
+      "other recreational merchandise"
+    ],
+    "Pet Products": [
+      "Pet collars",
+      "pet leads",
+      "pet toys",
+      "pet clothing",
+      "pet bowls",
+      "pet accessories",
+      "other animal products"
+    ],
+    "Novelty & Everyday Objects": [
+      "Magnets",
+      "keychains",
+      "bottle openers",
+      "luggage accessories",
+      "novelty stationery",
+      "decorative objects",
+      "branded practical accessories",
+      "miscellaneous novelty products"
+    ],
+    "In-Game Brands & Fictional Businesses": [
+      "Fictional company merchandise",
+      "fictional restaurant merchandise",
+      "fictional beverage branding",
+      "fictional radio station merchandise",
+      "fictional television programme merchandise",
+      "fictional advertising merchandise",
+      "fictional product packaging",
+      "fictional sports team merchandise",
+      "fictional organisation merchandise",
+      "fictional location merchandise"
+    ],
+    "Promotional Giveaways & Event Merchandise": [
+      "Convention giveaways",
+      "trade-show merchandise",
+      "launch-event gifts",
+      "competition prizes",
+      "fan-site gifts",
+      "press gifts",
+      "pre-order bonuses",
+      "anniversary merchandise",
+      "event-exclusive items",
+      "limited promotional releases"
+    ],
+    "Press Kits & Promotional Materials": [
+      "Electronic press kits",
+      "physical press kits",
+      "promotional flyers",
+      "press information packs",
+      "promotional leaflets",
+      "launch materials",
+      "retail display materials",
+      "advertising materials",
+      "promotional packaging",
+      "press-only merchandise"
+    ],
+    "Collector's Editions & Merchandise Bundles": [
+      "Collector's boxes",
+      "special-edition merchandise sets",
+      "gift sets",
+      "multi-item bundles",
+      "premium boxed collections",
+      "limited-edition collections",
+      "anniversary sets",
+      "themed merchandise collections"
+    ],
+    "Collectible Memorabilia": [
+      "Signed merchandise",
+      "numbered collectibles",
+      "limited-edition memorabilia",
+      "original promotional artefacts",
+      "historical merchandise samples",
+      "developer or press gifts",
+      "authenticated promotional pieces"
+    ],
+    "Packaging & Product Inserts": [
+      "Original product boxes",
+      "retail packaging",
+      "collector's packaging",
+      "branded tags",
+      "instruction leaflets",
+      "certificates of authenticity",
+      "product inserts",
+      "promotional cards",
+      "original packaging components"
+    ],
+    "Other": [
+      "Unclassified merchandise",
+      "unusual one-off products",
+      "unidentified promotional items",
+      "items awaiting verification",
+      "products that do not fit an existing category"
+    ]
+  };
+
+  // ================================================================
+  // GAME OPTIONS (unchanged)
+  // ================================================================
   const GAME_OPTIONS = [
     "Grand Theft Auto (1997)",
     "Grand Theft Auto 2 (1999)",
@@ -530,15 +871,28 @@
   }
   function escapeAttr(str) { return escapeHtml(str); }
 
-  // build select options
+  // build select options — clean, no "(custom)" entries
   function buildSelectOptions(options, selectedValue) {
     const sel = String(selectedValue || '').trim();
     let html = '';
-    // if the current value is not in the list, add it as a temporary option (so we don't lose it)
-    if (sel && !options.includes(sel)) {
-      html += `<option value="${escapeAttr(sel)}" selected>${escapeHtml(sel)} (custom)</option>`;
-    }
     options.forEach(opt => {
+      const isSelected = (opt === sel);
+      html += `<option value="${escapeAttr(opt)}" ${isSelected ? 'selected' : ''}>${escapeHtml(opt)}</option>`;
+    });
+    return html;
+  }
+
+  // get subcategories for a given main category (with fallback)
+  function getSubcategoriesFor(mainCat) {
+    return SUB_CATEGORY_MAP[mainCat] || SUB_CATEGORY_MAP["Other"] || ["Other"];
+  }
+
+  // build subcategory select options based on main category — clean, no "(custom)"
+  function buildSubOptions(mainCat, selectedSub) {
+    const subs = getSubcategoriesFor(mainCat);
+    const sel = String(selectedSub || '').trim();
+    let html = '';
+    subs.forEach(opt => {
       const isSelected = (opt === sel);
       html += `<option value="${escapeAttr(opt)}" ${isSelected ? 'selected' : ''}>${escapeHtml(opt)}</option>`;
     });
@@ -648,13 +1002,13 @@
       const isEditing = (activeEditIndex === idx);
       const name = item.name || 'Untitled item';
       const game = item.game || '—';
-      const category = item.category || '—';
+      const mainCat = item.category || 'Other';
+      const subCat = item.subcategory || 'Other';
       const rarity = item.rarity || '—';
       const year = item.year || '—';
 
-      // Build category and game select options
-      const categoryOptionsHtml = buildSelectOptions(CATEGORY_OPTIONS, item.category || '');
-      const gameOptionsHtml = buildSelectOptions(GAME_OPTIONS, item.game || '');
+      const mainCatOptionsHtml = buildSelectOptions(MAIN_CATEGORY_OPTIONS, mainCat);
+      const subCatOptionsHtml = buildSubOptions(mainCat, subCat);
 
       const editorHtml = `
         <div class="item-editor" id="editor-${idx}">
@@ -666,13 +1020,19 @@
             <div>
               <label>Game</label>
               <select id="edit-game-${idx}">
-                ${gameOptionsHtml}
+                ${buildSelectOptions(GAME_OPTIONS, item.game || '')}
               </select>
             </div>
             <div>
-              <label>Category</label>
-              <select id="edit-category-${idx}">
-                ${categoryOptionsHtml}
+              <label>Main category (umbrella)</label>
+              <select id="edit-maincat-${idx}" onchange="onMainCategoryChange(${idx})">
+                ${mainCatOptionsHtml}
+              </select>
+            </div>
+            <div>
+              <label>Subcategory (specific item)</label>
+              <select id="edit-subcat-${idx}">
+                ${subCatOptionsHtml}
               </select>
             </div>
             <div class="full">
@@ -722,7 +1082,7 @@
               <span class="item-name">${escapeHtml(name)}</span>
               <div class="item-meta">
                 <span>🎮 ${escapeHtml(game)}</span>
-                <span>🏷️ ${escapeHtml(category)}</span>
+                <span>📂 ${escapeHtml(mainCat)} → ${escapeHtml(subCat)}</span>
                 <span>⭐ ${escapeHtml(rarity)}</span>
                 <span>📅 ${escapeHtml(year)}</span>
               </div>
@@ -737,6 +1097,24 @@
     });
 
     itemListContainer.innerHTML = html;
+  }
+
+  // dynamically update subcategory dropdown when main category changes
+  function onMainCategoryChange(idx) {
+    const mainSelect = document.getElementById(`edit-maincat-${idx}`);
+    const subSelect = document.getElementById(`edit-subcat-${idx}`);
+    if (!mainSelect || !subSelect) return;
+
+    const mainCat = mainSelect.value;
+    const newSubs = getSubcategoriesFor(mainCat);
+
+    // rebuild clean sub options; select first by default
+    let optionsHtml = '';
+    newSubs.forEach((sub, i) => {
+      optionsHtml += `<option value="${escapeAttr(sub)}" ${i === 0 ? 'selected' : ''}>${escapeHtml(sub)}</option>`;
+    });
+
+    subSelect.innerHTML = optionsHtml;
   }
 
   function parseAndRenderItems() {
@@ -786,8 +1164,9 @@
     };
 
     item.name = get('name');
-    item.game = get('game');            // from <select>
-    item.category = get('category');    // from <select>
+    item.game = get('game');
+    item.category = get('maincat');           // umbrella
+    item.subcategory = get('subcat');         // specific item type
     item.description = get('description');
     item.year = get('year');
     item.rarity = get('rarity');
@@ -821,7 +1200,8 @@
     const newItem = {
       name: 'New item',
       game: 'Grand Theft Auto V (2013)',
-      category: 'T-Shirts & Tops',
+      category: 'Clothing',               // umbrella
+      subcategory: 'T-shirts',            // specific
       description: '',
       year: new Date().getFullYear().toString(),
       rarity: 'Common',
@@ -864,6 +1244,7 @@
     name: ${jsString(item.name || '')},
     game: ${jsString(item.game || '')},
     category: ${jsString(item.category || '')},
+    subcategory: ${jsString(item.subcategory || '')},
     description: ${jsString(item.description || '')},
     year: ${jsString(item.year || '')},
     rarity: ${jsString(item.rarity || '')},
@@ -899,7 +1280,6 @@
   function copyOutput() {
     const text = outputEl.textContent;
     if (!text) { alert('Generate the catalog first!'); return; }
-    // extra reminder
     if (!confirm('⚠️ Reminder: Have you saved all changes in the item editor before copying?\n\nPress OK to copy the generated text anyway.')) {
       return;
     }
@@ -944,6 +1324,7 @@
   window.saveItem = saveItem;
   window.cancelEdit = cancelEdit;
   window.deleteItem = deleteItem;
+  window.onMainCategoryChange = onMainCategoryChange;
 </script>
 
 </body>
