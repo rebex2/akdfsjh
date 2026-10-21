@@ -128,4 +128,27 @@ function saveItem(i){
  item.availability=get("edit-availability").value;if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
  item.image=formatImagePath(`${dir}${base}_${main}.jpg`);
  item.extraImages=Array.from({length:count},(_,n)=>n+1).filter(n=>n!==main).map(n=>formatImagePath(`${dir}${base}_${n}.jpg`));
- item.link=get("edit-link").
+ item.link=get("edit-link").value;activeEditIndex=-1;renderItemList();
+}
+function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;renderItemList();}}
+function addNewItem(){currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});activeEditIndex=currentItems.length-1;renderItemList();}
+function generateCatalog(){
+ if(!currentItems.length){$("generateStatus").textContent="No items to generate.";return;}
+ const strings=currentItems.map(item=>`  {\n    name: ${jsString(item.name)},\n    game: ${jsString(item.game)},\n    category: ${jsString(item.category)},\n    subcategory: ${jsString(item.subcategory)},\n    description: ${jsString(item.description)},\n    year: ${jsString(item.year)},\n    rarity: ${jsString(item.rarity)},\n    availability: ${jsString(item.availability)},\n    image: ${jsString(formatImagePath(item.image))},\n    extraImages: ${JSON.stringify(item.extraImages||[])},\n    link: ${jsString(item.link)}\n  }`).join(",\n");
+ const raw=currentCatalogText||$("catalogInput").value;let output;
+ if(raw&&raw.includes("[")&&raw.includes("]")){const a=raw.indexOf("["),b=raw.lastIndexOf("]");output=raw.slice(0,a)+"[\n"+strings+"\n]"+raw.slice(b+1);}
+ else output="const catalog = [\n"+strings+"\n];\n";
+ $("output").textContent=output;$("generateStatus").textContent="Catalog generated.";
+}
+async function fetchFromGithub(){
+ let url=$("githubUrl").value.trim();if(!url){$("fetchStatus").textContent="Enter a GitHub URL first.";return;}
+ if(url.includes("github.com")&&url.includes("/blob/"))url=url.replace("github.com","raw.githubusercontent.com").replace("/blob/","/");
+ $("fetchStatus").textContent="Fetching…";
+ try{const response=await fetch(url);if(!response.ok)throw Error("HTTP "+response.status);const text=await response.text();$("catalogInput").value=text;parseAndRenderItems();$("fetchStatus").textContent="Loaded catalog.";}
+ catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}}
+async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
+function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
+window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;
+</script>
+</body>
+</html>
