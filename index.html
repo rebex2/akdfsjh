@@ -5,12 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rockstar Merch · Full Catalog Editor</title>
 <style>
-*{box-sizing:border-box}body{margin:0;padding:24px;background:#0f0f10;color:#eaeef2;font-family:Inter,"Segoe UI",system-ui,sans-serif}.app{max-width:1000px;margin:auto;display:flex;flex-direction:column;gap:22px}.header,.card-header,.row,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.header h1{font-size:1.8rem}.badge,.status{background:#292930;color:#aab3c2;border-radius:24px;padding:7px 12px;font-size:.8rem}.card{background:#1c1c20;border:1px solid #303039;border-radius:18px;padding:22px}.card h2{font-size:1.2rem;font-weight:550;color:#d0d6e0}.hint,.helper{font-size:.82rem;color:#8993a5;line-height:1.5}.hint{margin:0 0 12px}label{display:block;font-size:.82rem;color:#b6c0d0;margin:13px 0 5px}input,textarea,select{width:100%;background:#131317;border:1px solid #363640;border-radius:9px;padding:10px 12px;color:#f0f4fc;font:inherit;font-size:.9rem}textarea{min-height:90px;resize:vertical}button{background:#292930;border:1px solid #41414b;border-radius:9px;padding:10px 14px;color:#eef2f8;font-weight:600;cursor:pointer}button:hover{background:#383841}.primary{background:#4f7df3;border-color:#4f7df3}.success{background:#2b7a4b;border-color:#2b7a4b}.danger{background:#4a1e1e;border-color:#6a2a2a}.actions{justify-content:flex-start;margin-top:15px}.actions button{flex:1}.item-list{display:flex;flex-direction:column;gap:10px}.item{background:#131317;border:1px solid #303039;border-radius:12px;overflow:hidden}.summary{padding:14px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center}.summary:hover{background:#202027}.item-name{font-weight:650}.meta{font-size:.78rem;color:#8993a5;margin-top:5px}.editor{display:none;border-top:1px solid #303039;padding:0 16px 16px}.item.open .editor{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}.output{white-space:pre-wrap;overflow:auto;max-height:400px;background:#0b0b0e;border:1px solid #303039;border-radius:12px;padding:16px;font: .82rem ui-monospace,monospace}.status.ok{color:#8dd6a8}.status.err{color:#f09a9a}@media(max-width:640px){body{padding:12px}.card{padding:15px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.summary{align-items:flex-start;flex-direction:column}}
+*{box-sizing:border-box}body{margin:0;padding:24px;background:#0f0f10;color:#eaeef2;font-family:Inter,"Segoe UI",system-ui,sans-serif}.app{max-width:1000px;margin:auto;display:flex;flex-direction:column;gap:22px}.header,.card-header,.row,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.header h1{font-size:1.8rem}.badge,.status{background:#292930;color:#aab3c2;border-radius:24px;padding:7px 12px;font-size:.8rem}.card{background:#1c1c20;border:1px solid #303039;border-radius:18px;padding:22px}.card h2{font-size:1.2rem;font-weight:550;color:#d0d6e0}.hint,.helper{font-size:.82rem;color:#8993a5;line-height:1.5}.hint{margin:0 0 12px}label{display:block;font-size:.82rem;color:#b6c0d0;margin:13px 0 5px}input,textarea,select{width:100%;background:#131317;border:1px solid #363640;border-radius:9px;padding:10px 12px;color:#f0f4fc;font:inherit;font-size:.9rem}textarea{min-height:90px;resize:vertical}button{background:#292930;border:1px solid #41414b;border-radius:9px;padding:10px 14px;color:#eef2f8;font-weight:600;cursor:pointer}button:hover{background:#383841}.primary{background:#4f7df3;border-color:#4f7df3}.success{background:#2b7a4b;border-color:#2b7a4b}.danger{background:#4a1e1e;border-color:#6a2a2a}.actions{justify-content:flex-start;margin-top:15px}.actions button{flex:1}.item-list{display:flex;flex-direction:column;gap:10px}.item{background:#131317;border:1px solid #303039;border-radius:12px;overflow:hidden}.summary{padding:14px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center}.summary:hover{background:#202027}.item-name{font-weight:650}.meta{font-size:.78rem;color:#8993a5;margin-top:5px}.editor{display:none;border-top:1px solid #303039;padding:0 16px 16px}.item.open .editor{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}.output{white-space:pre-wrap;overflow:auto;max-height:400px;background:#0b0b0e;border:1px solid #303039;border-radius:12px;padding:16px;font: .82rem ui-monospace,monospace}.status.ok{color:#8dd6a8}.status.err{color:#f09a9a}.reorder-btn{padding:6px 10px;font-size:1.1rem;line-height:1;min-width:40px;text-align:center}.reorder-group{display:flex;gap:4px;align-items:center}.save-reminder{background:#2a2a1e;border-left:4px solid #e6c84a;padding:8px 14px;border-radius:6px;font-size:.8rem;color:#d4c77a;margin:8px 0}.price-badge{font-size:.75rem;background:#2a2a1e;color:#e6c84a;padding:2px 8px;border-radius:12px;margin-left:8px}.warning-box{background:#2a1e1e;border-left:4px solid #f09a9a;padding:8px 14px;border-radius:6px;font-size:.8rem;color:#f09a9a;margin:8px 0}.devmode-toggle{display:flex;align-items:center;gap:6px;font-size:.78rem;color:#8993a5;cursor:pointer;user-select:none;background:#131317;padding:6px 12px;border-radius:20px;border:1px solid #363640}.devmode-toggle input{width:auto;margin:0;accent-color:#4f7df3}.devmode-toggle:hover{border-color:#4f7df3}@media(max-width:640px){body{padding:12px}.card{padding:15px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.summary{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header"><h1>🎸 Full Catalog Editor</h1><span class="badge">rockstar · catalog editor</span></div>
+  <div class="header">
+    <h1>🎸 Full Catalog Editor</h1>
+    <div style="display:flex;align-items:center;gap:10px">
+      <label class="devmode-toggle" title="Shows the ⬆️ / ⬇️ reorder buttons on each item">
+        <input type="checkbox" id="devModeToggle" onchange="toggleDevMode()"> Developer mode
+      </label>
+      <span class="badge">rockstar · catalog editor</span>
+    </div>
+  </div>
   <section class="card">
     <div class="card-header"><h2>📥 Step 1 — Load your catalog</h2><span id="fetchStatus" class="status">Ready</span></div>
     <p class="hint">Paste your catalog.js below, or fetch it from GitHub. Edit an item in Step 2, then save its changes before generating the updated catalog.</p>
@@ -20,13 +28,16 @@
   </section>
   <section class="card">
     <div class="card-header"><h2>✏️ Step 2 — Edit items</h2><span id="itemCount" class="status">0 items</span></div>
-    <p class="hint">Images use numbered filenames, for example chop_1.jpg, chop_2.jpg, chop_3.jpg. Select the main image and the editor fills the remaining images automatically.</p>
+    <p class="hint">Images use numbered filenames, for example chop_1.jpg, chop_2.jpg, chop_3.jpg. Select the main image and the editor fills the remaining images automatically. <strong>Remember to save each item after editing!</strong></p>
+    <div id="saveReminder" class="save-reminder" style="display:none">⚠️ You have unsaved changes in this item. Click “💾 Save changes” before leaving or generating the catalog.</div>
     <div id="itemListContainer" class="item-list"></div>
     <div class="actions"><button class="primary" onclick="addNewItem()">➕ Add new item</button><button class="success" onclick="generateCatalog()">⚙️ Generate updated catalog.js</button></div>
   </section>
   <section class="card">
     <div class="card-header"><h2>⚙️ Step 3 — Updated catalog.js</h2><span id="generateStatus" class="status"></span></div>
-    <p class="hint">Save your changes inside the item editor before generating the output.</p><pre id="output" class="output"></pre>
+    <p class="hint">Save your changes inside the item editor before generating the output.</p>
+    <div id="outputWarnings"></div>
+    <pre id="output" class="output"></pre>
     <div class="actions"><button onclick="copyOutput()">📋 Copy to clipboard</button><button onclick="downloadOutput()">⬇ Download catalog.js</button></div>
   </section>
 </div>
@@ -62,7 +73,7 @@ const SUB_CATEGORY_MAP={
 "Packaging & Product Inserts":["Original product boxes","Retail packaging","Collector's packaging","Branded tags","Instruction leaflets","Certificates of authenticity","Product inserts","Promotional cards","Original packaging components"],
 "Other":["Unclassified merchandise","Unusual one-off products","Unidentified promotional items","Items awaiting verification","Products that do not fit an existing category"]};
 const GAME_OPTIONS=["Grand Theft Auto (1997)","Grand Theft Auto 2 (1999)","Midnight Club: Street Racing (2000)","Max Payne (2001)","Grand Theft Auto III (2001)","Grand Theft Auto: Vice City (2002)","Max Payne 2: The Fall of Max Payne (2003)","Midnight Club II (2003)","Manhunt (2003)","Red Dead Revolver (2004)","Grand Theft Auto: Advance (2004)","Grand Theft Auto: San Andreas (2004)","Midnight Club 3: DUB Edition (2005)","The Warriors (2005)","Grand Theft Auto: Liberty City Stories (2005)","Grand Theft Auto: Vice City Stories (2006)","Bully (2006)","Manhunt 2 (2007)","Grand Theft Auto IV (2008)","Midnight Club: Los Angeles (2008)","Grand Theft Auto: Chinatown Wars (2009)","Red Dead Redemption (2010)","Red Dead Redemption: Undead Nightmare (2010)","L.A. Noire (2011)","Max Payne 3 (2012)","Grand Theft Auto V (2013)","Red Dead Redemption 2 (2018)","Grand Theft Auto VI (2026)"];
-let currentCatalogText="",currentItems=[],activeEditIndex=-1;
+let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false;
 const $=id=>document.getElementById(id);
 function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function jsString(v){return JSON.stringify(v??"");}
@@ -90,16 +101,22 @@ function parseCatalogItems(text){
  try{return Function('"use strict"; return ('+source+');')().filter(x=>x&&typeof x==="object");}
  catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
 }
-function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;renderItemList();$("output").textContent="";$("generateStatus").textContent="";}
+function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;renderItemList();$("output").textContent="";$("generateStatus").textContent="";$("outputWarnings").innerHTML="";}
 function renderItemList(){
  $("itemCount").textContent=`${currentItems.length} item${currentItems.length===1?"":"s"}`;
- if(!currentItems.length){$("itemListContainer").innerHTML='<div class="hint" style="padding:24px;text-align:center">No items loaded yet. Paste a catalog or click “Add new item”.</div>';return;}
+ if(!currentItems.length){$("itemListContainer").innerHTML='<div class="hint" style="padding:24px;text-align:center">No items loaded yet. Paste a catalog or click “Add new item”.</div>';$("saveReminder").style.display="none";return;}
+ $("saveReminder").style.display=activeEditIndex>=0?"block":"none";
  $("itemListContainer").innerHTML=currentItems.map((item,i)=>{
   const s=imageSettings(item),editing=activeEditIndex===i;
-  return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div>
+  const priceDisplay=item.price!==undefined&&item.price!==""?`<span class="price-badge">${escapeHtml(item.price)}</span>`:"";
+  const reorderButtons=devModeEnabled
+    ? `<button class="reorder-btn" title="Move up" onclick="event.stopPropagation();moveItem(${i},-1)">⬆️</button><button class="reorder-btn" title="Move down" onclick="event.stopPropagation();moveItem(${i},1)">⬇️</button>`
+    : ``;
+  return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
   <div class="editor"><div class="grid">
   <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
   <div><label>Game</label><select id="edit-game-${i}">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
+  <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99"></div>
   <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||"Other")}</select></div>
   <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||"Other",item.subcategory||"Other")}</select></div>
   <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
@@ -115,9 +132,20 @@ function renderItemList(){
  }).join("");
  currentItems.forEach((item,i)=>updateImageControls(i));
 }
+function toggleDevMode(){devModeEnabled=$("devModeToggle").checked;renderItemList();}
 function onMainCategoryChange(i){const cat=$(`edit-maincat-${i}`).value;$(`edit-subcat-${i}`).innerHTML=subOptions(cat,(SUB_CATEGORY_MAP[cat]||["Other"])[0]);}
 function toggleEdit(i){activeEditIndex=activeEditIndex===i?-1:i;renderItemList();}
 function cancelEdit(){activeEditIndex=-1;renderItemList();}
+function moveItem(index,direction){
+ const newIndex=index+direction;
+ if(newIndex<0||newIndex>=currentItems.length)return;
+ const temp=currentItems[index];
+ currentItems[index]=currentItems[newIndex];
+ currentItems[newIndex]=temp;
+ if(activeEditIndex===index)activeEditIndex=newIndex;
+ else if(activeEditIndex===newIndex)activeEditIndex=index;
+ renderItemList();
+}
 function saveItem(i){
  const get=id=>$(`${id}-${i}`),item=currentItems[i],dir=get("edit-image-directory").value.trim().replace(/\\/g,"/").replace(/\/+$/,"")+"/",base=get("edit-image-base").value.trim(),count=parseInt(get("edit-image-count").value,10),main=+get("edit-image-main").value;
  if(!dir||!base){alert("Please enter both an image directory and an image name.");return;}
@@ -125,20 +153,64 @@ function saveItem(i){
  if(!Number.isInteger(count)||count<1||count>500){alert("Enter a number of images between 1 and 500.");return;}
  if(!Number.isInteger(main)||main<1||main>count){alert("Choose a valid main image.");return;}
  item.name=get("edit-name").value;item.game=get("edit-game").value;item.category=get("edit-maincat").value;item.subcategory=get("edit-subcat").value;item.description=get("edit-description").value;item.year=get("edit-year").value;item.rarity=get("edit-rarity").value;
+ item.price=get("edit-price").value.trim();
  item.availability=get("edit-availability").value;if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
  item.image=formatImagePath(`${dir}${base}_${main}.jpg`);
  item.extraImages=Array.from({length:count},(_,n)=>n+1).filter(n=>n!==main).map(n=>formatImagePath(`${dir}${base}_${n}.jpg`));
  item.link=get("edit-link").value;activeEditIndex=-1;renderItemList();
+ $("saveReminder").style.display="none";
 }
 function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;renderItemList();}}
-function addNewItem(){currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});activeEditIndex=currentItems.length-1;renderItemList();}
+function addNewItem(){currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});activeEditIndex=currentItems.length-1;renderItemList();}
+function validateAndWarn(){
+ const warnings=[];
+ currentItems.forEach((item,i)=>{
+   const missing=[];
+   if(!item.name)missing.push("name");
+   if(!item.game)missing.push("game");
+   if(!item.category)missing.push("category");
+   if(!item.subcategory)missing.push("subcategory");
+   if(!item.description)missing.push("description");
+   if(!item.year)missing.push("year");
+   if(!item.rarity)missing.push("rarity");
+   if(!item.availability)missing.push("availability");
+   if(!item.image)missing.push("image");
+   if(!item.link)missing.push("link");
+   if(missing.length)warnings.push(`Item ${i+1} (${item.name||"Untitled"}) has empty fields: ${missing.join(", ")}`);
+ });
+ const generated=$("output").textContent;
+ const inputText=$("catalogInput").value;
+ if(generated && inputText && generated.trim()===inputText.trim()){
+   warnings.push("⚠️ Generated output is identical to the loaded input — no changes were made?");
+ }
+ return warnings;
+}
 function generateCatalog(){
- if(!currentItems.length){$("generateStatus").textContent="No items to generate.";return;}
- const strings=currentItems.map(item=>`  {\n    name: ${jsString(item.name)},\n    game: ${jsString(item.game)},\n    category: ${jsString(item.category)},\n    subcategory: ${jsString(item.subcategory)},\n    description: ${jsString(item.description)},\n    year: ${jsString(item.year)},\n    rarity: ${jsString(item.rarity)},\n    availability: ${jsString(item.availability)},\n    image: ${jsString(formatImagePath(item.image))},\n    extraImages: ${JSON.stringify(item.extraImages||[])},\n    link: ${jsString(item.link)}\n  }`).join(",\n");
+ if(!currentItems.length){$("generateStatus").textContent="No items to generate.";$("outputWarnings").innerHTML="";return;}
+ const strings=currentItems.map(item=>{
+   const base={name:item.name,game:item.game,category:item.category,subcategory:item.subcategory,description:item.description,year:item.year,rarity:item.rarity,availability:item.availability,image:formatImagePath(item.image),extraImages:item.extraImages||[],link:item.link};
+   if(item.price!==undefined&&item.price!=="")base.price=item.price;
+   else if(item.price==="")base.price="";
+   const lines=Object.entries(base).map(([k,v])=>{
+     if(k==="extraImages")return `    extraImages: ${JSON.stringify(v)}`;
+     return `    ${k}: ${jsString(v)}`;
+   });
+   return `  {\n${lines.join(",\n")}\n  }`;
+ }).join(",\n");
  const raw=currentCatalogText||$("catalogInput").value;let output;
  if(raw&&raw.includes("[")&&raw.includes("]")){const a=raw.indexOf("["),b=raw.lastIndexOf("]");output=raw.slice(0,a)+"[\n"+strings+"\n]"+raw.slice(b+1);}
  else output="const catalog = [\n"+strings+"\n];\n";
  $("output").textContent=output;$("generateStatus").textContent="Catalog generated.";
+ const warns=validateAndWarn();
+ const warnContainer=$("outputWarnings");
+ if(warns.length){
+   warnContainer.innerHTML=warns.map(w=>`<div class="warning-box">${escapeHtml(w)}</div>`).join("");
+ }else{
+   warnContainer.innerHTML="";
+ }
+ if(activeEditIndex>=0){
+   warnContainer.innerHTML+=`<div class="save-reminder">⚠️ You still have an open unsaved item. Save it before using the output.</div>`;
+ }
 }
 async function fetchFromGithub(){
  let url=$("githubUrl").value.trim();if(!url){$("fetchStatus").textContent="Enter a GitHub URL first.";return;}
@@ -148,7 +220,7 @@ async function fetchFromGithub(){
  catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}}
 async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
 function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
-window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;
+window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;
 </script>
 </body>
 </html>
