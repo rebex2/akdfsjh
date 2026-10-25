@@ -5,14 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rockstar Merch · Full Catalog Editor</title>
 <style>
-*{box-sizing:border-box}body{margin:0;padding:24px;background:#0f0f10;color:#eaeef2;font-family:Inter,"Segoe UI",system-ui,sans-serif}.app{max-width:1000px;margin:auto;display:flex;flex-direction:column;gap:22px}.header,.card-header,.row,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.header h1{font-size:1.8rem}.badge,.status{background:#292930;color:#aab3c2;border-radius:24px;padding:7px 12px;font-size:.8rem}.card{background:#1c1c20;border:1px solid #303039;border-radius:18px;padding:22px}.card h2{font-size:1.2rem;font-weight:550;color:#d0d6e0}.hint,.helper{font-size:.82rem;color:#8993a5;line-height:1.5}.hint{margin:0 0 12px}label{display:block;font-size:.82rem;color:#b6c0d0;margin:13px 0 5px}input,textarea,select{width:100%;background:#131317;border:1px solid #363640;border-radius:9px;padding:10px 12px;color:#f0f4fc;font:inherit;font-size:.9rem}textarea{min-height:90px;resize:vertical}button{background:#292930;border:1px solid #41414b;border-radius:9px;padding:10px 14px;color:#eef2f8;font-weight:600;cursor:pointer}button:hover{background:#383841}.primary{background:#4f7df3;border-color:#4f7df3}.success{background:#2b7a4b;border-color:#2b7a4b}.danger{background:#4a1e1e;border-color:#6a2a2a}.actions{justify-content:flex-start;margin-top:15px}.actions button{flex:1}.item-list{display:flex;flex-direction:column;gap:10px}.item{background:#131317;border:1px solid #303039;border-radius:12px;overflow:hidden}.summary{padding:14px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center}.summary:hover{background:#202027}.item-name{font-weight:650}.meta{font-size:.78rem;color:#8993a5;margin-top:5px}.editor{display:none;border-top:1px solid #303039;padding:0 16px 16px}.item.open .editor{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}.output{white-space:pre-wrap;overflow:auto;max-height:400px;background:#0b0b0e;border:1px solid #303039;border-radius:12px;padding:16px;font: .82rem ui-monospace,monospace}.status.ok{color:#8dd6a8}.status.err{color:#f09a9a}.reorder-btn{padding:6px 10px;font-size:1.1rem;line-height:1;min-width:40px;text-align:center}.reorder-group{display:flex;gap:4px;align-items:center}.save-reminder{background:#2a2a1e;border-left:4px solid #e6c84a;padding:8px 14px;border-radius:6px;font-size:.8rem;color:#d4c77a;margin:8px 0}.price-badge{font-size:.75rem;background:#2a2a1e;color:#e6c84a;padding:2px 8px;border-radius:12px;margin-left:8px}.warning-box{background:#2a1e1e;border-left:4px solid #f09a9a;padding:8px 14px;border-radius:6px;font-size:.8rem;color:#f09a9a;margin:8px 0}.devmode-toggle{display:flex;align-items:center;gap:6px;font-size:.78rem;color:#8993a5;cursor:pointer;user-select:none;background:#131317;padding:6px 12px;border-radius:20px;border:1px solid #363640}.devmode-toggle input{width:auto;margin:0;accent-color:#4f7df3}.devmode-toggle:hover{border-color:#4f7df3}@media(max-width:640px){body{padding:12px}.card{padding:15px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.summary{align-items:flex-start;flex-direction:column}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:#0f0f10;color:#eaeef2;font-family:Inter,"Segoe UI",system-ui,sans-serif;line-height:1.6}
+.app{max-width:1060px;margin:auto;display:flex;flex-direction:column;gap:26px}
+.header,.card-header,.row,.actions{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.header h1{font-size:1.8rem;letter-spacing:-.02em}
+.badge,.status{background:#292930;color:#aab3c2;border-radius:24px;padding:7px 13px;font-size:.8rem;white-space:nowrap}
+.card{background:#1c1c20;border:1px solid #303039;border-radius:18px;padding:26px 24px}
+.card h2{font-size:1.2rem;font-weight:550;color:#d0d6e0;margin:0}
+.hint,.helper{font-size:.82rem;color:#8993a5;line-height:1.6}
+.hint{margin:0 0 16px;max-width:80ch}
+label{display:block;font-size:.82rem;color:#b6c0d0;margin:16px 0 6px;font-weight:500}
+input,textarea,select{width:100%;background:#131317;border:1px solid #363640;border-radius:9px;padding:11px 13px;color:#f0f4fc;font:inherit;font-size:.9rem;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#4f7df3}
+textarea{min-height:90px;resize:vertical}
+button{background:#292930;border:1px solid #41414b;border-radius:9px;padding:11px 16px;color:#eef2f8;font-weight:600;cursor:pointer;transition:background .15s}
+button:hover{background:#383841}
+.primary{background:#4f7df3;border-color:#4f7df3}
+.primary:hover{background:#3d6ce0}
+.success{background:#2b7a4b;border-color:#2b7a4b}
+.success:hover{background:#246840}
+.danger{background:#4a1e1e;border-color:#6a2a2a}
+.danger:hover{background:#5c2626}
+.actions{justify-content:flex-start;margin-top:18px;gap:10px}
+.actions button{flex:1;min-width:120px}
+.item-list{display:flex;flex-direction:column;gap:12px}
+.item{background:#131317;border:1px solid #303039;border-radius:12px;overflow:hidden;transition:border-color .15s}
+.item:hover{border-color:#41414b}
+.summary{padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;gap:14px;align-items:center}
+.summary:hover{background:#202027}
+.item-name{font-weight:650;font-size:.95rem}
+.meta{font-size:.78rem;color:#8993a5;margin-top:6px}
+.editor{display:none;border-top:1px solid #303039;padding:4px 18px 18px}
+.item.open .editor{display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px}
+.full{grid-column:1/-1}
+.output{white-space:pre-wrap;overflow:auto;max-height:420px;background:#0b0b0e;border:1px solid #303039;border-radius:12px;padding:18px;font:.82rem ui-monospace,monospace;line-height:1.5;margin-top:8px}
+.status.ok{color:#8dd6a8}
+.status.err{color:#f09a9a}
+.reorder-btn{padding:6px 11px;font-size:1.05rem;line-height:1;min-width:40px;text-align:center}
+.reorder-group{display:flex;gap:6px;align-items:center}
+.save-reminder{background:#2a2a1e;border-left:4px solid #e6c84a;padding:10px 16px;border-radius:6px;font-size:.8rem;color:#d4c77a;margin:10px 0}
+.price-badge{font-size:.75rem;background:#2a2a1e;color:#e6c84a;padding:2px 9px;border-radius:12px;margin-left:10px;font-weight:600}
+.warning-box{background:#2a1e1e;border-left:4px solid #f09a9a;padding:10px 16px;border-radius:6px;font-size:.8rem;color:#f09a9a;margin:10px 0}
+.devmode-toggle{display:flex;align-items:center;gap:7px;font-size:.78rem;color:#8993a5;cursor:pointer;user-select:none;background:#131317;padding:7px 13px;border-radius:20px;border:1px solid #363640;transition:border-color .15s}
+.devmode-toggle input{width:auto;margin:0;accent-color:#4f7df3}
+.devmode-toggle:hover{border-color:#4f7df3}
+.search-wrap{position:relative;margin:0 0 18px}
+.search-wrap input{padding-left:38px}
+.search-wrap::before{content:"🔍";position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:.9rem;opacity:.6;pointer-events:none}
+.filter-info{font-size:.78rem;color:#8993a5;margin:-8px 0 14px;min-height:1.2em}
+@media(max-width:640px){body{padding:14px}.card{padding:18px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.summary{align-items:flex-start;flex-direction:column}.actions button{min-width:100%}}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="header">
     <h1>🎸 Full Catalog Editor</h1>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:12px">
       <label class="devmode-toggle" title="Shows the ⬆️ / ⬇️ reorder buttons on each item">
         <input type="checkbox" id="devModeToggle" onchange="toggleDevMode()"> Developer mode
       </label>
@@ -28,7 +78,11 @@
   </section>
   <section class="card">
     <div class="card-header"><h2>✏️ Step 2 — Edit items</h2><span id="itemCount" class="status">0 items</span></div>
-    <p class="hint">Images use numbered filenames, for example chop_1.jpg, chop_2.jpg, chop_3.jpg. Select the main image and the editor fills the remaining images automatically. <strong>Remember to save each item after editing!</strong></p>
+    <p class="hint">Images use numbered filenames based on their parent folder name — e.g. <code>images/GTAVI/gator_white_T/gator_white_T_1.jpg</code>. Select the main image and the editor fills the rest automatically. <strong>Remember to save each item after editing!</strong></p>
+    <div class="search-wrap">
+      <input id="searchFilter" type="text" placeholder="Search items by name, game, category, description…" oninput="applySearchFilter()">
+    </div>
+    <div id="filterInfo" class="filter-info"></div>
     <div id="saveReminder" class="save-reminder" style="display:none">⚠️ You have unsaved changes in this item. Click “💾 Save changes” before leaving or generating the catalog.</div>
     <div id="itemListContainer" class="item-list"></div>
     <div class="actions"><button class="primary" onclick="addNewItem()">➕ Add new item</button><button class="success" onclick="generateCatalog()">⚙️ Generate updated catalog.js</button></div>
@@ -73,154 +127,208 @@ const SUB_CATEGORY_MAP={
 "Packaging & Product Inserts":["Original product boxes","Retail packaging","Collector's packaging","Branded tags","Instruction leaflets","Certificates of authenticity","Product inserts","Promotional cards","Original packaging components"],
 "Other":["Unclassified merchandise","Unusual one-off products","Unidentified promotional items","Items awaiting verification","Products that do not fit an existing category"]};
 const GAME_OPTIONS=["Grand Theft Auto (1997)","Grand Theft Auto 2 (1999)","Midnight Club: Street Racing (2000)","Max Payne (2001)","Grand Theft Auto III (2001)","Grand Theft Auto: Vice City (2002)","Max Payne 2: The Fall of Max Payne (2003)","Midnight Club II (2003)","Manhunt (2003)","Red Dead Revolver (2004)","Grand Theft Auto: Advance (2004)","Grand Theft Auto: San Andreas (2004)","Midnight Club 3: DUB Edition (2005)","The Warriors (2005)","Grand Theft Auto: Liberty City Stories (2005)","Grand Theft Auto: Vice City Stories (2006)","Bully (2006)","Manhunt 2 (2007)","Grand Theft Auto IV (2008)","Midnight Club: Los Angeles (2008)","Grand Theft Auto: Chinatown Wars (2009)","Red Dead Redemption (2010)","Red Dead Redemption: Undead Nightmare (2010)","L.A. Noire (2011)","Max Payne 3 (2012)","Grand Theft Auto V (2013)","Red Dead Redemption 2 (2018)","Grand Theft Auto VI (2026)"];
-let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false;
+let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false,searchTerm="";
 const $=id=>document.getElementById(id);
 function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function jsString(v){return JSON.stringify(v??"");}
 function formatImagePath(p){p=String(p||"").trim().replace(/\\/g,"/");if(!p)return "";if(!p.startsWith("images/")&&!/^https?:\/\//i.test(p)&&!p.startsWith("/"))p="images/"+p;return p;}
 function selectOptions(opts,value){let list=[...opts];if(value&&!list.includes(value))list.unshift(value);return list.map(x=>`<option value="${escapeHtml(x)}" ${x===value?"selected":""}>${escapeHtml(x)}</option>`).join("");}
 function subOptions(cat,value){return selectOptions(SUB_CATEGORY_MAP[cat]||SUB_CATEGORY_MAP.Other,value||"Other");}
+
+// Directory name is the image base name (last segment of the directory path).
+function dirBaseName(dir){
+  const clean=String(dir||"").replace(/\\/g,"/").replace(/\/+$/,"");
+  const parts=clean.split("/");
+  return parts[parts.length-1]||"";
+}
+
 function imageSettings(item){
- let paths=[item.image||"",...(Array.isArray(item.extraImages)?item.extraImages:[])].map(x=>String(x).replace(/\\/g,"/"));
- let first=paths[0]||"",slash=first.lastIndexOf("/"),directory=slash>=0?first.slice(0,slash+1):"images/",filename=slash>=0?first.slice(slash+1):first;
- let m=filename.match(/^(.+?)_(\d+)\.jpg$/i),base=m?m[1]:filename.replace(/\.[^.]+$/,""),main=m?+m[2]:1;
- let nums=paths.map(p=>{let f=p.split("/").pop().match(/^.+?_(\d+)\.jpg$/i);return f?+f[1]:0;});
- return {directory,base,count:Math.max(1,main,...nums),main};
+  let paths=[item.image||"",...(Array.isArray(item.extraImages)?item.extraImages:[])].map(x=>String(x).replace(/\\/g,"/"));
+  let first=paths[0]||"",slash=first.lastIndexOf("/"),directory=slash>=0?first.slice(0,slash+1):"images/",filename=slash>=0?first.slice(slash+1):first;
+  let m=filename.match(/^(.+?)_(\d+)\.jpg$/i),base=m?m[1]:filename.replace(/\.[^.]+$/,""),main=m?+m[2]:1;
+  // If the directory basename matches a numbered file pattern, prefer that as base
+  const dirBase=dirBaseName(directory);
+  if(dirBase && /^.+?_\d+\.jpg$/i.test(filename)){
+    const dirMatch=filename.match(/^(.+?)_(\d+)\.jpg$/i);
+    if(dirMatch){ base=dirBase; }
+  }
+  let nums=paths.map(p=>{let f=p.split("/").pop().match(/^.+?_(\d+)\.jpg$/i);return f?+f[1]:0;});
+  return {directory,base,count:Math.max(1,main,...nums),main};
 }
 function imageSelect(idx,base,count,main){return `<select id="edit-image-main-${idx}">${Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("")}</select>`;}
 function updateImageControls(idx){
- const base=$(`edit-image-base-${idx}`).value.trim(),count=Math.max(1,Math.min(500,parseInt($(`edit-image-count-${idx}`).value,10)||1)),old=+$(`edit-image-main-${idx}`).value||1,main=Math.min(old,count);
- $(`edit-image-main-${idx}`).innerHTML=Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("");
- const dir=$(`edit-image-directory-${idx}`).value.trim().replace(/\/+$/,"");
- $(`edit-extra-preview-${idx}`).value=Array.from({length:count},(_,i)=>i+1).filter(n=>n!==main).map(n=>`${dir}/${base||"image"}_${n}.jpg`).join(", ");
+  const dirInput=$(`edit-image-directory-${idx}`).value.trim();
+  const derivedBase=dirBaseName(dirInput);
+  const baseInput=$(`edit-image-base-${idx}`);
+  // auto-sync base name from directory if user hasn't overridden manually and directory is valid
+  if(dirInput && derivedBase){
+    baseInput.value=derivedBase;
+  }
+  const base=baseInput.value.trim();
+  const count=Math.max(1,Math.min(500,parseInt($(`edit-image-count-${idx}`).value,10)||1));
+  const old=+$(`edit-image-main-${idx}`).value||1,main=Math.min(old,count);
+  $(`edit-image-main-${idx}`).innerHTML=Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("");
+  const dir=dirInput.replace(/\\/g,"/").replace(/\/+$/,"");
+  $(`edit-extra-preview-${idx}`).value=Array.from({length:count},(_,i)=>i+1).filter(n=>n!==main).map(n=>`${dir}/${base||"image"}_${n}.jpg`).join(", ");
 }
 function parseCatalogItems(text){
- if(!text.trim())return [];
- let start=text.indexOf("["),end=text.lastIndexOf("]");if(start<0||end<=start)return [];
- let source=text.slice(start,end+1).replace(/,\s*]/g,"]");
- try{return Function('"use strict"; return ('+source+');')().filter(x=>x&&typeof x==="object");}
- catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
+  if(!text.trim())return [];
+  let start=text.indexOf("["),end=text.lastIndexOf("]");if(start<0||end<=start)return [];
+  let source=text.slice(start,end+1).replace(/,\s*]/g,"]");
+  try{return Function('"use strict"; return ('+source+');')().filter(x=>x&&typeof x==="object");}
+  catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
 }
 function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;renderItemList();$("output").textContent="";$("generateStatus").textContent="";$("outputWarnings").innerHTML="";}
-function renderItemList(){
- $("itemCount").textContent=`${currentItems.length} item${currentItems.length===1?"":"s"}`;
- if(!currentItems.length){$("itemListContainer").innerHTML='<div class="hint" style="padding:24px;text-align:center">No items loaded yet. Paste a catalog or click “Add new item”.</div>';$("saveReminder").style.display="none";return;}
- $("saveReminder").style.display=activeEditIndex>=0?"block":"none";
- $("itemListContainer").innerHTML=currentItems.map((item,i)=>{
-  const s=imageSettings(item),editing=activeEditIndex===i;
-  const priceDisplay=item.price!==undefined&&item.price!==""?`<span class="price-badge">${escapeHtml(item.price)}</span>`:"";
-  const reorderButtons=devModeEnabled
-    ? `<button class="reorder-btn" title="Move up" onclick="event.stopPropagation();moveItem(${i},-1)">⬆️</button><button class="reorder-btn" title="Move down" onclick="event.stopPropagation();moveItem(${i},1)">⬇️</button>`
-    : ``;
-  return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
-  <div class="editor"><div class="grid">
-  <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
-  <div><label>Game</label><select id="edit-game-${i}">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
-  <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99"></div>
-  <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||"Other")}</select></div>
-  <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||"Other",item.subcategory||"Other")}</select></div>
-  <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
-  <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}"></div>
-  <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
-  <div class="full"><label>Image directory</label><input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/"><div class="helper">Folder containing the numbered JPG images.</div></div>
-  <div><label>Image name</label><input id="edit-image-base-${i}" value="${escapeHtml(s.base)}" placeholder="chop" oninput="updateImageControls(${i})"><div class="helper">Without number or extension.</div></div>
-  <div><label>Number of images</label><input id="edit-image-count-${i}" type="number" min="1" max="500" value="${s.count}" oninput="updateImageControls(${i})"></div>
-  <div class="full"><label>Main image</label>${imageSelect(i,s.base,s.count,s.main)}<div class="helper">Choose which numbered image represents the item.</div></div>
-  <div class="full"><label>Extra images (automatically generated)</label><textarea readonly id="edit-extra-preview-${i}"></textarea></div>
-  <div class="full"><label>Link (optional)</label><input id="edit-link-${i}" value="${escapeHtml(item.link||"")}"></div></div>
-  <div class="actions"><button class="success" onclick="saveItem(${i})">💾 Save changes</button><button onclick="cancelEdit(${i})">Cancel</button><button class="danger" onclick="deleteItem(${i})">🗑 Delete</button></div></div></div>`;
- }).join("");
- currentItems.forEach((item,i)=>updateImageControls(i));
+
+function itemMatchesSearch(item,term){
+  if(!term)return true;
+  const hay=term.toLowerCase();
+  const fields=[item.name,item.game,item.category,item.subcategory,item.description,item.year,item.rarity,item.availability,item.price,item.link];
+  return fields.some(f=>String(f??"").toLowerCase().includes(hay));
 }
+
+function renderItemList(){
+  const filtered=currentItems.filter(item=>itemMatchesSearch(item,searchTerm));
+  $("itemCount").textContent=`${currentItems.length} item${currentItems.length===1?"":"s"}`;
+  const infoEl=$("filterInfo");
+  if(searchTerm){
+    infoEl.textContent=`Showing ${filtered.length} of ${currentItems.length} items matching “${searchTerm}”.`;
+  }else{
+    infoEl.textContent="";
+  }
+  if(!currentItems.length){
+    $("itemListContainer").innerHTML='<div class="hint" style="padding:24px;text-align:center">No items loaded yet. Paste a catalog or click “Add new item”.</div>';
+    $("saveReminder").style.display="none";return;
+  }
+  if(!filtered.length){
+    $("itemListContainer").innerHTML=`<div class="hint" style="padding:24px;text-align:center">No items match “${escapeHtml(searchTerm)}”.</div>`;
+    $("saveReminder").style.display=activeEditIndex>=0?"block":"none";return;
+  }
+  $("saveReminder").style.display=activeEditIndex>=0?"block":"none";
+  $("itemListContainer").innerHTML=filtered.map(item=>{
+    const i=currentItems.indexOf(item);
+    const s=imageSettings(item),editing=activeEditIndex===i;
+    const priceDisplay=item.price!==undefined&&item.price!==""?`<span class="price-badge">${escapeHtml(item.price)}</span>`:"";
+    const reorderButtons=devModeEnabled
+      ? `<button class="reorder-btn" title="Move up" onclick="event.stopPropagation();moveItem(${i},-1)">⬆️</button><button class="reorder-btn" title="Move down" onclick="event.stopPropagation();moveItem(${i},1)">⬇️</button>`
+      : ``;
+    return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
+    <div class="editor"><div class="grid">
+    <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
+    <div><label>Game</label><select id="edit-game-${i}">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
+    <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99"></div>
+    <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||"Other")}</select></div>
+    <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||"Other",item.subcategory||"Other")}</select></div>
+    <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
+    <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}"></div>
+    <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
+    <div class="full"><label>Image directory</label><input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i})"><div class="helper">Folder containing the numbered JPG images. The image name is derived from the last folder name.</div></div>
+    <div><label>Image name (auto from folder)</label><input id="edit-image-base-${i}" value="${escapeHtml(s.base)}" placeholder="chop" oninput="updateImageControls(${i})"><div class="helper">Usually matches the directory name. Without number or extension.</div></div>
+    <div><label>Number of images</label><input id="edit-image-count-${i}" type="number" min="1" max="500" value="${s.count}" oninput="updateImageControls(${i})"></div>
+    <div class="full"><label>Main image</label>${imageSelect(i,s.base,s.count,s.main)}<div class="helper">Choose which numbered image represents the item.</div></div>
+    <div class="full"><label>Extra images (automatically generated)</label><textarea readonly id="edit-extra-preview-${i}"></textarea></div>
+    <div class="full"><label>Link (optional)</label><input id="edit-link-${i}" value="${escapeHtml(item.link||"")}"></div></div>
+    <div class="actions"><button class="success" onclick="saveItem(${i})">💾 Save changes</button><button onclick="cancelEdit(${i})">Cancel</button><button class="danger" onclick="deleteItem(${i})">🗑 Delete</button></div></div></div>`;
+  }).join("");
+  filtered.forEach(item=>updateImageControls(currentItems.indexOf(item)));
+}
+function applySearchFilter(){searchTerm=$("searchFilter").value.trim();renderItemList();}
 function toggleDevMode(){devModeEnabled=$("devModeToggle").checked;renderItemList();}
 function onMainCategoryChange(i){const cat=$(`edit-maincat-${i}`).value;$(`edit-subcat-${i}`).innerHTML=subOptions(cat,(SUB_CATEGORY_MAP[cat]||["Other"])[0]);}
 function toggleEdit(i){activeEditIndex=activeEditIndex===i?-1:i;renderItemList();}
 function cancelEdit(){activeEditIndex=-1;renderItemList();}
 function moveItem(index,direction){
- const newIndex=index+direction;
- if(newIndex<0||newIndex>=currentItems.length)return;
- const temp=currentItems[index];
- currentItems[index]=currentItems[newIndex];
- currentItems[newIndex]=temp;
- if(activeEditIndex===index)activeEditIndex=newIndex;
- else if(activeEditIndex===newIndex)activeEditIndex=index;
- renderItemList();
+  const newIndex=index+direction;
+  if(newIndex<0||newIndex>=currentItems.length)return;
+  const temp=currentItems[index];
+  currentItems[index]=currentItems[newIndex];
+  currentItems[newIndex]=temp;
+  if(activeEditIndex===index)activeEditIndex=newIndex;
+  else if(activeEditIndex===newIndex)activeEditIndex=index;
+  renderItemList();
 }
 function saveItem(i){
- const get=id=>$(`${id}-${i}`),item=currentItems[i],dir=get("edit-image-directory").value.trim().replace(/\\/g,"/").replace(/\/+$/,"")+"/",base=get("edit-image-base").value.trim(),count=parseInt(get("edit-image-count").value,10),main=+get("edit-image-main").value;
- if(!dir||!base){alert("Please enter both an image directory and an image name.");return;}
- if(/[\\/]/.test(base)||/\.[^.]+$/.test(base)){alert("Use only the base image name, without slashes or a file extension.");return;}
- if(!Number.isInteger(count)||count<1||count>500){alert("Enter a number of images between 1 and 500.");return;}
- if(!Number.isInteger(main)||main<1||main>count){alert("Choose a valid main image.");return;}
- item.name=get("edit-name").value;item.game=get("edit-game").value;item.category=get("edit-maincat").value;item.subcategory=get("edit-subcat").value;item.description=get("edit-description").value;item.year=get("edit-year").value;item.rarity=get("edit-rarity").value;
- item.price=get("edit-price").value.trim();
- item.availability=get("edit-availability").value;if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
- item.image=formatImagePath(`${dir}${base}_${main}.jpg`);
- item.extraImages=Array.from({length:count},(_,n)=>n+1).filter(n=>n!==main).map(n=>formatImagePath(`${dir}${base}_${n}.jpg`));
- item.link=get("edit-link").value;activeEditIndex=-1;renderItemList();
- $("saveReminder").style.display="none";
+  const get=id=>$(`${id}-${i}`),item=currentItems[i],dirInput=get("edit-image-directory").value.trim().replace(/\\/g,"/").replace(/\/+$/,"")+"/";
+  const base=get("edit-image-base").value.trim();
+  const count=parseInt(get("edit-image-count").value,10),main=+get("edit-image-main").value;
+  if(!dirInput||!base){alert("Please enter both an image directory and an image name.");return;}
+  if(/[\\/]/.test(base)||/\.[^.]+$/.test(base)){alert("Use only the base image name, without slashes or a file extension.");return;}
+  if(!Number.isInteger(count)||count<1||count>500){alert("Enter a number of images between 1 and 500.");return;}
+  if(!Number.isInteger(main)||main<1||main>count){alert("Choose a valid main image.");return;}
+  item.name=get("edit-name").value;item.game=get("edit-game").value;item.category=get("edit-maincat").value;item.subcategory=get("edit-subcat").value;item.description=get("edit-description").value;item.year=get("edit-year").value;item.rarity=get("edit-rarity").value;
+  item.price=get("edit-price").value.trim();
+  item.availability=get("edit-availability").value;if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
+  item.image=formatImagePath(`${dirInput}${base}_${main}.jpg`);
+  item.extraImages=Array.from({length:count},(_,n)=>n+1).filter(n=>n!==main).map(n=>formatImagePath(`${dirInput}${base}_${n}.jpg`));
+  item.link=get("edit-link").value;activeEditIndex=-1;renderItemList();
+  $("saveReminder").style.display="none";
 }
 function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;renderItemList();}}
-function addNewItem(){currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});activeEditIndex=currentItems.length-1;renderItemList();}
+function addNewItem(){
+  currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});
+  activeEditIndex=currentItems.length-1;
+  searchTerm="";$("searchFilter").value="";
+  renderItemList();
+}
 function validateAndWarn(){
- const warnings=[];
- currentItems.forEach((item,i)=>{
-   const missing=[];
-   if(!item.name)missing.push("name");
-   if(!item.game)missing.push("game");
-   if(!item.category)missing.push("category");
-   if(!item.subcategory)missing.push("subcategory");
-   if(!item.description)missing.push("description");
-   if(!item.year)missing.push("year");
-   if(!item.rarity)missing.push("rarity");
-   if(!item.availability)missing.push("availability");
-   if(!item.image)missing.push("image");
-   if(!item.link)missing.push("link");
-   if(missing.length)warnings.push(`Item ${i+1} (${item.name||"Untitled"}) has empty fields: ${missing.join(", ")}`);
- });
- const generated=$("output").textContent;
- const inputText=$("catalogInput").value;
- if(generated && inputText && generated.trim()===inputText.trim()){
-   warnings.push("⚠️ Generated output is identical to the loaded input — no changes were made?");
- }
- return warnings;
+  const warnings=[];
+  currentItems.forEach((item,i)=>{
+    const missing=[];
+    if(!item.name)missing.push("name");
+    if(!item.game)missing.push("game");
+    if(!item.category)missing.push("category");
+    if(!item.subcategory)missing.push("subcategory");
+    if(!item.description)missing.push("description");
+    if(!item.year)missing.push("year");
+    if(!item.rarity)missing.push("rarity");
+    if(!item.availability)missing.push("availability");
+    if(!item.image)missing.push("image");
+    if(!item.link)missing.push("link");
+    if(missing.length)warnings.push(`Item ${i+1} (${item.name||"Untitled"}) has empty fields: ${missing.join(", ")}`);
+  });
+  const generated=$("output").textContent;
+  const inputText=$("catalogInput").value;
+  if(generated && inputText && generated.trim()===inputText.trim()){
+    warnings.push("⚠️ Generated output is identical to the loaded input — no changes were made?");
+  }
+  return warnings;
 }
 function generateCatalog(){
- if(!currentItems.length){$("generateStatus").textContent="No items to generate.";$("outputWarnings").innerHTML="";return;}
- const strings=currentItems.map(item=>{
-   const base={name:item.name,game:item.game,category:item.category,subcategory:item.subcategory,description:item.description,year:item.year,rarity:item.rarity,availability:item.availability,image:formatImagePath(item.image),extraImages:item.extraImages||[],link:item.link};
-   if(item.price!==undefined&&item.price!=="")base.price=item.price;
-   else if(item.price==="")base.price="";
-   const lines=Object.entries(base).map(([k,v])=>{
-     if(k==="extraImages")return `    extraImages: ${JSON.stringify(v)}`;
-     return `    ${k}: ${jsString(v)}`;
-   });
-   return `  {\n${lines.join(",\n")}\n  }`;
- }).join(",\n");
- const raw=currentCatalogText||$("catalogInput").value;let output;
- if(raw&&raw.includes("[")&&raw.includes("]")){const a=raw.indexOf("["),b=raw.lastIndexOf("]");output=raw.slice(0,a)+"[\n"+strings+"\n]"+raw.slice(b+1);}
- else output="const catalog = [\n"+strings+"\n];\n";
- $("output").textContent=output;$("generateStatus").textContent="Catalog generated.";
- const warns=validateAndWarn();
- const warnContainer=$("outputWarnings");
- if(warns.length){
-   warnContainer.innerHTML=warns.map(w=>`<div class="warning-box">${escapeHtml(w)}</div>`).join("");
- }else{
-   warnContainer.innerHTML="";
- }
- if(activeEditIndex>=0){
-   warnContainer.innerHTML+=`<div class="save-reminder">⚠️ You still have an open unsaved item. Save it before using the output.</div>`;
- }
+  if(!currentItems.length){$("generateStatus").textContent="No items to generate.";$("outputWarnings").innerHTML="";return;}
+  const strings=currentItems.map(item=>{
+    const base={name:item.name,game:item.game,category:item.category,subcategory:item.subcategory,description:item.description,year:item.year,rarity:item.rarity,availability:item.availability,image:formatImagePath(item.image),extraImages:item.extraImages||[],link:item.link};
+    if(item.price!==undefined&&item.price!=="")base.price=item.price;
+    else if(item.price==="")base.price="";
+    const lines=Object.entries(base).map(([k,v])=>{
+      if(k==="extraImages")return `    extraImages: ${JSON.stringify(v)}`;
+      return `    ${k}: ${jsString(v)}`;
+    });
+    return `  {\n${lines.join(",\n")}\n  }`;
+  }).join(",\n");
+  const raw=currentCatalogText||$("catalogInput").value;let output;
+  if(raw&&raw.includes("[")&&raw.includes("]")){const a=raw.indexOf("["),b=raw.lastIndexOf("]");output=raw.slice(0,a)+"[\n"+strings+"\n]"+raw.slice(b+1);}
+  else output="const catalog = [\n"+strings+"\n];\n";
+  $("output").textContent=output;$("generateStatus").textContent="Catalog generated.";
+  const warns=validateAndWarn();
+  const warnContainer=$("outputWarnings");
+  if(warns.length){
+    warnContainer.innerHTML=warns.map(w=>`<div class="warning-box">${escapeHtml(w)}</div>`).join("");
+  }else{
+    warnContainer.innerHTML="";
+  }
+  if(activeEditIndex>=0){
+    warnContainer.innerHTML+=`<div class="save-reminder">⚠️ You still have an open unsaved item. Save it before using the output.</div>`;
+  }
 }
 async function fetchFromGithub(){
- let url=$("githubUrl").value.trim();if(!url){$("fetchStatus").textContent="Enter a GitHub URL first.";return;}
- if(url.includes("github.com")&&url.includes("/blob/"))url=url.replace("github.com","raw.githubusercontent.com").replace("/blob/","/");
- $("fetchStatus").textContent="Fetching…";
- try{const response=await fetch(url);if(!response.ok)throw Error("HTTP "+response.status);const text=await response.text();$("catalogInput").value=text;parseAndRenderItems();$("fetchStatus").textContent="Loaded catalog.";}
- catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}}
+  let url=$("githubUrl").value.trim();if(!url){$("fetchStatus").textContent="Enter a GitHub URL first.";return;}
+  if(url.includes("github.com")&&url.includes("/blob/"))url=url.replace("github.com","raw.githubusercontent.com").replace("/blob/","/");
+  $("fetchStatus").textContent="Fetching…";
+  try{const response=await fetch(url);if(!response.ok)throw Error("HTTP "+response.status);const text=await response.text();$("catalogInput").value=text;parseAndRenderItems();$("fetchStatus").textContent="Loaded catalog.";}
+  catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}}
 async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
 function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
-window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;
+window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;
 </script>
 </body>
 </html>
