@@ -45,7 +45,7 @@ button:hover{background:#383841}
 .status.err{color:#f09a9a}
 .reorder-btn{padding:6px 11px;font-size:1.05rem;line-height:1;min-width:40px;text-align:center}
 .reorder-group{display:flex;gap:6px;align-items:center}
-.save-reminder{background:#2a2a1e;border-left:4px solid #e6c84a;padding:10px 16px;border-radius:6px;font-size:.8rem;color:#d4c77a;margin:10px 0}
+.autosave-indicator{background:#1e2a20;border-left:4px solid #4caf50;padding:10px 16px;border-radius:6px;font-size:.8rem;color:#8dd6a8;margin:10px 0;display:none}
 .price-badge{font-size:.75rem;background:#2a2a1e;color:#e6c84a;padding:2px 9px;border-radius:12px;margin-left:10px;font-weight:600}
 .warning-box{background:#2a1e1e;border-left:4px solid #f09a9a;padding:10px 16px;border-radius:6px;font-size:.8rem;color:#f09a9a;margin:10px 0}
 .devmode-toggle{display:flex;align-items:center;gap:7px;font-size:.78rem;color:#8993a5;cursor:pointer;user-select:none;background:#131317;padding:7px 13px;border-radius:20px;border:1px solid #363640;transition:border-color .15s}
@@ -71,25 +71,25 @@ button:hover{background:#383841}
   </div>
   <section class="card">
     <div class="card-header"><h2>📥 Step 1 — Load your catalog</h2><span id="fetchStatus" class="status">Ready</span></div>
-    <p class="hint">Paste your catalog.js below, or fetch it from GitHub. Edit an item in Step 2, then save its changes before generating the updated catalog.</p>
+    <p class="hint">Paste your catalog.js below, or fetch it from GitHub. Edit an item in Step 2 — changes save automatically as you type.</p>
     <label for="githubUrl">GitHub URL (optional)</label><div class="row"><input id="githubUrl" value="https://github.com/rebex2/texture-toolkit/blob/main/catalog.js" placeholder="https://github.com/.../catalog.js"><button type="button" onclick="fetchFromGithub()">⬇ Fetch</button></div>
     <label for="catalogInput">catalog.js content</label><textarea id="catalogInput" placeholder="Paste your catalog.js here..." style="min-height:150px"></textarea>
     <div class="actions"><button class="primary" onclick="parseAndRenderItems()">📋 Load &amp; show items</button></div>
   </section>
   <section class="card">
     <div class="card-header"><h2>✏️ Step 2 — Edit items</h2><span id="itemCount" class="status">0 items</span></div>
-    <p class="hint">Images use numbered filenames based on their parent folder name — e.g. <code>images/GTAVI/gator_white_T/gator_white_T_1.jpg</code>. Select the main image and the editor fills the rest automatically. <strong>Remember to save each item after editing!</strong></p>
+    <p class="hint">Images use numbered filenames based on their parent folder name — e.g. <code>images/GTAVI/gator_white_T/gator_white_T_1.jpg</code>. Select the main image and the editor fills the rest automatically. <strong>Changes save automatically as you edit.</strong></p>
     <div class="search-wrap">
       <input id="searchFilter" type="text" placeholder="Search items by name, game, category, description…" oninput="applySearchFilter()">
     </div>
     <div id="filterInfo" class="filter-info"></div>
-    <div id="saveReminder" class="save-reminder" style="display:none">⚠️ You have unsaved changes in this item. Click “💾 Save changes” before leaving or generating the catalog.</div>
+    <div id="autosaveIndicator" class="autosave-indicator">✓ Changes saved automatically.</div>
     <div id="itemListContainer" class="item-list"></div>
     <div class="actions"><button class="primary" onclick="addNewItem()">➕ Add new item</button><button class="success" onclick="generateCatalog()">⚙️ Generate updated catalog.js</button></div>
   </section>
   <section class="card">
     <div class="card-header"><h2>⚙️ Step 3 — Updated catalog.js</h2><span id="generateStatus" class="status"></span></div>
-    <p class="hint">Save your changes inside the item editor before generating the output.</p>
+    <p class="hint">All item changes are saved automatically. Click generate when you're ready to produce the output.</p>
     <div id="outputWarnings"></div>
     <pre id="output" class="output"></pre>
     <div class="actions"><button onclick="copyOutput()">📋 Copy to clipboard</button><button onclick="downloadOutput()">⬇ Download catalog.js</button></div>
@@ -128,30 +128,20 @@ const SUB_CATEGORY_MAP={
 "Other":["Unclassified merchandise","Unusual one-off products","Unidentified promotional items","Items awaiting verification","Products that do not fit an existing category"]};
 const GAME_OPTIONS=["Grand Theft Auto (1997)","Grand Theft Auto 2 (1999)","Midnight Club: Street Racing (2000)","Max Payne (2001)","Grand Theft Auto III (2001)","Grand Theft Auto: Vice City (2002)","Max Payne 2: The Fall of Max Payne (2003)","Midnight Club II (2003)","Manhunt (2003)","Red Dead Revolver (2004)","Grand Theft Auto: Advance (2004)","Grand Theft Auto: San Andreas (2004)","Midnight Club 3: DUB Edition (2005)","The Warriors (2005)","Grand Theft Auto: Liberty City Stories (2005)","Grand Theft Auto: Vice City Stories (2006)","Bully (2006)","Manhunt 2 (2007)","Grand Theft Auto IV (2008)","Midnight Club: Los Angeles (2008)","Grand Theft Auto: Chinatown Wars (2009)","Red Dead Redemption (2010)","Red Dead Redemption: Undead Nightmare (2010)","L.A. Noire (2011)","Max Payne 3 (2012)","Grand Theft Auto V (2013)","Red Dead Redemption 2 (2018)","Grand Theft Auto VI (2026)"];
 let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false,searchTerm="";
+let autosaveTimer=null;
 const $=id=>document.getElementById(id);
 function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function jsString(v){return JSON.stringify(v??"");}
 function formatImagePath(p){p=String(p||"").trim().replace(/\\/g,"/");if(!p)return "";if(!p.startsWith("images/")&&!/^https?:\/\//i.test(p)&&!p.startsWith("/"))p="images/"+p;return p;}
 function selectOptions(opts,value){let list=[...opts];if(value&&!list.includes(value))list.unshift(value);return list.map(x=>`<option value="${escapeHtml(x)}" ${x===value?"selected":""}>${escapeHtml(x)}</option>`).join("");}
 function subOptions(cat,value){return selectOptions(SUB_CATEGORY_MAP[cat]||SUB_CATEGORY_MAP.Other,value||"Other");}
-
-// Directory name is the image base name (last segment of the directory path).
-function dirBaseName(dir){
-  const clean=String(dir||"").replace(/\\/g,"/").replace(/\/+$/,"");
-  const parts=clean.split("/");
-  return parts[parts.length-1]||"";
-}
-
+function dirBaseName(dir){const clean=String(dir||"").replace(/\\/g,"/").replace(/\/+$/,"");const parts=clean.split("/");return parts[parts.length-1]||"";}
 function imageSettings(item){
   let paths=[item.image||"",...(Array.isArray(item.extraImages)?item.extraImages:[])].map(x=>String(x).replace(/\\/g,"/"));
   let first=paths[0]||"",slash=first.lastIndexOf("/"),directory=slash>=0?first.slice(0,slash+1):"images/",filename=slash>=0?first.slice(slash+1):first;
   let m=filename.match(/^(.+?)_(\d+)\.jpg$/i),base=m?m[1]:filename.replace(/\.[^.]+$/,""),main=m?+m[2]:1;
-  // If the directory basename matches a numbered file pattern, prefer that as base
   const dirBase=dirBaseName(directory);
-  if(dirBase && /^.+?_\d+\.jpg$/i.test(filename)){
-    const dirMatch=filename.match(/^(.+?)_(\d+)\.jpg$/i);
-    if(dirMatch){ base=dirBase; }
-  }
+  if(dirBase && /^.+?_\d+\.jpg$/i.test(filename)){const dirMatch=filename.match(/^(.+?)_(\d+)\.jpg$/i);if(dirMatch){base=dirBase;}}
   let nums=paths.map(p=>{let f=p.split("/").pop().match(/^.+?_(\d+)\.jpg$/i);return f?+f[1]:0;});
   return {directory,base,count:Math.max(1,main,...nums),main};
 }
@@ -160,10 +150,7 @@ function updateImageControls(idx){
   const dirInput=$(`edit-image-directory-${idx}`).value.trim();
   const derivedBase=dirBaseName(dirInput);
   const baseInput=$(`edit-image-base-${idx}`);
-  // auto-sync base name from directory if user hasn't overridden manually and directory is valid
-  if(dirInput && derivedBase){
-    baseInput.value=derivedBase;
-  }
+  if(dirInput && derivedBase){baseInput.value=derivedBase;}
   const base=baseInput.value.trim();
   const count=Math.max(1,Math.min(500,parseInt($(`edit-image-count-${idx}`).value,10)||1));
   const old=+$(`edit-image-main-${idx}`).value||1,main=Math.min(old,count);
@@ -179,32 +166,25 @@ function parseCatalogItems(text){
   catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
 }
 function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;renderItemList();$("output").textContent="";$("generateStatus").textContent="";$("outputWarnings").innerHTML="";}
-
 function itemMatchesSearch(item,term){
   if(!term)return true;
   const hay=term.toLowerCase();
   const fields=[item.name,item.game,item.category,item.subcategory,item.description,item.year,item.rarity,item.availability,item.price,item.link];
   return fields.some(f=>String(f??"").toLowerCase().includes(hay));
 }
-
 function renderItemList(){
   const filtered=currentItems.filter(item=>itemMatchesSearch(item,searchTerm));
   $("itemCount").textContent=`${currentItems.length} item${currentItems.length===1?"":"s"}`;
   const infoEl=$("filterInfo");
-  if(searchTerm){
-    infoEl.textContent=`Showing ${filtered.length} of ${currentItems.length} items matching “${searchTerm}”.`;
-  }else{
-    infoEl.textContent="";
-  }
+  if(searchTerm){infoEl.textContent=`Showing ${filtered.length} of ${currentItems.length} items matching “${searchTerm}”.`;}else{infoEl.textContent="";}
   if(!currentItems.length){
     $("itemListContainer").innerHTML='<div class="hint" style="padding:24px;text-align:center">No items loaded yet. Paste a catalog or click “Add new item”.</div>';
-    $("saveReminder").style.display="none";return;
+    return;
   }
   if(!filtered.length){
     $("itemListContainer").innerHTML=`<div class="hint" style="padding:24px;text-align:center">No items match “${escapeHtml(searchTerm)}”.</div>`;
-    $("saveReminder").style.display=activeEditIndex>=0?"block":"none";return;
+    return;
   }
-  $("saveReminder").style.display=activeEditIndex>=0?"block":"none";
   $("itemListContainer").innerHTML=filtered.map(item=>{
     const i=currentItems.indexOf(item);
     const s=imageSettings(item),editing=activeEditIndex===i;
@@ -212,113 +192,95 @@ function renderItemList(){
     const reorderButtons=devModeEnabled
       ? `<button class="reorder-btn" title="Move up" onclick="event.stopPropagation();moveItem(${i},-1)">⬆️</button><button class="reorder-btn" title="Move down" onclick="event.stopPropagation();moveItem(${i},1)">⬇️</button>`
       : ``;
-    return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
+    return `<div class="item ${editing?"open":""}" data-index="${i}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
     <div class="editor"><div class="grid">
-    <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
-    <div><label>Game</label><select id="edit-game-${i}">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
-    <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99"></div>
+    <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}" oninput="scheduleAutosave(${i})"></div>
+    <div><label>Game</label><select id="edit-game-${i}" onchange="scheduleAutosave(${i})">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
+    <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99" oninput="scheduleAutosave(${i})"></div>
     <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||"Other")}</select></div>
-    <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||"Other",item.subcategory||"Other")}</select></div>
-    <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
-    <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}"></div>
-    <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
-    <div class="full"><label>Image directory</label><input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i})"><div class="helper">Folder containing the numbered JPG images. The image name is derived from the last folder name.</div></div>
-    <div><label>Image name (auto from folder)</label><input id="edit-image-base-${i}" value="${escapeHtml(s.base)}" placeholder="chop" oninput="updateImageControls(${i})"><div class="helper">Usually matches the directory name. Without number or extension.</div></div>
-    <div><label>Number of images</label><input id="edit-image-count-${i}" type="number" min="1" max="500" value="${s.count}" oninput="updateImageControls(${i})"></div>
+    <div><label>Subcategory</label><select id="edit-subcat-${i}" onchange="scheduleAutosave(${i})">${subOptions(item.category||"Other",item.subcategory||"Other")}</select></div>
+    <div class="full"><label>Description</label><textarea id="edit-description-${i}" oninput="scheduleAutosave(${i})">${escapeHtml(item.description||"")}</textarea></div>
+    <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}" oninput="scheduleAutosave(${i})"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}" oninput="scheduleAutosave(${i})"></div>
+    <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}" oninput="scheduleAutosave(${i})"></div>
+    <div class="full"><label>Image directory</label><input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i});scheduleAutosave(${i})"><div class="helper">Folder containing the numbered JPG images. The image name is derived from the last folder name.</div></div>
+    <div><label>Image name (auto from folder)</label><input id="edit-image-base-${i}" value="${escapeHtml(s.base)}" placeholder="chop" oninput="updateImageControls(${i});scheduleAutosave(${i})"><div class="helper">Usually matches the directory name. Without number or extension.</div></div>
+    <div><label>Number of images</label><input id="edit-image-count-${i}" type="number" min="1" max="500" value="${s.count}" oninput="updateImageControls(${i});scheduleAutosave(${i})"></div>
     <div class="full"><label>Main image</label>${imageSelect(i,s.base,s.count,s.main)}<div class="helper">Choose which numbered image represents the item.</div></div>
     <div class="full"><label>Extra images (automatically generated)</label><textarea readonly id="edit-extra-preview-${i}"></textarea></div>
-    <div class="full"><label>Link (optional)</label><input id="edit-link-${i}" value="${escapeHtml(item.link||"")}"></div></div>
-    <div class="actions"><button class="success" onclick="saveItem(${i})">💾 Save changes</button><button onclick="cancelEdit(${i})">Cancel</button><button class="danger" onclick="deleteItem(${i})">🗑 Delete</button></div></div></div>`;
+    <div class="full"><label>Link (optional)</label><input id="edit-link-${i}" value="${escapeHtml(item.link||"")}" oninput="scheduleAutosave(${i})"></div></div>
+    <div class="actions"><button onclick="cancelEdit(${i})">Cancel</button><button class="danger" onclick="deleteItem(${i})">🗑 Delete</button></div></div></div>`;
   }).join("");
   filtered.forEach(item=>updateImageControls(currentItems.indexOf(item)));
 }
 function applySearchFilter(){searchTerm=$("searchFilter").value.trim();renderItemList();}
 function toggleDevMode(){devModeEnabled=$("devModeToggle").checked;renderItemList();}
-function onMainCategoryChange(i){const cat=$(`edit-maincat-${i}`).value;$(`edit-subcat-${i}`).innerHTML=subOptions(cat,(SUB_CATEGORY_MAP[cat]||["Other"])[0]);}
+function onMainCategoryChange(i){const cat=$(`edit-maincat-${i}`).value;$(`edit-subcat-${i}`).innerHTML=subOptions(cat,(SUB_CATEGORY_MAP[cat]||["Other"])[0]);scheduleAutosave(i);}
 function toggleEdit(i){activeEditIndex=activeEditIndex===i?-1:i;renderItemList();}
 function cancelEdit(){activeEditIndex=-1;renderItemList();}
 function moveItem(index,direction){
   const newIndex=index+direction;
   if(newIndex<0||newIndex>=currentItems.length)return;
-  const temp=currentItems[index];
-  currentItems[index]=currentItems[newIndex];
-  currentItems[newIndex]=temp;
-  if(activeEditIndex===index)activeEditIndex=newIndex;
-  else if(activeEditIndex===newIndex)activeEditIndex=index;
+  const temp=currentItems[index];currentItems[index]=currentItems[newIndex];currentItems[newIndex]=temp;
+  if(activeEditIndex===index)activeEditIndex=newIndex;else if(activeEditIndex===newIndex)activeEditIndex=index;
   renderItemList();
 }
-function saveItem(i){
-  const get=id=>$(`${id}-${i}`),item=currentItems[i],dirInput=get("edit-image-directory").value.trim().replace(/\\/g,"/").replace(/\/+$/,"")+"/";
+
+// --- AUTO-SAVE ---
+function scheduleAutosave(i){
+  const indicator=$("autosaveIndicator");
+  indicator.style.display="block";
+  indicator.textContent="⏳ Saving…";
+  clearTimeout(autosaveTimer);
+  autosaveTimer=setTimeout(()=>{saveItem(i,true);},600);
+}
+function saveItem(i,silent){
+  const get=id=>$(`${id}-${i}`);
+  if(!get("edit-name"))return; // editor not open
+  const item=currentItems[i];
+  const dirInput=get("edit-image-directory").value.trim().replace(/\\/g,"/").replace(/\/+$/,"")+"/";
   const base=get("edit-image-base").value.trim();
   const count=parseInt(get("edit-image-count").value,10),main=+get("edit-image-main").value;
-  if(!dirInput||!base){alert("Please enter both an image directory and an image name.");return;}
-  if(/[\\/]/.test(base)||/\.[^.]+$/.test(base)){alert("Use only the base image name, without slashes or a file extension.");return;}
-  if(!Number.isInteger(count)||count<1||count>500){alert("Enter a number of images between 1 and 500.");return;}
-  if(!Number.isInteger(main)||main<1||main>count){alert("Choose a valid main image.");return;}
+  if(dirInput&&base&&Number.isInteger(count)&&count>=1&&count<=500&&Number.isInteger(main)&&main>=1&&main<=count){
+    item.image=formatImagePath(`${dirInput}${base}_${main}.jpg`);
+    item.extraImages=Array.from({length:count},(_,n)=>n+1).filter(n=>n!==main).map(n=>formatImagePath(`${dirInput}${base}_${n}.jpg`));
+  }
   item.name=get("edit-name").value;item.game=get("edit-game").value;item.category=get("edit-maincat").value;item.subcategory=get("edit-subcat").value;item.description=get("edit-description").value;item.year=get("edit-year").value;item.rarity=get("edit-rarity").value;
   item.price=get("edit-price").value.trim();
   item.availability=get("edit-availability").value;if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
-  item.image=formatImagePath(`${dirInput}${base}_${main}.jpg`);
-  item.extraImages=Array.from({length:count},(_,n)=>n+1).filter(n=>n!==main).map(n=>formatImagePath(`${dirInput}${base}_${n}.jpg`));
-  item.link=get("edit-link").value;activeEditIndex=-1;renderItemList();
-  $("saveReminder").style.display="none";
+  item.link=get("edit-link").value;
+  const indicator=$("autosaveIndicator");
+  if(indicator){indicator.textContent="✓ Changes saved automatically.";indicator.style.display="block";}
 }
 function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;renderItemList();}}
 function addNewItem(){
   currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});
-  activeEditIndex=currentItems.length-1;
-  searchTerm="";$("searchFilter").value="";
-  renderItemList();
+  activeEditIndex=currentItems.length-1;searchTerm="";$("searchFilter").value="";renderItemList();
 }
 function validateAndWarn(){
   const warnings=[];
   currentItems.forEach((item,i)=>{
     const missing=[];
-    if(!item.name)missing.push("name");
-    if(!item.game)missing.push("game");
-    if(!item.category)missing.push("category");
-    if(!item.subcategory)missing.push("subcategory");
-    if(!item.description)missing.push("description");
-    if(!item.year)missing.push("year");
-    if(!item.rarity)missing.push("rarity");
-    if(!item.availability)missing.push("availability");
-    if(!item.image)missing.push("image");
-    if(!item.link)missing.push("link");
+    if(!item.name)missing.push("name");if(!item.game)missing.push("game");if(!item.category)missing.push("category");if(!item.subcategory)missing.push("subcategory");if(!item.description)missing.push("description");if(!item.year)missing.push("year");if(!item.rarity)missing.push("rarity");if(!item.availability)missing.push("availability");if(!item.image)missing.push("image");if(!item.link)missing.push("link");
     if(missing.length)warnings.push(`Item ${i+1} (${item.name||"Untitled"}) has empty fields: ${missing.join(", ")}`);
   });
-  const generated=$("output").textContent;
-  const inputText=$("catalogInput").value;
-  if(generated && inputText && generated.trim()===inputText.trim()){
-    warnings.push("⚠️ Generated output is identical to the loaded input — no changes were made?");
-  }
+  const generated=$("output").textContent;const inputText=$("catalogInput").value;
+  if(generated&&inputText&&generated.trim()===inputText.trim()){warnings.push("⚠️ Generated output is identical to the loaded input — no changes were made?");}
   return warnings;
 }
 function generateCatalog(){
   if(!currentItems.length){$("generateStatus").textContent="No items to generate.";$("outputWarnings").innerHTML="";return;}
   const strings=currentItems.map(item=>{
     const base={name:item.name,game:item.game,category:item.category,subcategory:item.subcategory,description:item.description,year:item.year,rarity:item.rarity,availability:item.availability,image:formatImagePath(item.image),extraImages:item.extraImages||[],link:item.link};
-    if(item.price!==undefined&&item.price!=="")base.price=item.price;
-    else if(item.price==="")base.price="";
-    const lines=Object.entries(base).map(([k,v])=>{
-      if(k==="extraImages")return `    extraImages: ${JSON.stringify(v)}`;
-      return `    ${k}: ${jsString(v)}`;
-    });
+    if(item.price!==undefined&&item.price!=="")base.price=item.price;else if(item.price==="")base.price="";
+    const lines=Object.entries(base).map(([k,v])=>{if(k==="extraImages")return `    extraImages: ${JSON.stringify(v)}`;return `    ${k}: ${jsString(v)}`;});
     return `  {\n${lines.join(",\n")}\n  }`;
   }).join(",\n");
   const raw=currentCatalogText||$("catalogInput").value;let output;
   if(raw&&raw.includes("[")&&raw.includes("]")){const a=raw.indexOf("["),b=raw.lastIndexOf("]");output=raw.slice(0,a)+"[\n"+strings+"\n]"+raw.slice(b+1);}
   else output="const catalog = [\n"+strings+"\n];\n";
   $("output").textContent=output;$("generateStatus").textContent="Catalog generated.";
-  const warns=validateAndWarn();
-  const warnContainer=$("outputWarnings");
-  if(warns.length){
-    warnContainer.innerHTML=warns.map(w=>`<div class="warning-box">${escapeHtml(w)}</div>`).join("");
-  }else{
-    warnContainer.innerHTML="";
-  }
-  if(activeEditIndex>=0){
-    warnContainer.innerHTML+=`<div class="save-reminder">⚠️ You still have an open unsaved item. Save it before using the output.</div>`;
-  }
+  const warns=validateAndWarn();const warnContainer=$("outputWarnings");
+  if(warns.length){warnContainer.innerHTML=warns.map(w=>`<div class="warning-box">${escapeHtml(w)}</div>`).join("");}else{warnContainer.innerHTML="";}
 }
 async function fetchFromGithub(){
   let url=$("githubUrl").value.trim();if(!url){$("fetchStatus").textContent="Enter a GitHub URL first.";return;}
@@ -328,7 +290,7 @@ async function fetchFromGithub(){
   catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}}
 async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
 function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
-window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;
+window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;window.scheduleAutosave=scheduleAutosave;
 </script>
 </body>
 </html>
