@@ -24,28 +24,20 @@
   }
   .badge,.status{
     background:linear-gradient(135deg,#2a2a36,#20202a);
-    color:#b0bccf;
-    border:1px solid #353545;
-    border-radius:30px;
-    padding:7px 16px;
-    font-size:.78rem;
-    font-weight:500;
-    letter-spacing:.02em;
-    white-space:nowrap;
-    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    color:#b0bccf;border:1px solid #353545;
+    border-radius:30px;padding:7px 16px;
+    font-size:.78rem;font-weight:500;letter-spacing:.02em;
+    white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.2);
   }
   .card{
     background:linear-gradient(160deg,#1c1c23 0%,#17171d 100%);
-    border:1px solid #2e2e3a;
-    border-radius:20px;
-    padding:28px 26px;
-    box-shadow:0 8px 32px rgba(0,0,0,.35);
+    border:1px solid #2e2e3a;border-radius:20px;
+    padding:28px 26px;box-shadow:0 8px 32px rgba(0,0,0,.35);
     transition:border-color .2s;
   }
   .card:hover{border-color:#3a3a4a}
   .card h2{
-    font-size:1.18rem;font-weight:600;
-    color:#e4eaf5;margin:0;
+    font-size:1.18rem;font-weight:600;color:#e4eaf5;margin:0;
     display:flex;align-items:center;gap:8px;
   }
   .hint,.helper{font-size:.84rem;color:#8b96ab;line-height:1.65}
@@ -55,73 +47,54 @@
     margin:18px 0 7px;font-weight:500;letter-spacing:.01em;
   }
   input,textarea,select{
-    width:100%;
-    background:#121217;
-    border:1px solid #353542;
-    border-radius:10px;
-    padding:12px 14px;
-    color:#f0f4fc;
+    width:100%;background:#121217;
+    border:1px solid #353542;border-radius:10px;
+    padding:12px 14px;color:#f0f4fc;
     font:inherit;font-size:.9rem;
     transition:border-color .18s,box-shadow .18s,background .18s;
   }
   input:hover,textarea:hover,select:hover{border-color:#454558}
   input:focus,textarea:focus,select:focus{
-    outline:none;
-    border-color:#5a82f5;
+    outline:none;border-color:#5a82f5;
     box-shadow:0 0 0 3px rgba(90,130,245,.15);
     background:#15151c;
   }
   textarea{min-height:90px;resize:vertical}
   button{
     background:linear-gradient(160deg,#2e2e3a,#26262f);
-    border:1px solid #41414f;
-    border-radius:10px;
-    padding:11px 18px;
-    color:#eef2f8;
-    font-weight:600;font-size:.88rem;
-    cursor:pointer;
+    border:1px solid #41414f;border-radius:10px;
+    padding:11px 18px;color:#eef2f8;
+    font-weight:600;font-size:.88rem;cursor:pointer;
     transition:background .18s,border-color .18s,transform .1s,box-shadow .18s;
     box-shadow:0 2px 6px rgba(0,0,0,.2);
   }
   button:hover{
     background:linear-gradient(160deg,#3a3a48,#303039);
-    border-color:#555568;
-    box-shadow:0 4px 12px rgba(0,0,0,.3);
+    border-color:#555568;box-shadow:0 4px 12px rgba(0,0,0,.3);
   }
   button:active{transform:translateY(1px)}
-  .primary{
-    background:linear-gradient(160deg,#5a82f5,#4a6fe0);
-    border-color:#5a82f5;
-    color:#fff;
-  }
+  button:disabled{opacity:.45;cursor:not-allowed}
+  button:disabled:hover{background:linear-gradient(160deg,#2e2e3a,#26262f);border-color:#41414f;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+  .primary{background:linear-gradient(160deg,#5a82f5,#4a6fe0);border-color:#5a82f5;color:#fff}
   .primary:hover{background:linear-gradient(160deg,#6b90ff,#5a7de8);border-color:#6b90ff}
-  .success{
-    background:linear-gradient(160deg,#2f8a55,#257548);
-    border-color:#2f8a55;color:#fff;
-  }
+  .success{background:linear-gradient(160deg,#2f8a55,#257548);border-color:#2f8a55;color:#fff}
   .success:hover{background:linear-gradient(160deg,#39a064,#2a8452);border-color:#39a064}
-  .danger{
-    background:linear-gradient(160deg,#5a2424,#481c1c);
-    border-color:#7a3030;color:#f5d0d0;
-  }
+  .danger{background:linear-gradient(160deg,#5a2424,#481c1c);border-color:#7a3030;color:#f5d0d0}
   .danger:hover{background:linear-gradient(160deg,#6d2b2b,#572020);border-color:#8f3838}
   .actions{justify-content:flex-start;margin-top:20px;gap:10px}
   .actions button{flex:1;min-width:130px}
   .item-list{display:flex;flex-direction:column;gap:14px}
   .item{
     background:linear-gradient(160deg,#15151b,#111116);
-    border:1px solid #2c2c38;
-    border-radius:14px;
-    overflow:hidden;
-    transition:border-color .2s,box-shadow .2s;
+    border:1px solid #2c2c38;border-radius:14px;
+    overflow:hidden;transition:border-color .2s,box-shadow .2s;
   }
   .item:hover{border-color:#3d3d50;box-shadow:0 4px 16px rgba(0,0,0,.25)}
   .item.open{border-color:#5a82f5;box-shadow:0 0 0 1px rgba(90,130,245,.2)}
   .summary{
     padding:16px 20px;cursor:pointer;
     display:flex;justify-content:space-between;
-    gap:14px;align-items:center;
-    transition:background .18s;
+    gap:14px;align-items:center;transition:background .18s;
   }
   .summary:hover{background:#1c1c26}
   .item-name{font-weight:650;font-size:.96rem;letter-spacing:.01em}
@@ -132,20 +105,16 @@
   .full{grid-column:1/-1}
   .output{
     white-space:pre-wrap;overflow:auto;max-height:440px;
-    background:#0b0b0f;
-    border:1px solid #2c2c38;
-    border-radius:12px;
-    padding:20px;
+    background:#0b0b0f;border:1px solid #2c2c38;
+    border-radius:12px;padding:20px;
     font:.82rem ui-monospace,SFMono-Regular,monospace;
-    line-height:1.55;margin-top:10px;
-    color:#c8d2e4;
+    line-height:1.55;margin-top:10px;color:#c8d2e4;
   }
   .status.ok{color:#9ae0b0}
   .status.err{color:#f5a8a8}
   .reorder-btn{
     padding:6px 10px;font-size:1.05rem;line-height:1;
-    min-width:38px;text-align:center;
-    border-radius:8px;
+    min-width:38px;text-align:center;border-radius:8px;
   }
   .reorder-group{display:flex;gap:7px;align-items:center}
   .save-reminder{
@@ -156,41 +125,30 @@
     box-shadow:0 2px 8px rgba(0,0,0,.2);
   }
   .price-badge{
-    font-size:.74rem;
-    background:linear-gradient(135deg,#3a3a20,#2e2e18);
-    color:#e6c84a;
-    padding:3px 10px;border-radius:14px;
-    margin-left:10px;font-weight:600;
-    border:1px solid #4a4a28;
+    font-size:.74rem;background:linear-gradient(135deg,#3a3a20,#2e2e18);
+    color:#e6c84a;padding:3px 10px;border-radius:14px;
+    margin-left:10px;font-weight:600;border:1px solid #4a4a28;
   }
   .warning-box{
     background:linear-gradient(90deg,#2e1c1c,#261818);
-    border-left:4px solid #f09a9a;
-    padding:12px 18px;border-radius:8px;
-    font-size:.8rem;color:#f0b0b0;margin:10px 0;
+    border-left:4px solid #f09a9a;padding:12px 18px;
+    border-radius:8px;font-size:.8rem;color:#f0b0b0;margin:10px 0;
     box-shadow:0 2px 8px rgba(0,0,0,.2);
   }
   .devmode-toggle{
     display:flex;align-items:center;gap:8px;
     font-size:.78rem;color:#9aa5ba;cursor:pointer;
-    user-select:none;
-    background:linear-gradient(160deg,#1a1a22,#141419);
+    user-select:none;background:linear-gradient(160deg,#1a1a22,#141419);
     padding:8px 15px;border-radius:24px;
     border:1px solid #353542;
     transition:border-color .18s,color .18s;
   }
-  .devmode-toggle input{
-    width:auto;margin:0;
-    accent-color:#5a82f5;
-    transform:scale(1.15);
-  }
+  .devmode-toggle input{width:auto;margin:0;accent-color:#5a82f5;transform:scale(1.15)}
   .devmode-toggle:hover{border-color:#5a82f5;color:#c0cbe0}
   .search-wrap{position:relative;margin:0 0 18px}
   .search-wrap input{
-    padding-left:42px;
-    background:#111116;
-    border-color:#2e2e3a;
-    font-size:.95rem;
+    padding-left:42px;background:#111116;
+    border-color:#2e2e3a;font-size:.95rem;
   }
   .search-wrap input:focus{border-color:#5a82f5}
   .search-wrap::before{
@@ -204,10 +162,8 @@
   }
   .empty-state{
     padding:36px 20px;text-align:center;color:#6b768a;
-    font-size:.9rem;
-    background:#111116;
-    border:1px dashed #2e2e3a;
-    border-radius:14px;
+    font-size:.9rem;background:#111116;
+    border:1px dashed #2e2e3a;border-radius:14px;
   }
   .empty-state .big{font-size:1.6rem;display:block;margin-bottom:8px;opacity:.7}
   .empty-state .examples{font-size:.8rem;color:#5a6478;margin-top:10px}
@@ -215,131 +171,79 @@
     background:#1a1a22;padding:2px 8px;border-radius:6px;
     color:#9aa5ba;font-size:.78rem;
   }
-  .game-chips{
-    display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;
-  }
+  .game-chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px}
   .game-chip{
-    font-size:.74rem;color:#9aa5ba;
-    background:#1a1a22;
-    border:1px solid #2e2e3a;
-    border-radius:20px;
-    padding:5px 12px;
-    cursor:pointer;
+    font-size:.74rem;color:#9aa5ba;background:#1a1a22;
+    border:1px solid #2e2e3a;border-radius:20px;
+    padding:5px 12px;cursor:pointer;
     transition:border-color .18s,color .18s,background .18s;
     user-select:none;
   }
   .game-chip:hover{border-color:#5a82f5;color:#c8d2e4;background:#1f1f2a}
-  /* ---- Image name locked/editable states ---- */
   .image-base-wrap{position:relative}
-  .image-base-wrap.locked input{
-    padding-right:64px;
-    cursor:not-allowed;
-  }
-  .image-base-wrap.editable input{
-    padding-right:64px;
-    border-color:#5a82f5;
-    background:#15151c;
-  }
+  .image-base-wrap.locked input{padding-right:64px;cursor:not-allowed}
+  .image-base-wrap.editable input{padding-right:64px;border-color:#5a82f5;background:#15151c}
   .image-base-lock{
     position:absolute;right:10px;top:50%;transform:translateY(-50%);
-    font-size:.7rem;font-weight:600;
-    padding:3px 9px;border-radius:12px;
-    letter-spacing:.02em;
-    pointer-events:none;
+    font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:12px;
+    letter-spacing:.02em;pointer-events:none;
   }
-  .image-base-wrap.locked .image-base-lock{
-    background:#24242e;color:#7a8598;border:1px solid #353542;
-  }
-  .image-base-wrap.editable .image-base-lock{
-    background:#2a3a5a;color:#9ab5e6;border:1px solid #4a5f8a;
-  }
-  /* ---- Extra image priority list ---- */
+  .image-base-wrap.locked .image-base-lock{background:#24242e;color:#7a8598;border:1px solid #353542}
+  .image-base-wrap.editable .image-base-lock{background:#2a3a5a;color:#9ab5e6;border:1px solid #4a5f8a}
   .extra-priority{
-    display:flex;flex-direction:column;gap:7px;
-    margin-top:10px;
-    background:#0f0f14;
-    border:1px solid #2c2c38;
-    border-radius:12px;
-    padding:12px;
+    display:flex;flex-direction:column;gap:7px;margin-top:10px;
+    background:#0f0f14;border:1px solid #2c2c38;
+    border-radius:12px;padding:12px;
   }
-  .extra-priority-empty{
-    font-size:.8rem;color:#6b768a;padding:6px 4px;font-style:italic;
-  }
+  .extra-priority-empty{font-size:.8rem;color:#6b768a;padding:6px 4px;font-style:italic}
   .extra-row{
-    display:flex;align-items:center;gap:10px;
-    background:#16161d;
-    border:1px solid #2c2c38;
-    border-radius:9px;
-    padding:8px 12px;
+    display:flex;align-items:center;gap:10px;background:#16161d;
+    border:1px solid #2c2c38;border-radius:9px;padding:8px 12px;
     transition:border-color .15s,background .15s;
   }
   .extra-row:hover{border-color:#3d3d50;background:#1a1a22}
   .extra-row .priority-num{
-    font-size:.72rem;font-weight:700;
-    color:#9aa5ba;
-    background:#23232e;
-    border:1px solid #353542;
-    border-radius:6px;
-    min-width:26px;height:26px;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-    font-variant-numeric:tabular-nums;
+    font-size:.72rem;font-weight:700;color:#9aa5ba;
+    background:#23232e;border:1px solid #353542;border-radius:6px;
+    min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-variant-numeric:tabular-nums;
   }
   .extra-row .priority-name{
-    flex:1;
-    font-size:.83rem;
-    color:#c8d2e4;
+    flex:1;font-size:.83rem;color:#c8d2e4;
     font-family:ui-monospace,SFMono-Regular,monospace;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .extra-row .priority-actions{
-    display:flex;gap:5px;flex-shrink:0;
-  }
+  .extra-row .priority-actions{display:flex;gap:5px;flex-shrink:0}
   .extra-row .priority-actions button{
-    padding:5px 8px;
-    font-size:.9rem;
-    line-height:1;
-    min-width:32px;
-    text-align:center;
-    border-radius:7px;
+    padding:5px 8px;font-size:.9rem;line-height:1;
+    min-width:32px;text-align:center;border-radius:7px;
   }
-  .extra-row .priority-actions button:disabled{
-    opacity:.3;
-    cursor:not-allowed;
-  }
+  .extra-row .priority-actions button:disabled{opacity:.3;cursor:not-allowed}
   .extra-row .priority-actions button:disabled:hover{
     background:linear-gradient(160deg,#2e2e3a,#26262f);
-    border-color:#41414f;
-    box-shadow:0 2px 6px rgba(0,0,0,.2);
+    border-color:#41414f;box-shadow:0 2px 6px rgba(0,0,0,.2);
   }
-  /* ---- GitHub Image Browser Modal ---- */
+  /* ---- Modal ---- */
   .modal-overlay{
     display:none;position:fixed;inset:0;
-    background:rgba(0,0,0,.75);
-    z-index:1000;align-items:center;justify-content:center;
-    padding:20px;
-    backdrop-filter:blur(4px);
+    background:rgba(0,0,0,.75);z-index:1000;
+    align-items:center;justify-content:center;
+    padding:20px;backdrop-filter:blur(4px);
   }
   .modal-overlay.active{display:flex}
   .modal{
     background:linear-gradient(160deg,#1c1c23 0%,#15151c 100%);
-    border:1px solid #353545;
-    border-radius:20px;
-    width:100%;max-width:900px;
-    max-height:85vh;
+    border:1px solid #353545;border-radius:20px;
+    width:100%;max-width:900px;max-height:85vh;
     display:flex;flex-direction:column;
-    box-shadow:0 20px 60px rgba(0,0,0,.6);
-    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden;
   }
   .modal-header{
-    padding:20px 24px;
-    border-bottom:1px solid #2c2c38;
+    padding:20px 24px;border-bottom:1px solid #2c2c38;
     display:flex;align-items:center;justify-content:space-between;
     flex-wrap:wrap;gap:12px;
   }
-  .modal-header h3{
-    margin:0;font-size:1.1rem;font-weight:600;color:#e4eaf5;
-  }
+  .modal-header h3{margin:0;font-size:1.1rem;font-weight:600;color:#e4eaf5}
   .modal-header .modal-close{
     background:none;border:none;color:#8b96ab;
     font-size:1.5rem;cursor:pointer;padding:4px 8px;
@@ -348,16 +252,10 @@
     width:auto;flex-shrink:0;
   }
   .modal-header .modal-close:hover{background:#2c2c38;color:#eef2f8}
-  .modal-body{
-    padding:20px 24px;
-    overflow-y:auto;flex:1;
-    min-height:0;
-  }
+  .modal-body{padding:20px 24px;overflow-y:auto;flex:1;min-height:0}
   .modal-footer{
-    padding:16px 24px;
-    border-top:1px solid #2c2c38;
-    display:flex;gap:10px;justify-content:flex-end;
-    flex-wrap:wrap;
+    padding:16px 24px;border-top:1px solid #2c2c38;
+    display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;
   }
   .modal-footer button{width:auto;min-width:100px}
   .gh-search-wrap{position:relative;margin:0 0 16px}
@@ -376,11 +274,8 @@
     gap:14px;
   }
   .folder-card{
-    background:#15151b;
-    border:1px solid #2c2c38;
-    border-radius:12px;
-    overflow:hidden;
-    cursor:pointer;
+    background:#15151b;border:1px solid #2c2c38;
+    border-radius:12px;overflow:hidden;cursor:pointer;
     transition:border-color .18s,box-shadow .18s,transform .1s;
   }
   .folder-card:hover{
@@ -395,89 +290,56 @@
   .folder-thumb{
     height:100px;background:#0b0b0f;
     display:flex;align-items:center;justify-content:center;
-    overflow:hidden;
-    position:relative;
+    overflow:hidden;position:relative;
   }
-  .folder-thumb img{
-    width:100%;height:100%;object-fit:cover;
-    display:block;
-  }
-  .folder-thumb .thumb-placeholder{
-    font-size:2rem;opacity:.25;
-  }
+  .folder-thumb .thumb-placeholder{font-size:2rem;opacity:.25}
   .folder-info{padding:10px 12px}
   .folder-name{
-    font-size:.84rem;font-weight:600;
-    color:#e4eaf5;margin:0 0 2px;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    font-size:.84rem;font-weight:600;color:#e4eaf5;
+    margin:0 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
   .folder-path{
     font-size:.7rem;color:#6b768a;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .folder-count{
-    font-size:.7rem;color:#5a82f5;
-    margin-top:4px;
-  }
-  .gh-status{
-    text-align:center;padding:30px 20px;
-    color:#8b96ab;font-size:.9rem;
-  }
+  .gh-status{text-align:center;padding:30px 20px;color:#8b96ab;font-size:.9rem}
   .gh-status .spinner{
     display:inline-block;width:24px;height:24px;
     border:3px solid #353545;border-top-color:#5a82f5;
-    border-radius:50%;
-    animation:spin .7s linear infinite;
-    margin-bottom:12px;
+    border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px;
   }
   @keyframes spin{to{transform:rotate(360deg)}}
   .gh-error{
     background:linear-gradient(90deg,#2e1c1c,#261818);
-    border-left:4px solid #f09a9a;
-    padding:12px 18px;border-radius:8px;
-    font-size:.84rem;color:#f0b0b0;margin:10px 0;
+    border-left:4px solid #f09a9a;padding:12px 18px;
+    border-radius:8px;font-size:.84rem;color:#f0b0b0;margin:10px 0;
   }
   .gh-breadcrumb{
     font-size:.8rem;color:#8b96ab;margin-bottom:14px;
-    padding:8px 12px;background:#111116;
-    border-radius:8px;
+    padding:8px 12px;background:#111116;border-radius:8px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
   .gh-breadcrumb span{color:#5a82f5;cursor:pointer}
   .gh-breadcrumb span:hover{text-decoration:underline}
   .image-preview-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-    gap:12px;
-    margin-top:16px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:12px;margin-top:16px;
   }
   .img-preview-card{
-    background:#15151b;
-    border:1px solid #2c2c38;
-    border-radius:10px;
-    overflow:hidden;
-    cursor:pointer;
-    transition:border-color .18s,box-shadow .18s;
-    position:relative;
+    background:#15151b;border:1px solid #2c2c38;
+    border-radius:10px;overflow:hidden;cursor:pointer;
+    transition:border-color .18s,box-shadow .18s;position:relative;
   }
   .img-preview-card:hover{border-color:#3d3d50}
-  .img-preview-card.main-selected{
-    border-color:#5a82f5;
-    box-shadow:0 0 0 2px rgba(90,130,245,.3);
-  }
-  .img-preview-card img{
-    width:100%;height:100px;object-fit:cover;display:block;
-  }
+  .img-preview-card.main-selected{border-color:#5a82f5;box-shadow:0 0 0 2px rgba(90,130,245,.3)}
+  .img-preview-card img{width:100%;height:100px;object-fit:cover;display:block}
   .img-preview-card .img-label{
-    padding:6px 8px;font-size:.72rem;
-    color:#9aa5ba;text-align:center;
-    font-family:ui-monospace,SFMono-Regular,monospace;
+    padding:6px 8px;font-size:.72rem;color:#9aa5ba;
+    text-align:center;font-family:ui-monospace,SFMono-Regular,monospace;
   }
   .img-preview-card .main-badge{
-    position:absolute;top:6px;right:6px;
-    background:#5a82f5;color:#fff;
-    font-size:.65rem;font-weight:700;
-    padding:2px 7px;border-radius:10px;
+    position:absolute;top:6px;right:6px;background:#5a82f5;color:#fff;
+    font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px;
     letter-spacing:.02em;
   }
   @media(max-width:640px){
@@ -548,19 +410,14 @@
   </section>
 </div>
 
-<!-- GitHub Image Browser Modal -->
 <div id="ghModal" class="modal-overlay">
   <div class="modal">
     <div class="modal-header">
       <h3 id="ghModalTitle">📂 Browse GitHub Image Folders</h3>
       <button class="modal-close" onclick="closeGhModal()">✕</button>
     </div>
-    <div class="modal-body" id="ghModalBody">
-      <!-- Content dynamically injected -->
-    </div>
-    <div class="modal-footer" id="ghModalFooter">
-      <!-- Buttons dynamically injected -->
-    </div>
+    <div class="modal-body" id="ghModalBody"></div>
+    <div class="modal-footer" id="ghModalFooter"></div>
   </div>
 </div>
 
@@ -602,12 +459,16 @@ const GH_REPO_NAME="texture-toolkit";
 const GH_BRANCH="main";
 const GH_API_BASE=`https://api.github.com/repos/${GH_REPO_OWNER}/${GH_REPO_NAME}/contents`;
 const GH_RAW_BASE=`https://raw.githubusercontent.com/${GH_REPO_OWNER}/${GH_REPO_NAME}/${GH_BRANCH}`;
-const ghCache=new Map(); // path -> { data, timestamp }
-const GH_CACHE_TTL=5*60*1000; // 5 minutes
+const ghCache=new Map();
+const GH_CACHE_TTL=5*60*1000;
 
 function imageRootForGame(game){return GAME_IMAGE_ROOT[game]||null;}
 let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false,searchTerm="";
-let ghModalState={ open:false, currentPath:"", folders:[], selectedFolder:null, images:[], selectedMain:null, itemIndex:-1, loading:false, error:null };
+let ghModalState={
+  open:false, currentPath:"", entries:[], selectedImageFolder:null,
+  images:[], selectedMain:null, itemIndex:-1, loading:false, error:null,
+  detectedPrefix:null, detectedCount:0, detectedNums:[]
+};
 const $=id=>document.getElementById(id);
 function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function jsString(v){return JSON.stringify(v??"");}
@@ -621,26 +482,26 @@ function dirBaseName(dir){
   return parts[parts.length-1]||"";
 }
 
+// FIX #4: do not silently re-root folders that already live under any canonical game root.
 function enforceGameRoot(path,game){
   const root=imageRootForGame(game);
-  if(!root)return formatImagePath(path);
-  let p=String(path||"").replace(/\\/g,"/").trim();
+  const p=formatImagePath(path);
+  if(!root)return p;
+  const roots=Object.values(GAME_IMAGE_ROOT).map(r=>r.toLowerCase()+"/");
+  if(roots.some(r=>p.toLowerCase().startsWith(r)))return p;
   const m=p.match(/^images\/[^/]+\/(.*)$/i);
-  const rest=m?m[1]:(p.replace(/^images\/?/i,"").replace(/^\/+/,""));
+  const rest=m?m[1]:p.replace(/^images\/?/i,"");
   return formatImagePath(root+"/"+rest.replace(/^\/+/,""));
 }
 
+// FIX #5: only re-root if the directory is not already under a canonical root; don't collapse nested folders.
 function imageSettings(item){
   let paths=[item.image||"",...(Array.isArray(item.extraImages)?item.extraImages:[])].map(x=>String(x).replace(/\\/g,"/"));
   let first=paths[0]||"",slash=first.lastIndexOf("/"),directory=slash>=0?first.slice(0,slash+1):"images/",filename=slash>=0?first.slice(slash+1):first;
   let m=filename.match(/^(.+?)_(\d+)\.jpg$/i),base=m?m[1]:filename.replace(/\.[^.]+$/,""),main=m?+m[2]:1;
   const gameRoot=imageRootForGame(item.game);
-  if(gameRoot && base){
+  if(gameRoot && base && !Object.values(GAME_IMAGE_ROOT).some(r=>directory.toLowerCase().startsWith(r.toLowerCase()+"/"))){
     directory=gameRoot+"/"+base+"/";
-  }
-  const dirBase=dirBaseName(directory);
-  if(dirBase && /^.+?_\d+\.jpg$/i.test(filename)){
-    base=dirBase;
   }
   const allNums=new Set();
   if(Number.isFinite(main)&&main>0)allNums.add(main);
@@ -657,42 +518,32 @@ function imageSettings(item){
   });
   return {directory,base,count:maxNum,main,extraOrder};
 }
-
 function imageSelect(idx,base,count,main){return `<select id="edit-image-main-${idx}" onchange="onMainImageChange(${idx})">${Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("")}</select>`;}
-
 function renderImageBaseField(idx,base){
   if(devModeEnabled){
     return `<div class="image-base-wrap editable"><input id="edit-image-base-${idx}" value="${escapeHtml(base)}" placeholder="chop" oninput="updateImageControls(${idx},true)"><span class="image-base-lock">✏️ Custom</span></div><div class="helper">Developer mode: you can override the auto-derived name.</div>`;
   }
   return `<div class="image-base-wrap locked"><input id="edit-image-base-${idx}" value="${escapeHtml(base)}" placeholder="chop" readonly oninput="updateImageControls(${idx},true)"><span class="image-base-lock">🔒 Auto</span></div><div class="helper">Usually matches the directory name. Enable Developer mode to override.</div>`;
 }
-
 const baseOverrides=new Map();
 
-function updateImageControls(idx,isManualEdit){
-  const dirInput=$(`edit-image-directory-${idx}`).value.trim();
-  const derivedBase=dirBaseName(dirInput);
+// FIX #3: separate "user edited base" from "directory changed". Only the directory handler resets the base.
+function updateImageControls(idx,isManualEdit,fromDir){
   const baseInput=$(`edit-image-base-${idx}`);
   if(!baseInput)return;
-  const manual=baseOverrides.get(idx);
-  if(!devModeEnabled){
-    baseInput.value=derivedBase;
-  } else if(!isManualEdit && manual===undefined){
-    baseInput.value=derivedBase;
-  } else if(!isManualEdit && manual!==undefined){
-    baseInput.value=manual;
+  if(isManualEdit){
+    if(devModeEnabled)baseOverrides.set(idx,baseInput.value.trim());
+  }else if(fromDir){
+    baseOverrides.delete(idx);
+    baseInput.value=dirBaseName($(`edit-image-directory-${idx}`).value.trim());
   }
   const base=baseInput.value.trim();
-  if(devModeEnabled && isManualEdit){
-    baseOverrides.set(idx,base);
-  }
   const count=Math.max(1,Math.min(500,parseInt($(`edit-image-count-${idx}`).value,10)||1));
   const old=+$(`edit-image-main-${idx}`).value||1,main=Math.min(old,count);
-  $(`edit-image-main-${idx}`).innerHTML=Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("");
-  const order=readExtraOrder(idx,main,count);
-  renderExtraPriority(idx,base,count,main,order);
+  $(`edit-image-main-${idx}`).innerHTML=Array.from({length:count},(_,i)=>i+1)
+    .map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("");
+  renderExtraPriority(idx,base,count,main,readExtraOrder(idx,main,count));
 }
-
 function readExtraOrder(idx,main,count){
   const listEl=$(`edit-extra-list-${idx}`);
   if(listEl){
@@ -701,7 +552,6 @@ function readExtraOrder(idx,main,count){
   }
   return Array.from({length:count},(_,i)=>i+1).filter(n=>n!==main);
 }
-
 function renderExtraPriority(idx,base,count,main,order){
   const listEl=$(`edit-extra-list-${idx}`);
   const previewEl=$(`edit-extra-preview-${idx}`);
@@ -729,7 +579,6 @@ function renderExtraPriority(idx,base,count,main,order){
     previewEl.value=valid.map(n=>`${base||"image"}_${n}.jpg`).join(", ");
   }
 }
-
 function moveExtra(idx,num,dir){
   const listEl=$(`edit-extra-list-${idx}`);
   if(!listEl)return;
@@ -745,7 +594,6 @@ function moveExtra(idx,num,dir){
   const base=$(`edit-image-base-${idx}`).value.trim();
   renderExtraPriority(idx,base,count,main,order);
 }
-
 function onMainImageChange(idx){
   const count=parseInt($(`edit-image-count-${idx}`).value,10)||1;
   const main=+$(`edit-image-main-${idx}`).value||1;
@@ -759,130 +607,85 @@ function onMainImageChange(idx){
   renderExtraPriority(idx,base,count,main,order);
 }
 
-// ==================== GitHub API Helpers ====================
-
+// ==================== GitHub API ====================
 async function ghFetch(path) {
   const cached = ghCache.get(path);
-  if (cached && (Date.now() - cached.timestamp) < GH_CACHE_TTL) {
-    return cached.data;
-  }
-  const url = `${GH_API_BASE}/${path}?ref=${GH_BRANCH}`;
-  const res = await fetch(url);
+  if (cached && (Date.now() - cached.timestamp) < GH_CACHE_TTL) return cached.data;
+  const url = `${GH_API_BASE}/${path.split("/").map(encodeURIComponent).join("/")}?ref=${GH_BRANCH}`;
+  const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
   if (!res.ok) {
-    if (res.status === 404) throw new Error(`Directory not found: ${path}`);
-    if (res.status === 403) throw new Error("GitHub API rate limit exceeded. Please wait a moment and try again.");
+    if (res.status === 404) throw new Error(`Folder not found: ${path}`);
+    if (res.status === 403) throw new Error("GitHub API rate limit exceeded. Wait a minute and try again.");
     throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
   }
   const data = await res.json();
+  if (!Array.isArray(data)) throw new Error(`Unexpected response for ${path} (expected a folder listing).`);
   ghCache.set(path, { data, timestamp: Date.now() });
   return data;
 }
-
-async function listFolders(parentPath) {
-  const entries = await ghFetch(parentPath);
-  return entries.filter(e => e.type === "dir");
-}
-
-async function listImages(folderPath) {
-  const entries = await ghFetch(folderPath);
-  return entries.filter(e => e.type === "file" && /\.(jpg|jpeg|png|webp|gif)$/i.test(e.name));
-}
-
-function parseImageNumbers(images) {
+function parseImageNumbers(entries) {
   const nums = [];
-  images.forEach(img => {
-    const m = img.name.match(/_(\d+)\.(jpg|jpeg|png|webp|gif)$/i);
+  entries.forEach(e => {
+    const m = e.name.match(/_(\d+)\.(jpg|jpeg|png|webp|gif)$/i);
     if (m) nums.push(parseInt(m[1], 10));
   });
   nums.sort((a, b) => a - b);
   return nums;
 }
-
-function detectPrefix(images) {
-  if (!images.length) return null;
-  const m = images[0].name.match(/^(.+?)_(\d+)\.\w+$/);
+function detectPrefix(entries) {
+  const imgs = entries.filter(e => /_(\d+)\.(jpg|jpeg|png|webp|gif)$/i.test(e.name));
+  if (!imgs.length) return null;
+  const m = imgs[0].name.match(/^(.+?)_(\d+)\.\w+$/);
   return m ? m[1] : null;
 }
-
-function getThumbUrl(imgEntry) {
-  if (imgEntry.download_url) return imgEntry.download_url;
-  // Fallback: construct raw URL from path
-  return `${GH_RAW_BASE}/${imgEntry.path}`;
+function getThumbUrl(entry) {
+  if (entry.download_url) return entry.download_url;
+  return `${GH_RAW_BASE}/${entry.path}`;
 }
 
-// ==================== Modal Logic ====================
-
+// ==================== Modal ====================
 function openGhBrowser(itemIndex) {
   ghModalState = {
-    open: true,
-    currentPath: "",
-    folders: [],
-    selectedFolder: null,
-    images: [],
-    selectedMain: null,
-    itemIndex,
-    loading: true,
-    error: null
+    open: true, currentPath: "", entries: [], selectedImageFolder: null,
+    images: [], selectedMain: null, itemIndex, loading: true, error: null,
+    detectedPrefix: null, detectedCount: 0, detectedNums: []
   };
   $("ghModal").classList.add("active");
   renderGhModal();
-  loadRootFolders();
+  loadFolder("images");
 }
-
 function closeGhModal() {
   $("ghModal").classList.remove("active");
   ghModalState.open = false;
 }
 
-async function loadRootFolders() {
-  try {
-    const folders = await listFolders("images");
-    ghModalState.folders = folders;
-    ghModalState.loading = false;
-    ghModalState.error = null;
-  } catch (e) {
-    ghModalState.loading = false;
-    ghModalState.error = e.message;
-  }
-  renderGhModal();
-}
-
-async function loadSubfolders(path) {
+async function loadFolder(path) {
   ghModalState.loading = true;
   ghModalState.error = null;
+  ghModalState.currentPath = path;
   renderGhModal();
   try {
-    const folders = await listFolders(path);
-    ghModalState.currentPath = path;
-    ghModalState.folders = folders;
-    ghModalState.selectedFolder = null;
-    ghModalState.images = [];
-    ghModalState.selectedMain = null;
+    const entries = await ghFetch(path);
+    const files = entries.filter(e => e.type === "file");
+    const imageFiles = files.filter(e => /_(\d+)\.(jpg|jpeg|png|webp|gif)$/i.test(e.name));
+    ghModalState.entries = entries;
     ghModalState.loading = false;
-  } catch (e) {
-    ghModalState.loading = false;
-    ghModalState.error = e.message;
-  }
-  renderGhModal();
-}
 
-async function selectFolder(folderPath) {
-  ghModalState.selectedFolder = folderPath;
-  ghModalState.loading = true;
-  ghModalState.error = null;
-  renderGhModal();
-  try {
-    const images = await listImages(folderPath);
-    const nums = parseImageNumbers(images);
-    const prefix = detectPrefix(images);
-    ghModalState.images = images;
-    ghModalState.selectedMain = nums.length ? nums[0] : null;
-    ghModalState.loading = false;
-    ghModalState.error = null;
-    // Store prefix and count for later use
-    ghModalState.detectedPrefix = prefix;
-    ghModalState.detectedCount = nums.length;
-    ghModalState.detectedNums = nums;
+    if (imageFiles.length > 0) {
+      ghModalState.selectedImageFolder = path;
+      ghModalState.images = imageFiles;
+      ghModalState.detectedPrefix = detectPrefix(imageFiles);
+      ghModalState.detectedNums = parseImageNumbers(imageFiles);
+      ghModalState.detectedCount = ghModalState.detectedNums.length;
+      ghModalState.selectedMain = ghModalState.detectedNums[0] || null;
+    } else {
+      ghModalState.selectedImageFolder = null;
+      ghModalState.images = [];
+      ghModalState.detectedPrefix = null;
+      ghModalState.detectedNums = [];
+      ghModalState.detectedCount = 0;
+      ghModalState.selectedMain = null;
+    }
     renderGhModal();
   } catch (e) {
     ghModalState.loading = false;
@@ -891,60 +694,78 @@ async function selectFolder(folderPath) {
   }
 }
 
+function selectMainImage(num) {
+  ghModalState.selectedMain = num;
+  renderGhModal();
+}
+
+// FIX #1: don't call renderItemList() (which reverts to the saved item). Fill fields directly,
+// use the highest image number as the count so nothing is dropped.
 function applyFolderToItem() {
-  const { itemIndex, selectedFolder, detectedPrefix, detectedCount, selectedMain, images } = ghModalState;
-  if (!selectedFolder || !detectedPrefix || !detectedCount) return;
+  const { itemIndex, selectedImageFolder, detectedPrefix, detectedNums, selectedMain } = ghModalState;
+  if (!selectedImageFolder || !detectedPrefix || !detectedNums.length) return;
   const idx = itemIndex;
-  // Populate directory
-  $(`edit-image-directory-${idx}`).value = selectedFolder + "/";
-  // Populate base name
+  const count = Math.max(...detectedNums);
+  const mainNum = detectedNums.includes(selectedMain) ? selectedMain : detectedNums[0];
+
+  $(`edit-image-directory-${idx}`).value = selectedImageFolder + "/";
   const baseInput = $(`edit-image-base-${idx}`);
   if (baseInput) baseInput.value = detectedPrefix;
-  // Populate count
-  const countInput = $(`edit-image-count-${idx}`);
-  if (countInput) countInput.value = detectedCount;
-  // Populate main image
-  const mainSelect = $(`edit-image-main-${idx}`);
-  if (mainSelect) {
-    mainSelect.innerHTML = Array.from({length: detectedCount}, (_, i) => i + 1).map(n =>
-      `<option value="${n}" ${n === (selectedMain || 1) ? "selected" : ""}>${escapeHtml(detectedPrefix)}_${n}.jpg</option>`
-    ).join("");
-  }
-  // Populate extra priority list
-  const mainNum = selectedMain || 1;
-  const order = Array.from({length: detectedCount}, (_, i) => i + 1).filter(n => n !== mainNum);
-  renderExtraPriority(idx, detectedPrefix, detectedCount, mainNum, order);
-  // Update base overrides so re-renders keep the value
   baseOverrides.set(idx, detectedPrefix);
+  $(`edit-image-count-${idx}`).value = count;
+  $(`edit-image-main-${idx}`).innerHTML = Array.from({length: count}, (_, i) => i + 1).map(n =>
+    `<option value="${n}" ${n === mainNum ? "selected" : ""}>${escapeHtml(detectedPrefix)}_${n}.jpg</option>`
+  ).join("");
+  const order = Array.from({length: count}, (_, i) => i + 1).filter(n => n !== mainNum);
+  renderExtraPriority(idx, detectedPrefix, count, mainNum, order);
   closeGhModal();
-  // Trigger a full re-render so the editor reflects changes
-  renderItemList();
 }
 
+// FIX #2: same — don't re-render the item list after applying the suggested folder.
 function suggestNewFolder() {
   const { itemIndex } = ghModalState;
   const nameInput = $(`edit-name-${itemIndex}`);
-  const currentDir = $(`edit-image-directory-${itemIndex}`).value;
   const gameSelect = $(`edit-game-${itemIndex}`);
   const game = gameSelect ? gameSelect.value : "";
   const root = imageRootForGame(game) || "images/GTAV";
   let suggestion = nameInput ? nameInput.value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") : "new-item";
   if (!suggestion) suggestion = "new-item";
   const newPath = root + "/" + suggestion + "/";
-  // Populate fields
   $(`edit-image-directory-${itemIndex}`).value = newPath;
   const baseInput = $(`edit-image-base-${itemIndex}`);
   if (baseInput) baseInput.value = suggestion;
   const countInput = $(`edit-image-count-${itemIndex}`);
   if (countInput) countInput.value = 1;
   const mainSelect = $(`edit-image-main-${itemIndex}`);
-  if (mainSelect) {
-    mainSelect.innerHTML = `<option value="1" selected>${escapeHtml(suggestion)}_1.jpg</option>`;
-  }
+  if (mainSelect) mainSelect.innerHTML = `<option value="1" selected>${escapeHtml(suggestion)}_1.jpg</option>`;
   renderExtraPriority(itemIndex, suggestion, 1, 1, []);
   baseOverrides.set(itemIndex, suggestion);
   closeGhModal();
-  renderItemList();
+}
+
+// Renders only the folder grid (so the search input keeps focus while typing)
+function renderFolderGrid() {
+  const grid = document.getElementById("ghFolderGrid");
+  if (!grid) return;
+  const searchVal = document.getElementById("ghSearchInput")?.value || "";
+  const subfolders = ghModalState.entries.filter(e => e.type === "dir");
+  const filtered = subfolders.filter(f =>
+    !searchVal || f.name.toLowerCase().includes(searchVal.toLowerCase())
+  );
+  if (!subfolders.length) { grid.innerHTML = ""; return; }
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="gh-status">No subfolders match “${escapeHtml(searchVal)}”.</div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(f => `
+    <div class="folder-card" data-path="${escapeHtml(f.path)}">
+      <div class="folder-thumb"><span class="thumb-placeholder">📁</span></div>
+      <div class="folder-info">
+        <div class="folder-name">${escapeHtml(f.name)}</div>
+        <div class="folder-path">${escapeHtml(f.path)}</div>
+      </div>
+    </div>
+  `).join("");
 }
 
 function renderGhModal() {
@@ -953,89 +774,67 @@ function renderGhModal() {
   const state = ghModalState;
 
   if (state.loading) {
-    body.innerHTML = `<div class="gh-status"><div class="spinner"></div><br>Loading from GitHub…</div>`;
+    body.innerHTML = `<div class="gh-status"><div class="spinner"></div><br>Loading <code>${escapeHtml(state.currentPath)}</code>…</div>`;
     footer.innerHTML = `<button onclick="closeGhModal()">Cancel</button>`;
     return;
   }
 
   if (state.error) {
     body.innerHTML = `<div class="gh-error">⚠️ ${escapeHtml(state.error)}</div>
-      <p class="helper">Check that the repository exists and the path is correct. Unauthenticated GitHub API requests are limited to 60 per hour.</p>`;
+      <p class="helper">Check that the repo/path is correct. Unauthenticated GitHub API requests are limited to 60 per hour.</p>`;
     footer.innerHTML = `
-      <button onclick="loadRootFolders()">🔄 Retry</button>
-      <button onclick="closeGhModal()">Close</button>
-    `;
-    return;
-  }
-
-  let breadcrumbHtml = "";
-  if (state.currentPath) {
-    const parts = state.currentPath.split("/");
-    breadcrumbHtml = `<div class="gh-breadcrumb">📁 <span onclick="loadRootFolders()">root</span>`;
-    let acc = "";
-    parts.forEach(p => {
-      acc += (acc ? "/" : "") + p;
-      breadcrumbHtml += ` / <span onclick="loadSubfolders('${escapeHtml(acc)}')">${escapeHtml(p)}</span>`;
-    });
-    breadcrumbHtml += `</div>`;
-  }
-
-  const searchVal = document.getElementById("ghSearchInput")?.value || "";
-  const filtered = state.folders.filter(f =>
-    !searchVal || f.name.toLowerCase().includes(searchVal.toLowerCase())
-  );
-
-  if (filtered.length === 0) {
-    body.innerHTML = breadcrumbHtml + `<div class="gh-status">No folders found${searchVal ? ` matching "${escapeHtml(searchVal)}"` : ""}.</div>`;
-    footer.innerHTML = `
-      <button onclick="suggestNewFolder()" class="primary">📝 Create new directory reference</button>
+      <button onclick="loadFolder('${escapeHtml(state.currentPath || 'images').replace(/'/g, "\\'")}')">🔄 Retry</button>
       <button onclick="closeGhModal()">Cancel</button>
     `;
     return;
   }
 
-  // Folder grid
-  const folderCards = filtered.map(f => {
-    const name = f.name;
-    const path = f.path;
-    const isSelected = state.selectedFolder === path;
-    // Use a placeholder initially; we could load thumbnails lazily but that's many requests.
-    // Instead, use a generic folder icon.
-    return `<div class="folder-card ${isSelected ? "selected" : ""}" onclick="selectFolder('${escapeHtml(path)}')">
-      <div class="folder-thumb"><span class="thumb-placeholder">📁</span></div>
-      <div class="folder-info">
-        <div class="folder-name">${escapeHtml(name)}</div>
-        <div class="folder-path">${escapeHtml(path)}</div>
-      </div>
-    </div>`;
-  }).join("");
+  // Breadcrumb
+  let breadcrumbHtml = `<div class="gh-breadcrumb">📁 <span data-nav="images">images</span>`;
+  if (state.currentPath && state.currentPath !== "images") {
+    const parts = state.currentPath.split("/").slice(1);
+    let acc = "images";
+    parts.forEach(p => {
+      acc += "/" + p;
+      breadcrumbHtml += ` / <span data-nav="${escapeHtml(acc)}">${escapeHtml(p)}</span>`;
+    });
+  }
+  breadcrumbHtml += `</div>`;
 
-  // If a folder is selected, show its images and allow selecting main
+  const subfolders = state.entries.filter(e => e.type === "dir");
+  let folderSection = "";
+  if (subfolders.length > 0) {
+    folderSection = `
+      <div class="gh-search-wrap">
+        <input id="ghSearchInput" type="text" placeholder="Search subfolders…" autocomplete="off">
+      </div>
+      <div class="folder-grid" id="ghFolderGrid"></div>
+    `;
+  } else if (!state.selectedImageFolder) {
+    folderSection = `<div class="gh-status">This folder is empty.</div>`;
+  }
+
   let imageSection = "";
-  if (state.selectedFolder && state.images.length) {
+  if (state.selectedImageFolder && state.images.length) {
     const nums = state.detectedNums || [];
     const prefix = state.detectedPrefix || "";
-    const imgCards = state.images
-      .filter(img => /_(\d+)\./i.test(img.name))
-      .map(img => {
-        const m = img.name.match(/_(\d+)\./i);
-        const num = m ? parseInt(m[1], 10) : 0;
-        const isMain = state.selectedMain === num;
-        const thumbUrl = getThumbUrl(img);
-        return `<div class="img-preview-card ${isMain ? "main-selected" : ""}" onclick="selectMainImage(${num})">
-          <img src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(img.name)}" loading="lazy" onerror="this.style.display='none'">
-          <div class="img-label">${escapeHtml(img.name)}</div>
-          ${isMain ? '<span class="main-badge">Main</span>' : ''}
-        </div>`;
-      }).join("");
-    // Check for gaps
+    const imgCards = state.images.map(img => {
+      const m = img.name.match(/_(\d+)\./i);
+      const num = m ? parseInt(m[1], 10) : 0;
+      const isMain = state.selectedMain === num;
+      return `<div class="img-preview-card ${isMain ? "main-selected" : ""}" data-main="${num}">
+        <img src="${escapeHtml(getThumbUrl(img))}" alt="${escapeHtml(img.name)}" loading="lazy" onerror="this.style.display='none'">
+        <div class="img-label">${escapeHtml(img.name)}</div>
+        ${isMain ? '<span class="main-badge">Main</span>' : ''}
+      </div>`;
+    }).join("");
     const hasGaps = nums.length > 0 && nums[nums.length - 1] !== nums.length;
     const gapWarning = hasGaps
-      ? `<div class="gh-error" style="margin-top:12px">⚠️ Image numbering has gaps (found ${nums.length} images but highest number is ${nums[nums.length - 1]}). The editor will still use the detected count.</div>`
+      ? `<div class="gh-error" style="margin-top:12px">⚠️ Numbering has gaps (found ${nums.length} images, highest number ${nums[nums.length - 1]}).</div>`
       : "";
     imageSection = `
       <div style="margin-top:20px;border-top:1px solid #2c2c38;padding-top:16px">
-        <h4 style="margin:0 0 10px;font-size:.95rem;color:#e4eaf5">📸 Images in ${escapeHtml(state.selectedFolder)}</h4>
+        <h4 style="margin:0 0 10px;font-size:.95rem;color:#e4eaf5">📸 Images in ${escapeHtml(state.selectedImageFolder)}</h4>
         <p class="helper" style="margin:0 0 12px">Prefix: <code>${escapeHtml(prefix)}</code> · Count: <strong>${state.detectedCount}</strong> · Click an image to set as main.</p>
         ${gapWarning}
         <div class="image-preview-grid">${imgCards}</div>
@@ -1043,29 +842,50 @@ function renderGhModal() {
     `;
   }
 
-  body.innerHTML = breadcrumbHtml + `
-    <div class="gh-search-wrap">
-      <input id="ghSearchInput" type="text" placeholder="Search folders…" value="${escapeHtml(searchVal)}" oninput="renderGhModal()" autocomplete="off">
-    </div>
-    <div class="folder-grid">${folderCards}</div>
-    ${imageSection}
-  `;
+  body.innerHTML = breadcrumbHtml + folderSection + imageSection;
+  // Populate the folder grid (listener attached below)
+  renderFolderGrid();
 
-  // Footer buttons
-  const canApply = state.selectedFolder && state.detectedCount > 0;
+  // Footer
+  const canApply = state.selectedImageFolder && state.detectedCount > 0;
   footer.innerHTML = `
-    <button onclick="suggestNewFolder()" class="primary" style="margin-right:auto">📝 Create new directory reference</button>
+    <button data-action="new" class="primary" style="margin-right:auto">📝 Create new directory reference</button>
     <button onclick="closeGhModal()">Cancel</button>
-    <button class="success" ${canApply ? "" : "disabled"} onclick="applyFolderToItem()">✅ Use this folder</button>
+    <button data-action="apply" class="success" ${canApply ? "" : "disabled"}>✅ Use this folder</button>
   `;
 }
 
-function selectMainImage(num) {
-  ghModalState.selectedMain = num;
-  renderGhModal();
-}
+// Event delegation for the modal body — robust to re-renders
+document.addEventListener("click", (ev) => {
+  const body = $("ghModalBody");
+  if (!body || !body.contains(ev.target)) return;
+  // Breadcrumb navigation
+  const nav = ev.target.closest("[data-nav]");
+  if (nav) { loadFolder(nav.dataset.nav); return; }
+  // Folder card click
+  const card = ev.target.closest(".folder-card");
+  if (card && card.dataset.path) { loadFolder(card.dataset.path); return; }
+  // Image main selection
+  const imgCard = ev.target.closest(".img-preview-card");
+  if (imgCard && imgCard.dataset.main) { selectMainImage(parseInt(imgCard.dataset.main, 10)); return; }
+});
 
-// ==================== End GitHub API Helpers ====================
+// Search input listener (delegated) — only re-renders the grid, keeps focus
+document.addEventListener("input", (ev) => {
+  if (ev.target && ev.target.id === "ghSearchInput") renderFolderGrid();
+});
+
+// Footer buttons (delegated)
+document.addEventListener("click", (ev) => {
+  const footer = $("ghModalFooter");
+  if (!footer || !footer.contains(ev.target)) return;
+  const btn = ev.target.closest("[data-action]");
+  if (!btn) return;
+  if (btn.dataset.action === "apply") applyFolderToItem();
+  if (btn.dataset.action === "new") suggestNewFolder();
+});
+
+// ==================== End Modal ====================
 
 function parseCatalogItems(text){
   if(!text.trim())return [];
@@ -1076,7 +896,6 @@ function parseCatalogItems(text){
   catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
 }
 function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;baseOverrides.clear();buildGameChips();renderItemList();$("output").textContent="";$("generateStatus").textContent="";$("outputWarnings").innerHTML="";}
-
 function buildGameChips(){
   const container=$("gameChips");
   if(!currentItems.length){container.innerHTML="";return;}
@@ -1102,14 +921,10 @@ function setSearch(term){
   activeEditIndex=-1;
   renderItemList();
 }
-
 function normalise(s){
-  return String(s??"")
-    .toLowerCase()
+  return String(s??"").toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .replace(/[^a-z0-9\s]/g," ")
-    .replace(/\s+/g," ")
-    .trim();
+    .replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();
 }
 function gameAliases(game){
   const out=new Set();
@@ -1210,6 +1025,7 @@ function renderItemList(){
         </div>
       </div>`;
     }).join("");
+    // FIX #3 (part 2): directory input calls updateImageControls(i,false,true) so it resets the base name.
     return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
     <div class="editor"><div class="grid">
     <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
@@ -1222,7 +1038,7 @@ function renderItemList(){
     <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
     <div class="full"><label>Image directory</label>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i})" style="flex:1;min-width:200px">
+        <input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i},false,true)" style="flex:1;min-width:200px">
         <button type="button" onclick="openGhBrowser(${i})" style="width:auto;white-space:nowrap;padding:10px 14px;font-size:.82rem">📂 Browse GitHub</button>
       </div>
       <div class="helper">Folder containing the numbered JPG images. The image name is derived from the last folder name.${imageRootForGame(item.game)?` For <strong>${escapeHtml(item.game)}</strong> the saved path is forced under <code>${escapeHtml(imageRootForGame(item.game))}/</code>.`:""}</div>
@@ -1378,7 +1194,7 @@ async function fetchFromGithub(){
 async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
 function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
 window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;window.setSearch=setSearch;window.moveExtra=moveExtra;window.onMainImageChange=onMainImageChange;
-window.openGhBrowser=openGhBrowser;window.closeGhModal=closeGhModal;window.selectFolder=selectFolder;window.applyFolderToItem=applyFolderToItem;window.suggestNewFolder=suggestNewFolder;window.renderGhModal=renderGhModal;window.selectMainImage=selectMainImage;window.loadRootFolders=loadRootFolders;window.loadSubfolders=loadSubfolders;
+window.openGhBrowser=openGhBrowser;window.closeGhModal=closeGhModal;window.selectMainImage=selectMainImage;window.applyFolderToItem=applyFolderToItem;window.suggestNewFolder=suggestNewFolder;window.renderGhModal=renderGhModal;window.loadFolder=loadFolder;
 </script>
 </body>
 </html>
