@@ -312,6 +312,174 @@
     border-color:#41414f;
     box-shadow:0 2px 6px rgba(0,0,0,.2);
   }
+  /* ---- GitHub Image Browser Modal ---- */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.75);
+    z-index:1000;align-items:center;justify-content:center;
+    padding:20px;
+    backdrop-filter:blur(4px);
+  }
+  .modal-overlay.active{display:flex}
+  .modal{
+    background:linear-gradient(160deg,#1c1c23 0%,#15151c 100%);
+    border:1px solid #353545;
+    border-radius:20px;
+    width:100%;max-width:900px;
+    max-height:85vh;
+    display:flex;flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);
+    overflow:hidden;
+  }
+  .modal-header{
+    padding:20px 24px;
+    border-bottom:1px solid #2c2c38;
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;
+  }
+  .modal-header h3{
+    margin:0;font-size:1.1rem;font-weight:600;color:#e4eaf5;
+  }
+  .modal-header .modal-close{
+    background:none;border:none;color:#8b96ab;
+    font-size:1.5rem;cursor:pointer;padding:4px 8px;
+    line-height:1;border-radius:8px;
+    transition:background .15s,color .15s;
+    width:auto;flex-shrink:0;
+  }
+  .modal-header .modal-close:hover{background:#2c2c38;color:#eef2f8}
+  .modal-body{
+    padding:20px 24px;
+    overflow-y:auto;flex:1;
+    min-height:0;
+  }
+  .modal-footer{
+    padding:16px 24px;
+    border-top:1px solid #2c2c38;
+    display:flex;gap:10px;justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+  .modal-footer button{width:auto;min-width:100px}
+  .gh-search-wrap{position:relative;margin:0 0 16px}
+  .gh-search-wrap input{
+    padding-left:42px;background:#111116;
+    border-color:#2e2e3a;font-size:.95rem;
+  }
+  .gh-search-wrap::before{
+    content:"🔍";position:absolute;left:15px;top:50%;
+    transform:translateY(-50%);font-size:.95rem;
+    opacity:.5;pointer-events:none;
+  }
+  .folder-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:14px;
+  }
+  .folder-card{
+    background:#15151b;
+    border:1px solid #2c2c38;
+    border-radius:12px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:border-color .18s,box-shadow .18s,transform .1s;
+  }
+  .folder-card:hover{
+    border-color:#5a82f5;
+    box-shadow:0 4px 16px rgba(90,130,245,.15);
+    transform:translateY(-2px);
+  }
+  .folder-card.selected{
+    border-color:#5a82f5;
+    box-shadow:0 0 0 2px rgba(90,130,245,.3);
+  }
+  .folder-thumb{
+    height:100px;background:#0b0b0f;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    position:relative;
+  }
+  .folder-thumb img{
+    width:100%;height:100%;object-fit:cover;
+    display:block;
+  }
+  .folder-thumb .thumb-placeholder{
+    font-size:2rem;opacity:.25;
+  }
+  .folder-info{padding:10px 12px}
+  .folder-name{
+    font-size:.84rem;font-weight:600;
+    color:#e4eaf5;margin:0 0 2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .folder-path{
+    font-size:.7rem;color:#6b768a;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .folder-count{
+    font-size:.7rem;color:#5a82f5;
+    margin-top:4px;
+  }
+  .gh-status{
+    text-align:center;padding:30px 20px;
+    color:#8b96ab;font-size:.9rem;
+  }
+  .gh-status .spinner{
+    display:inline-block;width:24px;height:24px;
+    border:3px solid #353545;border-top-color:#5a82f5;
+    border-radius:50%;
+    animation:spin .7s linear infinite;
+    margin-bottom:12px;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .gh-error{
+    background:linear-gradient(90deg,#2e1c1c,#261818);
+    border-left:4px solid #f09a9a;
+    padding:12px 18px;border-radius:8px;
+    font-size:.84rem;color:#f0b0b0;margin:10px 0;
+  }
+  .gh-breadcrumb{
+    font-size:.8rem;color:#8b96ab;margin-bottom:14px;
+    padding:8px 12px;background:#111116;
+    border-radius:8px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .gh-breadcrumb span{color:#5a82f5;cursor:pointer}
+  .gh-breadcrumb span:hover{text-decoration:underline}
+  .image-preview-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:12px;
+    margin-top:16px;
+  }
+  .img-preview-card{
+    background:#15151b;
+    border:1px solid #2c2c38;
+    border-radius:10px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:border-color .18s,box-shadow .18s;
+    position:relative;
+  }
+  .img-preview-card:hover{border-color:#3d3d50}
+  .img-preview-card.main-selected{
+    border-color:#5a82f5;
+    box-shadow:0 0 0 2px rgba(90,130,245,.3);
+  }
+  .img-preview-card img{
+    width:100%;height:100px;object-fit:cover;display:block;
+  }
+  .img-preview-card .img-label{
+    padding:6px 8px;font-size:.72rem;
+    color:#9aa5ba;text-align:center;
+    font-family:ui-monospace,SFMono-Regular,monospace;
+  }
+  .img-preview-card .main-badge{
+    position:absolute;top:6px;right:6px;
+    background:#5a82f5;color:#fff;
+    font-size:.65rem;font-weight:700;
+    padding:2px 7px;border-radius:10px;
+    letter-spacing:.02em;
+  }
   @media(max-width:640px){
     body{padding:16px 12px 40px}
     .card{padding:20px 16px;border-radius:16px}
@@ -323,6 +491,8 @@
     .card-header{gap:10px}
     .extra-row{padding:7px 9px;gap:7px}
     .extra-row .priority-name{font-size:.76rem}
+    .modal{max-height:90vh}
+    .folder-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
   }
 </style>
 </head>
@@ -377,6 +547,23 @@
     </div>
   </section>
 </div>
+
+<!-- GitHub Image Browser Modal -->
+<div id="ghModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="ghModalTitle">📂 Browse GitHub Image Folders</h3>
+      <button class="modal-close" onclick="closeGhModal()">✕</button>
+    </div>
+    <div class="modal-body" id="ghModalBody">
+      <!-- Content dynamically injected -->
+    </div>
+    <div class="modal-footer" id="ghModalFooter">
+      <!-- Buttons dynamically injected -->
+    </div>
+  </div>
+</div>
+
 <script>
 const MAIN_CATEGORY_OPTIONS=["Bags","Clothing","Drinks & Drinkware","Homeware","Pins, Patches & Stickers","Keychains & Clips","Novelty","Audio & Video","Models & Toys","Store Merch","Printed Materials","Sports & Outdoors","Game Media","Consoles & Accessories"];
 const SUB_CATEGORY_MAP={
@@ -396,7 +583,31 @@ const SUB_CATEGORY_MAP={
 "Consoles & Accessories":["Console Faceplaces","Console Skins","Custom Consoles","Headsets","Mouse Mats","Stylus","Tablet Sleeves","USBs","Phone Cases","Snap Cases","Other Console & Accessories"]
 };
 const GAME_OPTIONS=["Grand Theft Auto (1997)","Grand Theft Auto 2 (1999)","Midnight Club: Street Racing (2000)","Max Payne (2001)","Grand Theft Auto III (2001)","Grand Theft Auto: Vice City (2002)","Max Payne 2: The Fall of Max Payne (2003)","Midnight Club II (2003)","Manhunt (2003)","Red Dead Revolver (2004)","Grand Theft Auto: Advance (2004)","Grand Theft Auto: San Andreas (2004)","Midnight Club 3: DUB Edition (2005)","The Warriors (2005)","Grand Theft Auto: Liberty City Stories (2005)","Grand Theft Auto: Vice City Stories (2006)","Bully (2006)","Manhunt 2 (2007)","Grand Theft Auto IV (2008)","Midnight Club: Los Angeles (2008)","Grand Theft Auto: Chinatown Wars (2009)","Red Dead Redemption (2010)","Red Dead Redemption: Undead Nightmare (2010)","L.A. Noire (2011)","Max Payne 3 (2012)","Grand Theft Auto V (2013)","Red Dead Redemption 2 (2018)","Grand Theft Auto VI (2026)"];
+const GAME_IMAGE_ROOT={
+  "Grand Theft Auto (1997)":"images/GTA1",
+  "Grand Theft Auto 2 (1999)":"images/GTA2",
+  "Grand Theft Auto III (2001)":"images/GTAIII",
+  "Grand Theft Auto: Vice City (2002)":"images/GTAVC",
+  "Grand Theft Auto: Advance (2004)":"images/GTAA",
+  "Grand Theft Auto: San Andreas (2004)":"images/GTASA",
+  "Grand Theft Auto: Liberty City Stories (2005)":"images/GTALCS",
+  "Grand Theft Auto: Vice City Stories (2006)":"images/GTAVCS",
+  "Grand Theft Auto IV (2008)":"images/GTAIV",
+  "Grand Theft Auto: Chinatown Wars (2009)":"images/GTACW",
+  "Grand Theft Auto V (2013)":"images/GTAV",
+  "Grand Theft Auto VI (2026)":"images/GTAVI"
+};
+const GH_REPO_OWNER="rebex2";
+const GH_REPO_NAME="texture-toolkit";
+const GH_BRANCH="main";
+const GH_API_BASE=`https://api.github.com/repos/${GH_REPO_OWNER}/${GH_REPO_NAME}/contents`;
+const GH_RAW_BASE=`https://raw.githubusercontent.com/${GH_REPO_OWNER}/${GH_REPO_NAME}/${GH_BRANCH}`;
+const ghCache=new Map(); // path -> { data, timestamp }
+const GH_CACHE_TTL=5*60*1000; // 5 minutes
+
+function imageRootForGame(game){return GAME_IMAGE_ROOT[game]||null;}
 let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false,searchTerm="";
+let ghModalState={ open:false, currentPath:"", folders:[], selectedFolder:null, images:[], selectedMain:null, itemIndex:-1, loading:false, error:null };
 const $=id=>document.getElementById(id);
 function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function jsString(v){return JSON.stringify(v??"");}
@@ -404,33 +615,40 @@ function formatImagePath(p){p=String(p||"").trim().replace(/\\/g,"/");if(!p)retu
 function selectOptions(opts,value){let list=[...opts];if(value&&!list.includes(value))list.unshift(value);return list.map(x=>`<option value="${escapeHtml(x)}" ${x===value?"selected":""}>${escapeHtml(x)}</option>`).join("");}
 function subOptions(cat,value){const list=SUB_CATEGORY_MAP[cat]||["Other"];return selectOptions(list,value||list[0]);}
 
-// Directory name is the image base name (last segment of the directory path).
 function dirBaseName(dir){
   const clean=String(dir||"").replace(/\\/g,"/").replace(/\/+$/,"");
   const parts=clean.split("/");
   return parts[parts.length-1]||"";
 }
 
-// Parse the item's current image setup, preserving the existing extraImages order
-// (which is the user's priority order when saved).
+function enforceGameRoot(path,game){
+  const root=imageRootForGame(game);
+  if(!root)return formatImagePath(path);
+  let p=String(path||"").replace(/\\/g,"/").trim();
+  const m=p.match(/^images\/[^/]+\/(.*)$/i);
+  const rest=m?m[1]:(p.replace(/^images\/?/i,"").replace(/^\/+/,""));
+  return formatImagePath(root+"/"+rest.replace(/^\/+/,""));
+}
+
 function imageSettings(item){
   let paths=[item.image||"",...(Array.isArray(item.extraImages)?item.extraImages:[])].map(x=>String(x).replace(/\\/g,"/"));
   let first=paths[0]||"",slash=first.lastIndexOf("/"),directory=slash>=0?first.slice(0,slash+1):"images/",filename=slash>=0?first.slice(slash+1):first;
   let m=filename.match(/^(.+?)_(\d+)\.jpg$/i),base=m?m[1]:filename.replace(/\.[^.]+$/,""),main=m?+m[2]:1;
+  const gameRoot=imageRootForGame(item.game);
+  if(gameRoot && base){
+    directory=gameRoot+"/"+base+"/";
+  }
   const dirBase=dirBaseName(directory);
   if(dirBase && /^.+?_\d+\.jpg$/i.test(filename)){
     base=dirBase;
   }
-  // Build the full set of available numbered images: main + extras + any numbers seen
   const allNums=new Set();
   if(Number.isFinite(main)&&main>0)allNums.add(main);
   paths.forEach(p=>{
     const f=p.split("/").pop().match(/^.+?_(\d+)\.jpg$/i);
     if(f)allNums.add(+f[1]);
   });
-  // Max number seen (at least the main)
   const maxNum=Math.max(1,...allNums);
-  // Preserve the original extra order from the data, but drop the main image
   const extraOrder=[];
   const seenExtra=new Set();
   (Array.isArray(item.extraImages)?item.extraImages:[]).forEach(p=>{
@@ -442,33 +660,26 @@ function imageSettings(item){
 
 function imageSelect(idx,base,count,main){return `<select id="edit-image-main-${idx}" onchange="onMainImageChange(${idx})">${Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("")}</select>`;}
 
-// ---- Image base name editing (locked unless dev mode) ----
 function renderImageBaseField(idx,base){
-  // base may be overridden in dev mode; the value comes from the item's stored base or directory
   if(devModeEnabled){
     return `<div class="image-base-wrap editable"><input id="edit-image-base-${idx}" value="${escapeHtml(base)}" placeholder="chop" oninput="updateImageControls(${idx},true)"><span class="image-base-lock">✏️ Custom</span></div><div class="helper">Developer mode: you can override the auto-derived name.</div>`;
   }
   return `<div class="image-base-wrap locked"><input id="edit-image-base-${idx}" value="${escapeHtml(base)}" placeholder="chop" readonly oninput="updateImageControls(${idx},true)"><span class="image-base-lock">🔒 Auto</span></div><div class="helper">Usually matches the directory name. Enable Developer mode to override.</div>`;
 }
 
-// Track manual overrides per item so re-renders don't clobber the user's typed value
-const baseOverrides=new Map(); // key: item index, value: base string
+const baseOverrides=new Map();
 
 function updateImageControls(idx,isManualEdit){
   const dirInput=$(`edit-image-directory-${idx}`).value.trim();
   const derivedBase=dirBaseName(dirInput);
   const baseInput=$(`edit-image-base-${idx}`);
   if(!baseInput)return;
-  // Only auto-sync the base name when NOT in dev mode, or when the user hasn't manually edited it
   const manual=baseOverrides.get(idx);
   if(!devModeEnabled){
-    // Always mirror the directory when locked
     baseInput.value=derivedBase;
   } else if(!isManualEdit && manual===undefined){
-    // First render in dev mode with no override: seed from directory
     baseInput.value=derivedBase;
   } else if(!isManualEdit && manual!==undefined){
-    // Keep the user's previously saved override
     baseInput.value=manual;
   }
   const base=baseInput.value.trim();
@@ -478,19 +689,16 @@ function updateImageControls(idx,isManualEdit){
   const count=Math.max(1,Math.min(500,parseInt($(`edit-image-count-${idx}`).value,10)||1));
   const old=+$(`edit-image-main-${idx}`).value||1,main=Math.min(old,count);
   $(`edit-image-main-${idx}`).innerHTML=Array.from({length:count},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===main?"selected":""}>${escapeHtml(base||"image")}_${n}.jpg</option>`).join("");
-  // Refresh the priority list
   const order=readExtraOrder(idx,main,count);
   renderExtraPriority(idx,base,count,main,order);
 }
 
-// Read the current priority order for extras from the DOM (fallback to generated order)
 function readExtraOrder(idx,main,count){
   const listEl=$(`edit-extra-list-${idx}`);
   if(listEl){
     const nums=[...listEl.querySelectorAll(".extra-row")].map(r=>+r.dataset.num).filter(n=>Number.isInteger(n)&&n>=1&&n<=count&&n!==main);
     if(nums.length)return nums;
   }
-  // Fallback: ascending from 1 to count, skipping main
   return Array.from({length:count},(_,i)=>i+1).filter(n=>n!==main);
 }
 
@@ -498,9 +706,7 @@ function renderExtraPriority(idx,base,count,main,order){
   const listEl=$(`edit-extra-list-${idx}`);
   const previewEl=$(`edit-extra-preview-${idx}`);
   if(!listEl)return;
-  // Filter out stale numbers, keep valid ones in their priority order
   const valid=order.filter(n=>n!==main&&n>=1&&n<=count);
-  // Add any missing numbers (not main, not already listed) at the end
   const seen=new Set(valid);
   for(let n=1;n<=count;n++){if(n!==main&&!seen.has(n)){valid.push(n);seen.add(n);}}
   if(!valid.length){
@@ -541,21 +747,325 @@ function moveExtra(idx,num,dir){
 }
 
 function onMainImageChange(idx){
-  // When the main image changes, ensure the new main is removed from extras and the old main is added back
   const count=parseInt($(`edit-image-count-${idx}`).value,10)||1;
   const main=+$(`edit-image-main-${idx}`).value||1;
   const base=$(`edit-image-base-${idx}`).value.trim();
-  // Preserve existing extra order, drop the new main, add the previous main if it was removed
   const listEl=$(`edit-extra-list-${idx}`);
   let order=[];
   if(listEl){order=[...listEl.querySelectorAll(".extra-row")].map(r=>+r.dataset.num);}
-  // Remove the new main from the extras list if present
   order=order.filter(n=>n!==main);
-  // Add any missing numbers (not main)
   const seen=new Set(order);
   for(let n=1;n<=count;n++){if(n!==main&&!seen.has(n)){order.push(n);seen.add(n);}}
   renderExtraPriority(idx,base,count,main,order);
 }
+
+// ==================== GitHub API Helpers ====================
+
+async function ghFetch(path) {
+  const cached = ghCache.get(path);
+  if (cached && (Date.now() - cached.timestamp) < GH_CACHE_TTL) {
+    return cached.data;
+  }
+  const url = `${GH_API_BASE}/${path}?ref=${GH_BRANCH}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    if (res.status === 404) throw new Error(`Directory not found: ${path}`);
+    if (res.status === 403) throw new Error("GitHub API rate limit exceeded. Please wait a moment and try again.");
+    throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
+  }
+  const data = await res.json();
+  ghCache.set(path, { data, timestamp: Date.now() });
+  return data;
+}
+
+async function listFolders(parentPath) {
+  const entries = await ghFetch(parentPath);
+  return entries.filter(e => e.type === "dir");
+}
+
+async function listImages(folderPath) {
+  const entries = await ghFetch(folderPath);
+  return entries.filter(e => e.type === "file" && /\.(jpg|jpeg|png|webp|gif)$/i.test(e.name));
+}
+
+function parseImageNumbers(images) {
+  const nums = [];
+  images.forEach(img => {
+    const m = img.name.match(/_(\d+)\.(jpg|jpeg|png|webp|gif)$/i);
+    if (m) nums.push(parseInt(m[1], 10));
+  });
+  nums.sort((a, b) => a - b);
+  return nums;
+}
+
+function detectPrefix(images) {
+  if (!images.length) return null;
+  const m = images[0].name.match(/^(.+?)_(\d+)\.\w+$/);
+  return m ? m[1] : null;
+}
+
+function getThumbUrl(imgEntry) {
+  if (imgEntry.download_url) return imgEntry.download_url;
+  // Fallback: construct raw URL from path
+  return `${GH_RAW_BASE}/${imgEntry.path}`;
+}
+
+// ==================== Modal Logic ====================
+
+function openGhBrowser(itemIndex) {
+  ghModalState = {
+    open: true,
+    currentPath: "",
+    folders: [],
+    selectedFolder: null,
+    images: [],
+    selectedMain: null,
+    itemIndex,
+    loading: true,
+    error: null
+  };
+  $("ghModal").classList.add("active");
+  renderGhModal();
+  loadRootFolders();
+}
+
+function closeGhModal() {
+  $("ghModal").classList.remove("active");
+  ghModalState.open = false;
+}
+
+async function loadRootFolders() {
+  try {
+    const folders = await listFolders("images");
+    ghModalState.folders = folders;
+    ghModalState.loading = false;
+    ghModalState.error = null;
+  } catch (e) {
+    ghModalState.loading = false;
+    ghModalState.error = e.message;
+  }
+  renderGhModal();
+}
+
+async function loadSubfolders(path) {
+  ghModalState.loading = true;
+  ghModalState.error = null;
+  renderGhModal();
+  try {
+    const folders = await listFolders(path);
+    ghModalState.currentPath = path;
+    ghModalState.folders = folders;
+    ghModalState.selectedFolder = null;
+    ghModalState.images = [];
+    ghModalState.selectedMain = null;
+    ghModalState.loading = false;
+  } catch (e) {
+    ghModalState.loading = false;
+    ghModalState.error = e.message;
+  }
+  renderGhModal();
+}
+
+async function selectFolder(folderPath) {
+  ghModalState.selectedFolder = folderPath;
+  ghModalState.loading = true;
+  ghModalState.error = null;
+  renderGhModal();
+  try {
+    const images = await listImages(folderPath);
+    const nums = parseImageNumbers(images);
+    const prefix = detectPrefix(images);
+    ghModalState.images = images;
+    ghModalState.selectedMain = nums.length ? nums[0] : null;
+    ghModalState.loading = false;
+    ghModalState.error = null;
+    // Store prefix and count for later use
+    ghModalState.detectedPrefix = prefix;
+    ghModalState.detectedCount = nums.length;
+    ghModalState.detectedNums = nums;
+    renderGhModal();
+  } catch (e) {
+    ghModalState.loading = false;
+    ghModalState.error = e.message;
+    renderGhModal();
+  }
+}
+
+function applyFolderToItem() {
+  const { itemIndex, selectedFolder, detectedPrefix, detectedCount, selectedMain, images } = ghModalState;
+  if (!selectedFolder || !detectedPrefix || !detectedCount) return;
+  const idx = itemIndex;
+  // Populate directory
+  $(`edit-image-directory-${idx}`).value = selectedFolder + "/";
+  // Populate base name
+  const baseInput = $(`edit-image-base-${idx}`);
+  if (baseInput) baseInput.value = detectedPrefix;
+  // Populate count
+  const countInput = $(`edit-image-count-${idx}`);
+  if (countInput) countInput.value = detectedCount;
+  // Populate main image
+  const mainSelect = $(`edit-image-main-${idx}`);
+  if (mainSelect) {
+    mainSelect.innerHTML = Array.from({length: detectedCount}, (_, i) => i + 1).map(n =>
+      `<option value="${n}" ${n === (selectedMain || 1) ? "selected" : ""}>${escapeHtml(detectedPrefix)}_${n}.jpg</option>`
+    ).join("");
+  }
+  // Populate extra priority list
+  const mainNum = selectedMain || 1;
+  const order = Array.from({length: detectedCount}, (_, i) => i + 1).filter(n => n !== mainNum);
+  renderExtraPriority(idx, detectedPrefix, detectedCount, mainNum, order);
+  // Update base overrides so re-renders keep the value
+  baseOverrides.set(idx, detectedPrefix);
+  closeGhModal();
+  // Trigger a full re-render so the editor reflects changes
+  renderItemList();
+}
+
+function suggestNewFolder() {
+  const { itemIndex } = ghModalState;
+  const nameInput = $(`edit-name-${itemIndex}`);
+  const currentDir = $(`edit-image-directory-${itemIndex}`).value;
+  const gameSelect = $(`edit-game-${itemIndex}`);
+  const game = gameSelect ? gameSelect.value : "";
+  const root = imageRootForGame(game) || "images/GTAV";
+  let suggestion = nameInput ? nameInput.value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") : "new-item";
+  if (!suggestion) suggestion = "new-item";
+  const newPath = root + "/" + suggestion + "/";
+  // Populate fields
+  $(`edit-image-directory-${itemIndex}`).value = newPath;
+  const baseInput = $(`edit-image-base-${itemIndex}`);
+  if (baseInput) baseInput.value = suggestion;
+  const countInput = $(`edit-image-count-${itemIndex}`);
+  if (countInput) countInput.value = 1;
+  const mainSelect = $(`edit-image-main-${itemIndex}`);
+  if (mainSelect) {
+    mainSelect.innerHTML = `<option value="1" selected>${escapeHtml(suggestion)}_1.jpg</option>`;
+  }
+  renderExtraPriority(itemIndex, suggestion, 1, 1, []);
+  baseOverrides.set(itemIndex, suggestion);
+  closeGhModal();
+  renderItemList();
+}
+
+function renderGhModal() {
+  const body = $("ghModalBody");
+  const footer = $("ghModalFooter");
+  const state = ghModalState;
+
+  if (state.loading) {
+    body.innerHTML = `<div class="gh-status"><div class="spinner"></div><br>Loading from GitHub…</div>`;
+    footer.innerHTML = `<button onclick="closeGhModal()">Cancel</button>`;
+    return;
+  }
+
+  if (state.error) {
+    body.innerHTML = `<div class="gh-error">⚠️ ${escapeHtml(state.error)}</div>
+      <p class="helper">Check that the repository exists and the path is correct. Unauthenticated GitHub API requests are limited to 60 per hour.</p>`;
+    footer.innerHTML = `
+      <button onclick="loadRootFolders()">🔄 Retry</button>
+      <button onclick="closeGhModal()">Close</button>
+    `;
+    return;
+  }
+
+  let breadcrumbHtml = "";
+  if (state.currentPath) {
+    const parts = state.currentPath.split("/");
+    breadcrumbHtml = `<div class="gh-breadcrumb">📁 <span onclick="loadRootFolders()">root</span>`;
+    let acc = "";
+    parts.forEach(p => {
+      acc += (acc ? "/" : "") + p;
+      breadcrumbHtml += ` / <span onclick="loadSubfolders('${escapeHtml(acc)}')">${escapeHtml(p)}</span>`;
+    });
+    breadcrumbHtml += `</div>`;
+  }
+
+  const searchVal = document.getElementById("ghSearchInput")?.value || "";
+  const filtered = state.folders.filter(f =>
+    !searchVal || f.name.toLowerCase().includes(searchVal.toLowerCase())
+  );
+
+  if (filtered.length === 0) {
+    body.innerHTML = breadcrumbHtml + `<div class="gh-status">No folders found${searchVal ? ` matching "${escapeHtml(searchVal)}"` : ""}.</div>`;
+    footer.innerHTML = `
+      <button onclick="suggestNewFolder()" class="primary">📝 Create new directory reference</button>
+      <button onclick="closeGhModal()">Cancel</button>
+    `;
+    return;
+  }
+
+  // Folder grid
+  const folderCards = filtered.map(f => {
+    const name = f.name;
+    const path = f.path;
+    const isSelected = state.selectedFolder === path;
+    // Use a placeholder initially; we could load thumbnails lazily but that's many requests.
+    // Instead, use a generic folder icon.
+    return `<div class="folder-card ${isSelected ? "selected" : ""}" onclick="selectFolder('${escapeHtml(path)}')">
+      <div class="folder-thumb"><span class="thumb-placeholder">📁</span></div>
+      <div class="folder-info">
+        <div class="folder-name">${escapeHtml(name)}</div>
+        <div class="folder-path">${escapeHtml(path)}</div>
+      </div>
+    </div>`;
+  }).join("");
+
+  // If a folder is selected, show its images and allow selecting main
+  let imageSection = "";
+  if (state.selectedFolder && state.images.length) {
+    const nums = state.detectedNums || [];
+    const prefix = state.detectedPrefix || "";
+    const imgCards = state.images
+      .filter(img => /_(\d+)\./i.test(img.name))
+      .map(img => {
+        const m = img.name.match(/_(\d+)\./i);
+        const num = m ? parseInt(m[1], 10) : 0;
+        const isMain = state.selectedMain === num;
+        const thumbUrl = getThumbUrl(img);
+        return `<div class="img-preview-card ${isMain ? "main-selected" : ""}" onclick="selectMainImage(${num})">
+          <img src="${escapeHtml(thumbUrl)}" alt="${escapeHtml(img.name)}" loading="lazy" onerror="this.style.display='none'">
+          <div class="img-label">${escapeHtml(img.name)}</div>
+          ${isMain ? '<span class="main-badge">Main</span>' : ''}
+        </div>`;
+      }).join("");
+    // Check for gaps
+    const hasGaps = nums.length > 0 && nums[nums.length - 1] !== nums.length;
+    const gapWarning = hasGaps
+      ? `<div class="gh-error" style="margin-top:12px">⚠️ Image numbering has gaps (found ${nums.length} images but highest number is ${nums[nums.length - 1]}). The editor will still use the detected count.</div>`
+      : "";
+    imageSection = `
+      <div style="margin-top:20px;border-top:1px solid #2c2c38;padding-top:16px">
+        <h4 style="margin:0 0 10px;font-size:.95rem;color:#e4eaf5">📸 Images in ${escapeHtml(state.selectedFolder)}</h4>
+        <p class="helper" style="margin:0 0 12px">Prefix: <code>${escapeHtml(prefix)}</code> · Count: <strong>${state.detectedCount}</strong> · Click an image to set as main.</p>
+        ${gapWarning}
+        <div class="image-preview-grid">${imgCards}</div>
+      </div>
+    `;
+  }
+
+  body.innerHTML = breadcrumbHtml + `
+    <div class="gh-search-wrap">
+      <input id="ghSearchInput" type="text" placeholder="Search folders…" value="${escapeHtml(searchVal)}" oninput="renderGhModal()" autocomplete="off">
+    </div>
+    <div class="folder-grid">${folderCards}</div>
+    ${imageSection}
+  `;
+
+  // Footer buttons
+  const canApply = state.selectedFolder && state.detectedCount > 0;
+  footer.innerHTML = `
+    <button onclick="suggestNewFolder()" class="primary" style="margin-right:auto">📝 Create new directory reference</button>
+    <button onclick="closeGhModal()">Cancel</button>
+    <button class="success" ${canApply ? "" : "disabled"} onclick="applyFolderToItem()">✅ Use this folder</button>
+  `;
+}
+
+function selectMainImage(num) {
+  ghModalState.selectedMain = num;
+  renderGhModal();
+}
+
+// ==================== End GitHub API Helpers ====================
 
 function parseCatalogItems(text){
   if(!text.trim())return [];
@@ -567,7 +1077,6 @@ function parseCatalogItems(text){
 }
 function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;baseOverrides.clear();buildGameChips();renderItemList();$("output").textContent="";$("generateStatus").textContent="";$("outputWarnings").innerHTML="";}
 
-// ---- Game chip shortcuts ----
 function buildGameChips(){
   const container=$("gameChips");
   if(!currentItems.length){container.innerHTML="";return;}
@@ -594,7 +1103,6 @@ function setSearch(term){
   renderItemList();
 }
 
-// ---- Fuzzy-ish search ----
 function normalise(s){
   return String(s??"")
     .toLowerCase()
@@ -678,7 +1186,6 @@ function renderItemList(){
     const reorderButtons=devModeEnabled
       ? `<button class="reorder-btn" title="Move up" onclick="event.stopPropagation();moveItem(${i},-1)">⬆️</button><button class="reorder-btn" title="Move down" onclick="event.stopPropagation();moveItem(${i},1)">⬇️</button>`
       : ``;
-    // Extra priority order: prefer the item's saved extraImages order, else generated
     let extraOrder;
     if(Array.isArray(item.extraImages)&&item.extraImages.length){
       extraOrder=[];
@@ -691,7 +1198,6 @@ function renderItemList(){
     }else{
       extraOrder=Array.from({length:s.count},(_,k)=>k+1).filter(n=>n!==s.main);
     }
-    // If there's a manual override for this item, use it
     const baseForDisplay=baseOverrides.has(i)?baseOverrides.get(i):s.base;
     const extraRows=extraOrder.map((n,pos)=>{
       const up=pos===0,down=pos===extraOrder.length-1;
@@ -714,7 +1220,13 @@ function renderItemList(){
     <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
     <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}"></div>
     <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
-    <div class="full"><label>Image directory</label><input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i})"><div class="helper">Folder containing the numbered JPG images. The image name is derived from the last folder name.</div></div>
+    <div class="full"><label>Image directory</label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input id="edit-image-directory-${i}" value="${escapeHtml(s.directory)}" placeholder="images/gTAV/dog/" oninput="updateImageControls(${i})" style="flex:1;min-width:200px">
+        <button type="button" onclick="openGhBrowser(${i})" style="width:auto;white-space:nowrap;padding:10px 14px;font-size:.82rem">📂 Browse GitHub</button>
+      </div>
+      <div class="helper">Folder containing the numbered JPG images. The image name is derived from the last folder name.${imageRootForGame(item.game)?` For <strong>${escapeHtml(item.game)}</strong> the saved path is forced under <code>${escapeHtml(imageRootForGame(item.game))}/</code>.`:""}</div>
+    </div>
     <div><label>Image name ${devModeEnabled?'<span style="color:#9ab5e6">(editable)</span>':'<span style="color:#7a8598">(auto from folder)</span>'}</label>${renderImageBaseField(i,baseForDisplay)}</div>
     <div><label>Number of images</label><input id="edit-image-count-${i}" type="number" min="1" max="500" value="${s.count}" oninput="updateImageControls(${i})"></div>
     <div class="full"><label>Main image</label>${imageSelect(i,baseForDisplay,s.count,s.main)}<div class="helper">Choose which numbered image represents the item. Extras below are ordered by priority.</div></div>
@@ -723,7 +1235,6 @@ function renderItemList(){
     <div class="full"><label>Link (optional)</label><input id="edit-link-${i}" value="${escapeHtml(item.link||"")}"></div></div>
     <div class="actions"><button class="success" onclick="saveItem(${i})">💾 Save changes</button><button onclick="cancelEdit(${i})">Cancel</button><button class="danger" onclick="deleteItem(${i})">🗑 Delete</button></div></div></div>`;
   }).join("");
-  // Initialize the previews after render
   filtered.forEach(item=>{
     const i=currentItems.indexOf(item);
     const base=$(`edit-image-base-${i}`),countEl=$(`edit-image-count-${i}`),mainEl=$(`edit-image-main-${i}`);
@@ -738,7 +1249,6 @@ function renderItemList(){
       }
       const count=parseInt(countEl.value,10)||1;
       const main=+mainEl.value||1;
-      // Only re-render the priority list without triggering a base sync
       if(listEl){
         const baseVal=base.value.trim();
         renderExtraPriority(i,baseVal,count,main,order);
@@ -749,7 +1259,6 @@ function renderItemList(){
 function applySearchFilter(){searchTerm=$("searchFilter").value.trim();activeEditIndex=-1;renderItemList();}
 function toggleDevMode(){
   devModeEnabled=$("devModeToggle").checked;
-  // When turning dev mode off, clear manual overrides so fields re-sync to directory
   if(!devModeEnabled)baseOverrides.clear();
   renderItemList();
 }
@@ -766,7 +1275,6 @@ function moveItem(index,direction){
   const temp=currentItems[index];
   currentItems[index]=currentItems[newIndex];
   currentItems[newIndex]=temp;
-  // Re-map base overrides because indices shifted
   if(baseOverrides.has(index)||baseOverrides.has(newIndex)){
     const oi=baseOverrides.get(index),on=baseOverrides.get(newIndex);
     baseOverrides.delete(index);baseOverrides.delete(newIndex);
@@ -785,11 +1293,9 @@ function saveItem(i){
   if(/[\\/]/.test(base)||/\.[^.]+$/.test(base)){alert("Use only the base image name, without slashes or a file extension.");return;}
   if(!Number.isInteger(count)||count<1||count>500){alert("Enter a number of images between 1 and 500.");return;}
   if(!Number.isInteger(main)||main<1||main>count){alert("Choose a valid main image.");return;}
-  // Read the priority order for extras from the DOM
   const listEl=get("edit-extra-list");
   let extraOrder=[];
   if(listEl){extraOrder=[...listEl.querySelectorAll(".extra-row")].map(r=>+r.dataset.num);}
-  // Filter valid extras, dedupe, then add any missing numbers
   const valid=[];const seen=new Set();
   extraOrder.forEach(n=>{if(n!==main&&n>=1&&n<=count&&!seen.has(n)){seen.add(n);valid.push(n);}});
   for(let n=1;n<=count;n++){if(n!==main&&!seen.has(n)){valid.push(n);seen.add(n);}}
@@ -797,20 +1303,20 @@ function saveItem(i){
   item.price=get("edit-price").value.trim();
   item.availability=get("edit-availability").value;
   if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
-  item.image=formatImagePath(`${dirInput}${base}_${main}.jpg`);
-  // Persist the priority order directly in extraImages
-  item.extraImages=valid.map(n=>formatImagePath(`${dirInput}${base}_${n}.jpg`));
+  item.image=enforceGameRoot(`${dirInput}${base}_${main}.jpg`,item.game);
+  item.extraImages=valid.map(n=>enforceGameRoot(`${dirInput}${base}_${n}.jpg`,item.game));
   item.link=get("edit-link").value;
-  // The base name has been saved into the item; keep the override so re-renders show it
   if(devModeEnabled && base)baseOverrides.set(i,base);
   activeEditIndex=-1;renderItemList();
   $("saveReminder").style.display="none";
 }
 function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;baseOverrides.delete(i);buildGameChips();renderItemList();}}
 function addNewItem(){
-  currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/gTAV/new-item/new-item_1.jpg",extraImages:[],link:""});
-  activeEditIndex=currentItems.length-1;
-  searchTerm="";$("searchFilter").value="";
+  currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/GTAV/new-item/new-item_1.jpg",extraImages:[],link:""});
+  const newIndex=currentItems.length-1;
+  activeEditIndex=newIndex;
+  searchTerm="New item";
+  $("searchFilter").value=searchTerm;
   buildGameChips();
   renderItemList();
 }
@@ -839,7 +1345,7 @@ function validateAndWarn(){
 function generateCatalog(){
   if(!currentItems.length){$("generateStatus").textContent="No items to generate.";$("outputWarnings").innerHTML="";return;}
   const strings=currentItems.map(item=>{
-    const base={name:item.name,game:item.game,category:item.category,subcategory:item.subcategory,description:item.description,year:item.year,rarity:item.rarity,availability:item.availability,image:formatImagePath(item.image),extraImages:item.extraImages||[],link:item.link};
+    const base={name:item.name,game:item.game,category:item.category,subcategory:item.subcategory,description:item.description,year:item.year,rarity:item.rarity,availability:item.availability,image:formatImagePath(item.image),extraImages:(item.extraImages||[]).map(p=>formatImagePath(p)),link:item.link};
     if(item.price!==undefined&&item.price!=="")base.price=item.price;
     else if(item.price==="")base.price="";
     const lines=Object.entries(base).map(([k,v])=>{
@@ -872,6 +1378,7 @@ async function fetchFromGithub(){
 async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
 function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
 window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;window.setSearch=setSearch;window.moveExtra=moveExtra;window.onMainImageChange=onMainImageChange;
+window.openGhBrowser=openGhBrowser;window.closeGhModal=closeGhModal;window.selectFolder=selectFolder;window.applyFolderToItem=applyFolderToItem;window.suggestNewFolder=suggestNewFolder;window.renderGhModal=renderGhModal;window.selectMainImage=selectMainImage;window.loadRootFolders=loadRootFolders;window.loadSubfolders=loadSubfolders;
 </script>
 </body>
 </html>
