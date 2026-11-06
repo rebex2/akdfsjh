@@ -378,36 +378,23 @@
   </section>
 </div>
 <script>
-const MAIN_CATEGORY_OPTIONS=["Clothing","Hats & Headwear","Footwear","Bags & Luggage","Jewellery & Wearable Accessories","Pins, Patches & Badges","Stickers & Decals","Figures & Statues","Plushies","Toys & Games","Drinkware","Homeware & Household Items","Fragrance & Ambient Products","Desk Accessories & Stationery","Posters & Artwork","Books & Printed Publications","Music & Audio","Electronics & Technology Accessories","Sports & Outdoor Products","Pet Products","Novelty & Everyday Objects","In-Game Brands & Fictional Businesses","Promotional Giveaways & Event Merchandise","Press Kits & Promotional Materials","Collector's Editions & Merchandise Bundles","Collectible Memorabilia","Packaging & Product Inserts","Other"];
+const MAIN_CATEGORY_OPTIONS=["Bags","Clothing","Drinks & Drinkware","Homeware","Pins, Patches & Stickers","Keychains & Clips","Novelty","Audio & Video","Models & Toys","Store Merch","Printed Materials","Sports & Outdoors","Game Media","Consoles & Accessories"];
 const SUB_CATEGORY_MAP={
-"Clothing":["T-shirts","Graphic tees","Long-sleeve shirts","Polo shirts","Tank tops","Hoodies","Sweatshirts","Crewneck jumpers","Jackets","Coats","Windbreakers","Vests","Tracksuits","Trousers","Jeans","Shorts","Skirts","Dresses","Underwear","Socks","Sleepwear","Swimwear","Robes","Uniforms","Costume clothing"],
-"Hats & Headwear":["Baseball caps","Snapback caps","Fitted caps","Trucker hats","Beanies","Bucket hats","Five-panel caps","Flat caps","Bandanas","Headbands","Visors","Other branded headwear"],
-"Footwear":["Trainers","Skate shoes","Casual shoes","Boots","Sandals","Slippers","Flip-flops","Branded shoelaces","Other footwear"],
-"Bags & Luggage":["Backpacks","Tote bags","Shopping bags","Messenger bags","Shoulder bags","Duffel bags","Travel bags","Drawstring bags","Pouches","Pencil cases","Wallets","Purses","Card holders","Luggage tags","Other carrying accessories"],
-"Jewellery & Wearable Accessories":["Necklaces","Pendants","Bracelets","Rings","Earrings","Watches","Belt buckles","Belts","Cufflinks","Sunglasses","Glasses accessories","Other wearable accessories"],
-"Pins, Patches & Badges":["Enamel pins","Metal pins","Embroidered patches","Sew-on patches","Iron-on patches","Badges","Pin sets","Insignia","Logo badges"],
-"Stickers & Decals":["Individual stickers","Sticker sheets","Sticker packs","Logo decals","Vehicle decals","Window stickers","Reflective stickers","Holographic stickers","Removable decals"],
-"Figures & Statues":["Character figures","Character statues","Busts","Miniature figures","Articulated figures","Vinyl figures","Resin figures","Display figurines","Limited-edition sculptures"],
-"Plushies":["Character plushies","Animal plushies","Stuffed toys","Soft dolls","Mascot plushies","Plush keychains","Plush accessories"],
-"Toys & Games":["Playing cards","Domino sets","Puzzles","Rubik's cubes","Board games","Physical novelty games","Toy vehicles","Miniature playsets","Collectible toys"],
-"Drinkware":["Mugs","Glass bottles","Plastic bottles","Drinking glasses","coasters","Other"],
-"Homeware & Household Items":["Towels","Beach towels","Blankets","Cushions","Pillows","Doormats","Coasters","Mirrors","Clocks","Decorative ornaments","Household textiles","Other home accessories"],
-"Fragrance & Ambient Products":["Scented candles","Decorative candles","Room-fragrance products","Other home ambience merchandise"],
-"Desk Accessories & Stationery":["Mousepads","Desk mats","Notebooks","Notepads","Pens","Pencils","Bookmarks","Paperweights","Desk organisers","Calendars","Sticky notes","Office stationery"],
-"Posters & Artwork":["Posters","Art prints","Lithographs","Framed artwork","Canvas prints","Character illustrations","Concept art prints","Promotional posters","Limited-edition prints","Original promotional artwork"],
-"Books & Printed Publications":["Strategy guides","Art books","Companion books","Lore books","Illustrated books","Magazines","Promotional booklets","Press clippings","Catalogues","Printed manuals","Official publications"],
-"Music & Audio":["Soundtrack vinyl records","Soundtrack CDs","Soundtrack collections","Promotional audio CDs","Music samplers","Boxed soundtrack editions","Other physical music releases"],
-"Electronics & Technology Accessories":["Phone cases","Tablet cases","USB accessories","Computer accessories","Gaming desk accessories","Technology-themed collectibles","Other branded technology accessories"],
-"Sports & Outdoor Products":["Basketballs","Other sports balls","Beach balls","Skateboards","Exercise accessories","Outdoor games","Camping accessories","Beach accessories","Outdoor textiles","Other recreational merchandise"],
-"Pet Products":["Pet collars","Pet leads","Pet toys","Pet clothing","Pet bowls","Pet accessories","Other animal products"],
-"Novelty & Everyday Objects":["Magnets","Keychains","Bottle openers","Luggage accessories","Novelty stationery","Decorative objects","Branded practical accessories","Miscellaneous novelty products"],
-"In-Game Brands & Fictional Businesses":["Fictional company merchandise","Fictional restaurant merchandise","Fictional beverage branding","Fictional radio station merchandise","Fictional television programme merchandise","Fictional advertising merchandise","Fictional product packaging","Fictional sports team merchandise","Fictional organisation merchandise","Fictional location merchandise"],
-"Promotional Giveaways & Event Merchandise":["Convention giveaways","Trade-show merchandise","Launch-event gifts","Competition prizes","Fan-site gifts","Press gifts","Pre-order bonuses","Anniversary merchandise","Event-exclusive items","Limited promotional releases"],
-"Press Kits & Promotional Materials":["Electronic press kits","Physical press kits","Promotional flyers","Press information packs","Promotional leaflets","Launch materials","Retail display materials","Advertising materials","Promotional packaging","Press-only merchandise"],
-"Collector's Editions & Merchandise Bundles":["Collector's boxes","Special-edition merchandise sets","Gift sets","Multi-item bundles","Premium boxed collections","Limited-edition collections","Anniversary sets","Themed merchandise collections"],
-"Collectible Memorabilia":["Signed merchandise","Numbered collectibles","Limited-edition memorabilia","Original promotional artefacts","Historical merchandise samples","Developer or press gifts","Authenticated promotional pieces"],
-"Packaging & Product Inserts":["Original product boxes","Retail packaging","Collector's packaging","Branded tags","Instruction leaflets","Certificates of authenticity","Product inserts","Promotional cards","Original packaging components"],
-"Other":["Unclassified merchandise","Unusual one-off products","Unidentified promotional items","Items awaiting verification","Products that do not fit an existing category"]};
+"Bags":["Tote Bags","Paper Bags","Duffel Bags","Other Bags"],
+"Clothing":["T-shirts","Polo Shirts","Sweaters","Headwear","Socks","Footwear","Jackets","Costumes","Underwear","Shoelaces","Other Clothing"],
+"Drinks & Drinkware":["Drinks","Bottle Openers","Plastic Drinkware","Glass Drinkware","Ceramic Drinkware","Coasters","Stirers","Coolers","Napkins","Flasks","Other Drinkware"],
+"Homeware":["Candles","Door Mats","Soap","Ashtrays","Trays","Pillows","Signs","Kitchen Timers","Paperweights","Pencils","Pens","Other Homeware"],
+"Pins, Patches & Stickers":["Stickers","Pins","Patches","Other Pins, Patches & Stickers"],
+"Keychains & Clips":["Keychains","Moneyclips","Other Keychains & Clips"],
+"Novelty":["Magnets","Pet Products","Licence Plates","Air Freshners","Keys","Pizza Boxes","Flash Light","Money Bills","Gift Wrap","Slim Jim","Drug  Paraphernalia","Weapons","Lighters","Matches","Voice Changers","Paperweights","Luggage Tags","Stress Balls","Coins","Jewellary","Gambling Chips","Other Novelty"],
+"Audio & Video":["CDs","Vinyl","DVDs","Other Audio & Video"],
+"Models & Toys":["Figurines","Models","Plushies","Playing Cards","Puzzles","Viewfinders","Dice","Dominoes","Walkie Talkies","Cameras","Other Models & Toys"],
+"Store Merch":["Posters","Display Stands","Display Boxes","Console Boxes","Game Sleeves","Bags","Window Clings","Order Cards","Other Store Merch"],
+"Printed Materials":["Official Strategy Guides","Unofficial Strategy Guides","Art Books","Postcards","Magazines","Comics","Greeting Cards","Invites","Press/Promo Kit","Press Clippings","Bookmarks","Flyers","Paintings","Notebooks","Other Printed Materials"],
+"Sports & Outdoors":["Baseball Bats","Dart Boards","Golf Clubs","Beach Towels","Sleeping Bags","Umbrellas","Beach Balls","Blimps","Baseket Balls","Ping Pong","Foam Hands","Dodgeball","Spray Cans","Car Caps","RC Cars","Foam Fingers","Bikes","Chairs"],
+"Game Media":["Standard Editions","Special/Collectors Editions","Rockstar Promo Discs","Third-Party Demo Discs","Other Game Media"],
+"Consoles & Accessories":["Console Faceplaces","Console Skins","Custom Consoles","Headsets","Mouse Mats","Stylus","Tablet Sleeves","USBs","Phone Cases","Snap Cases","Other Console & Accessories"]
+};
 const GAME_OPTIONS=["Grand Theft Auto (1997)","Grand Theft Auto 2 (1999)","Midnight Club: Street Racing (2000)","Max Payne (2001)","Grand Theft Auto III (2001)","Grand Theft Auto: Vice City (2002)","Max Payne 2: The Fall of Max Payne (2003)","Midnight Club II (2003)","Manhunt (2003)","Red Dead Revolver (2004)","Grand Theft Auto: Advance (2004)","Grand Theft Auto: San Andreas (2004)","Midnight Club 3: DUB Edition (2005)","The Warriors (2005)","Grand Theft Auto: Liberty City Stories (2005)","Grand Theft Auto: Vice City Stories (2006)","Bully (2006)","Manhunt 2 (2007)","Grand Theft Auto IV (2008)","Midnight Club: Los Angeles (2008)","Grand Theft Auto: Chinatown Wars (2009)","Red Dead Redemption (2010)","Red Dead Redemption: Undead Nightmare (2010)","L.A. Noire (2011)","Max Payne 3 (2012)","Grand Theft Auto V (2013)","Red Dead Redemption 2 (2018)","Grand Theft Auto VI (2026)"];
 let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false,searchTerm="";
 const $=id=>document.getElementById(id);
@@ -415,7 +402,7 @@ function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","
 function jsString(v){return JSON.stringify(v??"");}
 function formatImagePath(p){p=String(p||"").trim().replace(/\\/g,"/");if(!p)return "";if(!p.startsWith("images/")&&!/^https?:\/\//i.test(p)&&!p.startsWith("/"))p="images/"+p;return p;}
 function selectOptions(opts,value){let list=[...opts];if(value&&!list.includes(value))list.unshift(value);return list.map(x=>`<option value="${escapeHtml(x)}" ${x===value?"selected":""}>${escapeHtml(x)}</option>`).join("");}
-function subOptions(cat,value){return selectOptions(SUB_CATEGORY_MAP[cat]||SUB_CATEGORY_MAP.Other,value||"Other");}
+function subOptions(cat,value){const list=SUB_CATEGORY_MAP[cat]||["Other"];return selectOptions(list,value||list[0]);}
 
 // Directory name is the image base name (last segment of the directory path).
 function dirBaseName(dir){
@@ -432,8 +419,7 @@ function imageSettings(item){
   let m=filename.match(/^(.+?)_(\d+)\.jpg$/i),base=m?m[1]:filename.replace(/\.[^.]+$/,""),main=m?+m[2]:1;
   const dirBase=dirBaseName(directory);
   if(dirBase && /^.+?_\d+\.jpg$/i.test(filename)){
-    const dirMatch=filename.match(/^(.+?)_(\d+)\.jpg$/i);
-    if(dirMatch){ base=dirBase; }
+    base=dirBase;
   }
   // Build the full set of available numbered images: main + extras + any numbers seen
   const allNums=new Set();
@@ -504,7 +490,7 @@ function readExtraOrder(idx,main,count){
     const nums=[...listEl.querySelectorAll(".extra-row")].map(r=>+r.dataset.num).filter(n=>Number.isInteger(n)&&n>=1&&n<=count&&n!==main);
     if(nums.length)return nums;
   }
-  // Fallback: descending from count down to 1, skipping main
+  // Fallback: ascending from 1 to count, skipping main
   return Array.from({length:count},(_,i)=>i+1).filter(n=>n!==main);
 }
 
@@ -573,8 +559,9 @@ function onMainImageChange(idx){
 
 function parseCatalogItems(text){
   if(!text.trim())return [];
-  let start=text.indexOf("["),end=text.lastIndexOf("]");if(start<0||end<=start)return [];
-  let source=text.slice(start,end+1).replace(/,\s*]/g,"]");
+  const start=text.indexOf("["),end=text.lastIndexOf("]");
+  if(start<0||end<=start)return [];
+  const source=text.slice(start,end+1).replace(/,\s*]/g,"]");
   try{return Function('"use strict"; return ('+source+');')().filter(x=>x&&typeof x==="object");}
   catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
 }
@@ -589,7 +576,7 @@ function buildGameChips(){
   games.sort((a,b)=>a.localeCompare(b));
   const chips=games.map(g=>{
     const short=shortGameLabel(g);
-    return `<span class="game-chip" title="${escapeHtml(g)}" onclick="setSearch('${escapeHtml(g).replace(/'/g,"\\'")}')">${escapeHtml(short)}</span>`;
+    return `<span class="game-chip" title="${escapeHtml(g)}" data-game="${escapeHtml(g)}" onclick="setSearch(this.dataset.game)">${escapeHtml(short)}</span>`;
   }).join("");
   container.innerHTML=`<span class="game-chip" onclick="setSearch('')">✕ Clear</span>${chips}`;
 }
@@ -722,8 +709,8 @@ function renderItemList(){
     <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
     <div><label>Game</label><select id="edit-game-${i}">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
     <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99"></div>
-    <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||"Other")}</select></div>
-    <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||"Other",item.subcategory||"Other")}</select></div>
+    <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||MAIN_CATEGORY_OPTIONS[0])}</select></div>
+    <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||MAIN_CATEGORY_OPTIONS[0],item.subcategory||"Other")}</select></div>
     <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
     <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}"></div>
     <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
@@ -766,7 +753,11 @@ function toggleDevMode(){
   if(!devModeEnabled)baseOverrides.clear();
   renderItemList();
 }
-function onMainCategoryChange(i){const cat=$(`edit-maincat-${i}`).value;$(`edit-subcat-${i}`).innerHTML=subOptions(cat,(SUB_CATEGORY_MAP[cat]||["Other"])[0]);}
+function onMainCategoryChange(i){
+  const cat=$(`edit-maincat-${i}`).value;
+  const list=SUB_CATEGORY_MAP[cat]||["Other"];
+  $(`edit-subcat-${i}`).innerHTML=subOptions(cat,list[0]);
+}
 function toggleEdit(i){activeEditIndex=activeEditIndex===i?-1:i;renderItemList();}
 function cancelEdit(){activeEditIndex=-1;renderItemList();}
 function moveItem(index,direction){
@@ -804,7 +795,8 @@ function saveItem(i){
   for(let n=1;n<=count;n++){if(n!==main&&!seen.has(n)){valid.push(n);seen.add(n);}}
   item.name=get("edit-name").value;item.game=get("edit-game").value;item.category=get("edit-maincat").value;item.subcategory=get("edit-subcat").value;item.description=get("edit-description").value;item.year=get("edit-year").value;item.rarity=get("edit-rarity").value;
   item.price=get("edit-price").value.trim();
-  item.availability=get("edit-availability").value;if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
+  item.availability=get("edit-availability").value;
+  if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
   item.image=formatImagePath(`${dirInput}${base}_${main}.jpg`);
   // Persist the priority order directly in extraImages
   item.extraImages=valid.map(n=>formatImagePath(`${dirInput}${base}_${n}.jpg`));
@@ -835,7 +827,6 @@ function validateAndWarn(){
     if(!item.rarity)missing.push("rarity");
     if(!item.availability)missing.push("availability");
     if(!item.image)missing.push("image");
-    if(!item.link)missing.push("link");
     if(missing.length)warnings.push(`Item ${i+1} (${item.name||"Untitled"}) has empty fields: ${missing.join(", ")}`);
   });
   const generated=$("output").textContent;
