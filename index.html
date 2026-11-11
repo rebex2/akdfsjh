@@ -342,6 +342,31 @@
     font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:10px;
     letter-spacing:.02em;
   }
+  /* ---- Combobox for category inputs ---- */
+  .combo-wrap{position:relative}
+  .combo-wrap input{padding-right:36px}
+  .combo-toggle{
+    position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    background:none;border:none;color:#8b96ab;font-size:.8rem;
+    padding:4px 6px;cursor:pointer;width:auto;box-shadow:none;
+    border-radius:6px;line-height:1;
+  }
+  .combo-toggle:hover{background:#2c2c38;color:#eef2f8;box-shadow:none}
+  .combo-list{
+    position:absolute;left:0;right:0;top:100%;z-index:50;
+    margin-top:4px;max-height:220px;overflow-y:auto;
+    background:#15151b;border:1px solid #353545;border-radius:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);display:none;
+  }
+  .combo-list.open{display:block}
+  .combo-option{
+    padding:9px 14px;font-size:.86rem;color:#c8d2e4;cursor:pointer;
+    transition:background .12s,color .12s;
+  }
+  .combo-option:hover,.combo-option.active{background:#2a3a5a;color:#fff}
+  .combo-option .combo-parent{font-size:.72rem;color:#8b96ab;margin-left:6px}
+  .combo-empty{padding:12px 14px;font-size:.82rem;color:#f0b0b0;font-style:italic}
+  .combo-invalid input{border-color:#c04a4a!important;box-shadow:0 0 0 3px rgba(192,74,74,.15)!important}
   @media(max-width:640px){
     body{padding:16px 12px 40px}
     .card{padding:20px 16px;border-radius:16px}
@@ -371,17 +396,14 @@
   </div>
   <section class="card">
     <div class="card-header"><h2>📥 Step 1 — Load your catalog</h2><span id="fetchStatus" class="status">Ready</span></div>
-    <p class="hint">Paste your catalog.js below, or fetch it from GitHub. Edit an item in Step 2, then save its changes before generating the updated catalog.</p>
+    <p class="hint">Paste your catalog.js below, or fetch it from GitHub. Items are parsed automatically. Edit an item in Step 2, then save its changes before generating the updated catalog.</p>
     <label for="githubUrl">GitHub URL (optional)</label>
     <div class="row">
       <input id="githubUrl" value="https://github.com/rebex2/texture-toolkit/blob/main/catalog.js" placeholder="https://github.com/.../catalog.js">
       <button type="button" onclick="fetchFromGithub()">⬇ Fetch</button>
     </div>
     <label for="catalogInput">catalog.js content</label>
-    <textarea id="catalogInput" placeholder="Paste your catalog.js here..." style="min-height:150px"></textarea>
-    <div class="actions">
-      <button class="primary" onclick="parseAndRenderItems()">📋 Load &amp; show items</button>
-    </div>
+    <textarea id="catalogInput" placeholder="Paste your catalog.js here..." style="min-height:150px" oninput="onCatalogInputChanged()"></textarea>
   </section>
   <section class="card">
     <div class="card-header"><h2>✏️ Step 2 — Edit items</h2><span id="itemCount" class="status">0 items</span></div>
@@ -391,6 +413,7 @@
     </div>
     <div id="gameChips" class="game-chips"></div>
     <div id="filterInfo" class="filter-info"></div>
+    <div id="categoryWarnings"></div>
     <div id="saveReminder" class="save-reminder" style="display:none">⚠️ You have unsaved changes in this item. Click “💾 Save changes” before leaving or generating the catalog.</div>
     <div id="itemListContainer" class="item-list"></div>
     <div class="actions">
@@ -463,7 +486,69 @@ const ghCache=new Map();
 const GH_CACHE_TTL=5*60*1000;
 
 function imageRootForGame(game){return GAME_IMAGE_ROOT[game]||null;}
+
+// ==================== Category lookup helpers ====================
+const SUBCATEGORY_INDEX=(()=>{
+  const idx=new Map();
+  Object.entries(SUB_CATEGORY_MAP).forEach(([main,subs])=>{
+    subs.forEach(sub=>{
+      const key=normaliseCat(sub);
+      if(!idx.has(key))idx.set(key,[]);
+      if(!idx.get(key).includes(main))idx.get(key).push(main);
+    });
+  });
+  return idx;
+})();
+
+function normaliseCat(s){
+  return String(s??"").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9\s]/g," ")
+    .replace(/\s+/g," ").trim();
+}
+function canonMain(s){
+  const n=normaliseCat(s);
+  return MAIN_CATEGORY_OPTIONS.find(m=>normaliseCat(m)===n)||null;
+}
+function canonSub(sub,mainHint){
+  const n=normaliseCat(sub);
+  if(!n)return null;
+  const candidates=SUBCATEGORY_INDEX.get(n);
+  if(!candidates||!candidates.length)return null;
+  if(mainHint&&candidates.includes(mainHint))return {main:mainHint,sub:SUB_CATEGORY_MAP[mainHint].find(s=>normaliseCat(s)===n)};
+  const main=candidates[0];
+  return {main,sub:SUB_CATEGORY_MAP[main].find(s=>normaliseCat(s)===n)};
+}
+function subcategoryExists(sub,main){
+  if(!main)return false;
+  const list=SUB_CATEGORY_MAP[main]||[];
+  const n=normaliseCat(sub);
+  return list.some(s=>normaliseCat(s)===n);
+}
+function findCategoryProblems(items){
+  const problems=[];
+  items.forEach((item,i)=>{
+    const mainOk=!!canonMain(item.category);
+    const subInfo=canonSub(item.subcategory,mainOk?canonMain(item.category):null);
+    const subOk=!!subInfo;
+    if(!mainOk||!subOk||subInfo.main!==canonMain(item.category)){
+      problems.push({
+        index:i,
+        name:item.name||`Item ${i+1}`,
+        currentCategory:item.category||"",
+        currentSubcategory:item.subcategory||"",
+        mainOk,
+        subOk,
+        suggestedMain:subInfo?subInfo.main:null,
+        suggestedSub:subInfo?subInfo.sub:null
+      });
+    }
+  });
+  return problems;
+}
+
 let currentCatalogText="",currentItems=[],activeEditIndex=-1,devModeEnabled=false,searchTerm="";
+let pendingCategoryProblems=[];
 let ghModalState={
   open:false, currentPath:"", entries:[], selectedImageFolder:null,
   images:[], selectedMain:null, itemIndex:-1, loading:false, error:null,
@@ -474,7 +559,6 @@ function escapeHtml(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","
 function jsString(v){return JSON.stringify(v??"");}
 function formatImagePath(p){p=String(p||"").trim().replace(/\\/g,"/");if(!p)return "";if(!p.startsWith("images/")&&!/^https?:\/\//i.test(p)&&!p.startsWith("/"))p="images/"+p;return p;}
 function selectOptions(opts,value){let list=[...opts];if(value&&!list.includes(value))list.unshift(value);return list.map(x=>`<option value="${escapeHtml(x)}" ${x===value?"selected":""}>${escapeHtml(x)}</option>`).join("");}
-function subOptions(cat,value){const list=SUB_CATEGORY_MAP[cat]||["Other"];return selectOptions(list,value||list[0]);}
 
 function dirBaseName(dir){
   const clean=String(dir||"").replace(/\\/g,"/").replace(/\/+$/,"");
@@ -482,7 +566,6 @@ function dirBaseName(dir){
   return parts[parts.length-1]||"";
 }
 
-// FIX #4: do not silently re-root folders that already live under any canonical game root.
 function enforceGameRoot(path,game){
   const root=imageRootForGame(game);
   const p=formatImagePath(path);
@@ -494,7 +577,6 @@ function enforceGameRoot(path,game){
   return formatImagePath(root+"/"+rest.replace(/^\/+/,""));
 }
 
-// FIX #5: only re-root if the directory is not already under a canonical root; don't collapse nested folders.
 function imageSettings(item){
   let paths=[item.image||"",...(Array.isArray(item.extraImages)?item.extraImages:[])].map(x=>String(x).replace(/\\/g,"/"));
   let first=paths[0]||"",slash=first.lastIndexOf("/"),directory=slash>=0?first.slice(0,slash+1):"images/",filename=slash>=0?first.slice(slash+1):first;
@@ -527,7 +609,6 @@ function renderImageBaseField(idx,base){
 }
 const baseOverrides=new Map();
 
-// FIX #3: separate "user edited base" from "directory changed". Only the directory handler resets the base.
 function updateImageControls(idx,isManualEdit,fromDir){
   const baseInput=$(`edit-image-base-${idx}`);
   if(!baseInput)return;
@@ -699,8 +780,6 @@ function selectMainImage(num) {
   renderGhModal();
 }
 
-// FIX #1: don't call renderItemList() (which reverts to the saved item). Fill fields directly,
-// use the highest image number as the count so nothing is dropped.
 function applyFolderToItem() {
   const { itemIndex, selectedImageFolder, detectedPrefix, detectedNums, selectedMain } = ghModalState;
   if (!selectedImageFolder || !detectedPrefix || !detectedNums.length) return;
@@ -721,7 +800,6 @@ function applyFolderToItem() {
   closeGhModal();
 }
 
-// FIX #2: same — don't re-render the item list after applying the suggested folder.
 function suggestNewFolder() {
   const { itemIndex } = ghModalState;
   const nameInput = $(`edit-name-${itemIndex}`);
@@ -743,7 +821,6 @@ function suggestNewFolder() {
   closeGhModal();
 }
 
-// Renders only the folder grid (so the search input keeps focus while typing)
 function renderFolderGrid() {
   const grid = document.getElementById("ghFolderGrid");
   if (!grid) return;
@@ -789,7 +866,6 @@ function renderGhModal() {
     return;
   }
 
-  // Breadcrumb
   let breadcrumbHtml = `<div class="gh-breadcrumb">📁 <span data-nav="images">images</span>`;
   if (state.currentPath && state.currentPath !== "images") {
     const parts = state.currentPath.split("/").slice(1);
@@ -843,10 +919,8 @@ function renderGhModal() {
   }
 
   body.innerHTML = breadcrumbHtml + folderSection + imageSection;
-  // Populate the folder grid (listener attached below)
   renderFolderGrid();
 
-  // Footer
   const canApply = state.selectedImageFolder && state.detectedCount > 0;
   footer.innerHTML = `
     <button data-action="new" class="primary" style="margin-right:auto">📝 Create new directory reference</button>
@@ -855,27 +929,21 @@ function renderGhModal() {
   `;
 }
 
-// Event delegation for the modal body — robust to re-renders
 document.addEventListener("click", (ev) => {
   const body = $("ghModalBody");
   if (!body || !body.contains(ev.target)) return;
-  // Breadcrumb navigation
   const nav = ev.target.closest("[data-nav]");
   if (nav) { loadFolder(nav.dataset.nav); return; }
-  // Folder card click
   const card = ev.target.closest(".folder-card");
   if (card && card.dataset.path) { loadFolder(card.dataset.path); return; }
-  // Image main selection
   const imgCard = ev.target.closest(".img-preview-card");
   if (imgCard && imgCard.dataset.main) { selectMainImage(parseInt(imgCard.dataset.main, 10)); return; }
 });
 
-// Search input listener (delegated) — only re-renders the grid, keeps focus
 document.addEventListener("input", (ev) => {
   if (ev.target && ev.target.id === "ghSearchInput") renderFolderGrid();
 });
 
-// Footer buttons (delegated)
 document.addEventListener("click", (ev) => {
   const footer = $("ghModalFooter");
   if (!footer || !footer.contains(ev.target)) return;
@@ -895,7 +963,62 @@ function parseCatalogItems(text){
   try{return Function('"use strict"; return ('+source+');')().filter(x=>x&&typeof x==="object");}
   catch(e){alert("Could not parse the catalog array. Check that the pasted catalog.js contains a valid JavaScript array.");return [];}
 }
-function parseAndRenderItems(){currentCatalogText=$("catalogInput").value;currentItems=parseCatalogItems(currentCatalogText);activeEditIndex=-1;baseOverrides.clear();buildGameChips();renderItemList();$("output").textContent="";$("generateStatus").textContent="";$("outputWarnings").innerHTML="";}
+
+function onCatalogInputChanged(){
+  currentCatalogText=$("catalogInput").value;
+  currentItems=parseCatalogItems(currentCatalogText);
+  activeEditIndex=-1;
+  baseOverrides.clear();
+  buildGameChips();
+  renderCategoryWarnings();
+  renderItemList();
+}
+
+function loadCatalogFromText(text){
+  $("catalogInput").value=text;
+  onCatalogInputChanged();
+}
+
+function renderCategoryWarnings(){
+  const container=$("categoryWarnings");
+  if(!container)return;
+  pendingCategoryProblems=findCategoryProblems(currentItems);
+  if(!pendingCategoryProblems.length){container.innerHTML="";return;}
+  const rows=pendingCategoryProblems.map(p=>{
+    let detail="";
+    if(!p.mainOk){
+      detail=`Main category “${escapeHtml(p.currentCategory)}” is not recognised.`;
+      if(p.suggestedMain)detail+=` Suggested: <strong>${escapeHtml(p.suggestedMain)}</strong>.`;
+    }else if(!p.subOk){
+      detail=`Subcategory “${escapeHtml(p.currentSubcategory)}” does not exist under <strong>${escapeHtml(p.currentCategory)}</strong>.`;
+      if(p.suggestedMain&&p.suggestedSub)detail+=` Suggested: <strong>${escapeHtml(p.suggestedMain)} → ${escapeHtml(p.suggestedSub)}</strong>.`;
+    }else if(p.suggestedMain&&p.suggestedSub){
+      detail=`Subcategory “${escapeHtml(p.currentSubcategory)}” belongs to <strong>${escapeHtml(p.suggestedMain)}</strong>, not “${escapeHtml(p.currentCategory)}”.`;
+    }
+    return `<div class="warning-box">⚠️ <strong>${escapeHtml(p.name)}</strong>: ${detail}
+      <button type="button" style="width:auto;padding:5px 12px;font-size:.78rem;margin-left:8px" onclick="openProblemItem(${p.index})">Edit item</button></div>`;
+  }).join("");
+  container.innerHTML=`<div class="warning-box" style="font-weight:600">⚠️ ${pendingCategoryProblems.length} item${pendingCategoryProblems.length===1?"":"s"} have invalid categories. Fix them before generating the catalog.</div>`+rows;
+}
+
+// FIX: expand the item and scroll to it. Do NOT reset search (that was hiding the item),
+// and ensure the editor is rendered open by setting activeEditIndex before rendering.
+function openProblemItem(index){
+  const item=currentItems[index];
+  if(!item)return;
+  activeEditIndex=index;
+  // Set search to something that matches this item so it's visible.
+  searchTerm=item.name||"";
+  $("searchFilter").value=searchTerm;
+  renderItemList();
+  // Scroll the (now open) editor into view.
+  requestAnimationFrame(()=>{
+    const items=[...document.querySelectorAll(".item")];
+    const target=items.find(el=>el.classList.contains("open"));
+    if(target)target.scrollIntoView({behavior:"smooth",block:"center"});
+  });
+}
+
 function buildGameChips(){
   const container=$("gameChips");
   if(!currentItems.length){container.innerHTML="";return;}
@@ -977,7 +1100,7 @@ function renderItemList(){
   const infoEl=$("filterInfo");
   if(!currentItems.length){
     infoEl.textContent="";
-    $("itemListContainer").innerHTML='<div class="empty-state"><span class="big">📭</span>No items loaded yet.<div class="examples">Paste a catalog above and click “Load &amp; show items”.</div></div>';
+    $("itemListContainer").innerHTML='<div class="empty-state"><span class="big">📭</span>No items loaded yet.<div class="examples">Paste a catalog above — items are parsed automatically.</div></div>';
     $("saveReminder").style.display="none";return;
   }
   if(!hasSearch){
@@ -1025,14 +1148,37 @@ function renderItemList(){
         </div>
       </div>`;
     }).join("");
-    // FIX #3 (part 2): directory input calls updateImageControls(i,false,true) so it resets the base name.
+    const catValue=canonMain(item.category)||item.category||"";
+    const subValue=(()=>{
+      if(!canonMain(item.category))return item.subcategory||"";
+      const info=canonSub(item.subcategory,canonMain(item.category));
+      return info?info.sub:(item.subcategory||"");
+    })();
     return `<div class="item ${editing?"open":""}"><div class="summary" onclick="toggleEdit(${i})"><div><div class="item-name">${escapeHtml(item.name||"Untitled item")}${priceDisplay}</div><div class="meta">${escapeHtml(item.game||"—")} · ${escapeHtml(item.category||"Other")} → ${escapeHtml(item.subcategory||"Other")}</div></div><div class="reorder-group">${reorderButtons}<button type="button" onclick="event.stopPropagation();toggleEdit(${i})">${editing?"Close":"Edit"}</button></div></div>
     <div class="editor"><div class="grid">
     <div class="full"><label>Name</label><input id="edit-name-${i}" value="${escapeHtml(item.name||"")}"></div>
     <div><label>Game</label><select id="edit-game-${i}">${selectOptions(GAME_OPTIONS,item.game||GAME_OPTIONS[25])}</select></div>
     <div><label>Price (optional)</label><input id="edit-price-${i}" value="${escapeHtml(item.price||"")}" placeholder="e.g. $29.99"></div>
-    <div><label>Main category</label><select id="edit-maincat-${i}" onchange="onMainCategoryChange(${i})">${selectOptions(MAIN_CATEGORY_OPTIONS,item.category||MAIN_CATEGORY_OPTIONS[0])}</select></div>
-    <div><label>Subcategory</label><select id="edit-subcat-${i}">${subOptions(item.category||MAIN_CATEGORY_OPTIONS[0],item.subcategory||"Other")}</select></div>
+    <div><label>Main category</label>
+      <div class="combo-wrap" id="combo-main-${i}">
+        <input id="edit-maincat-${i}" value="${escapeHtml(catValue)}" placeholder="e.g. Novelty" autocomplete="off"
+               oninput="onCatTyping(${i},'main')" onfocus="onCatFocus(${i},'main')" onblur="onCatBlur(${i},'main')"
+               onkeydown="onCatKeyDown(event,${i},'main')">
+        <button type="button" class="combo-toggle" tabindex="-1" onclick="toggleCombo(${i},'main')">▾</button>
+        <div class="combo-list" id="combo-main-list-${i}"></div>
+      </div>
+      <div class="helper">Type to filter or click ▾ to pick from the full list.</div>
+    </div>
+    <div><label>Subcategory</label>
+      <div class="combo-wrap" id="combo-sub-${i}">
+        <input id="edit-subcat-${i}" value="${escapeHtml(subValue)}" placeholder="e.g. Lighters" autocomplete="off"
+               oninput="onCatTyping(${i},'sub')" onfocus="onCatFocus(${i},'sub')" onblur="onCatBlur(${i},'sub')"
+               onkeydown="onCatKeyDown(event,${i},'sub')">
+        <button type="button" class="combo-toggle" tabindex="-1" onclick="toggleCombo(${i},'sub')">▾</button>
+        <div class="combo-list" id="combo-sub-list-${i}"></div>
+      </div>
+      <div class="helper">Type a subcategory (e.g. <code>lighter</code>) — the main category auto-fills.</div>
+    </div>
     <div class="full"><label>Description</label><textarea id="edit-description-${i}">${escapeHtml(item.description||"")}</textarea></div>
     <div><label>Year</label><input id="edit-year-${i}" value="${escapeHtml(item.year||"")}"></div><div><label>Rarity</label><input id="edit-rarity-${i}" value="${escapeHtml(item.rarity||"")}"></div>
     <div class="full"><label>Availability</label><input id="edit-availability-${i}" value="${escapeHtml(item.availability||"")}"></div>
@@ -1072,16 +1218,234 @@ function renderItemList(){
     }
   });
 }
+
+// ==================== Category combobox behaviour ====================
+let comboActive=null; // {idx, kind, activeIndex}
+
+function comboEls(idx,kind){
+  const wrap=$(`combo-${kind}-${idx}`);
+  const list=$(`combo-${kind}-list-${idx}`);
+  const input=$(`edit-${kind==='main'?'maincat':'subcat'}-${idx}`);
+  return {wrap,list,input};
+}
+
+function onCatFocus(idx,kind){
+  comboActive={idx,kind,activeIndex:-1};
+  // FIX: show the FULL list on focus (dropdown behaviour), not just filtered by current value.
+  showComboSuggestions(idx,kind,"",true);
+}
+
+function onCatBlur(idx,kind){
+  // Delay so a click on an option can register first.
+  setTimeout(()=>{
+    const {list}=comboEls(idx,kind);
+    if(list)list.classList.remove("open");
+    if(comboActive&&comboActive.idx===idx&&comboActive.kind===kind)comboActive=null;
+    // Validate but DO NOT alert on blur unless the value is non-empty and clearly wrong.
+    // Critically: do NOT re-render the item list here (that was collapsing the editor).
+    const input=$(`edit-${kind==='main'?'maincat':'subcat'}-${idx}`);
+    if(!input)return;
+    const val=input.value.trim();
+    if(!val)return;
+    if(kind==='main'){
+      const ok=canonMain(val);
+      if(ok)input.value=ok;
+    }else{
+      const mainInput=$(`edit-maincat-${idx}`);
+      const mainHint=mainInput?canonMain(mainInput.value):null;
+      const info=canonSub(val,mainHint);
+      if(info){input.value=info.sub;if(mainInput)mainInput.value=info.main;}
+    }
+  },160);
+}
+
+function onCatTyping(idx,kind){
+  const input=$(`edit-${kind==='main'?'maincat':'subcat'}-${idx}`);
+  const val=input.value;
+  if(kind==='sub'){
+    const hit=canonSub(val,null);
+    if(hit){
+      const mainInput=$(`edit-maincat-${idx}`);
+      if(mainInput)mainInput.value=hit.main;
+    }
+  }
+  showComboSuggestions(idx,kind,val,false);
+}
+
+function onCatKeyDown(ev,idx,kind){
+  const {list}=comboEls(idx,kind);
+  if(!list||!list.classList.contains("open"))return;
+  const opts=[...list.querySelectorAll(".combo-option")];
+  if(!opts.length)return;
+  if(!comboActive||comboActive.idx!==idx||comboActive.kind!==kind)return;
+  if(ev.key==="ArrowDown"){
+    ev.preventDefault();
+    comboActive.activeIndex=(comboActive.activeIndex+1)%opts.length;
+    highlightComboOption(list,comboActive.activeIndex);
+  }else if(ev.key==="ArrowUp"){
+    ev.preventDefault();
+    comboActive.activeIndex=(comboActive.activeIndex-1+opts.length)%opts.length;
+    highlightComboOption(list,comboActive.activeIndex);
+  }else if(ev.key==="Enter"){
+    if(comboActive.activeIndex>=0){
+      ev.preventDefault();
+      opts[comboActive.activeIndex].click();
+    }
+  }else if(ev.key==="Escape"){
+    list.classList.remove("open");
+  }
+}
+function highlightComboOption(list,index){
+  [...list.querySelectorAll(".combo-option")].forEach((el,i)=>{
+    el.classList.toggle("active",i===index);
+  });
+  const active=list.querySelectorAll(".combo-option")[index];
+  if(active)active.scrollIntoView({block:"nearest"});
+}
+
+// FIX: showFullList flag — when true (on focus / toggle button), ignore the typed value
+// and show every option so it behaves like a dropdown. Typing still filters.
+function showComboSuggestions(idx,kind,value,showFullList){
+  const {wrap,list}=comboEls(idx,kind);
+  if(!wrap||!list)return;
+  const nv=showFullList?"":normaliseCat(value);
+  if(kind==='main'){
+    const matches=showFullList?MAIN_CATEGORY_OPTIONS:MAIN_CATEGORY_OPTIONS.filter(m=>normaliseCat(m).includes(nv));
+    if(!matches.length){
+      if(!nv){list.innerHTML="";list.classList.remove("open");wrap.classList.remove("combo-invalid");return;}
+      list.innerHTML=`<div class="combo-empty">No matching main category.</div>`;
+      list.classList.add("open");
+      wrap.classList.add("combo-invalid");
+      comboActive={idx,kind,activeIndex:-1};
+      return;
+    }
+    list.innerHTML=matches.map((m,pos)=>{
+      const cls=pos===0?"combo-option active":"combo-option";
+      return `<div class="${cls}" data-value="${escapeHtml(m)}" onclick="pickCombo(${idx},'main','${escapeHtml(m).replace(/'/g,"\\'")}')">${escapeHtml(m)}</div>`;
+    }).join("");
+    list.classList.add("open");
+    wrap.classList.remove("combo-invalid");
+    comboActive={idx,kind,activeIndex:0};
+  }else{
+    // Subcategory: if a main category is already set and we're showing the full list,
+    // restrict to that category's subs first; otherwise list all matches.
+    const mainInput=$(`edit-maincat-${idx}`);
+    const mainHint=mainInput?canonMain(mainInput.value):null;
+    const all=[];
+    if(showFullList&&mainHint){
+      (SUB_CATEGORY_MAP[mainHint]||[]).forEach(sub=>all.push({main:mainHint,sub}));
+    }else{
+      Object.entries(SUB_CATEGORY_MAP).forEach(([main,subs])=>{
+        subs.forEach(sub=>{
+          const n=normaliseCat(sub);
+          if(showFullList||!nv||n.includes(nv)||normaliseCat(main).includes(nv)){
+            all.push({main,sub});
+          }
+        });
+      });
+    }
+    if(!all.length){
+      if(!nv){list.innerHTML="";list.classList.remove("open");wrap.classList.remove("combo-invalid");return;}
+      list.innerHTML=`<div class="combo-empty">No matching subcategory. Pick an existing one.</div>`;
+      list.classList.add("open");
+      wrap.classList.add("combo-invalid");
+      comboActive={idx,kind,activeIndex:-1};
+      return;
+    }
+    list.innerHTML=all.slice(0,120).map(({main,sub},pos)=>{
+      const cls=pos===0?"combo-option active":"combo-option";
+      return `<div class="${cls}" data-value="${escapeHtml(sub)}" data-main="${escapeHtml(main)}" onclick="pickCombo(${idx},'sub','${escapeHtml(sub).replace(/'/g,"\\'")}')">${escapeHtml(sub)}<span class="combo-parent">— ${escapeHtml(main)}</span></div>`;
+    }).join("");
+    list.classList.add("open");
+    wrap.classList.remove("combo-invalid");
+    comboActive={idx,kind,activeIndex:0};
+  }
+}
+
+function toggleCombo(idx,kind){
+  const {list,input}=comboEls(idx,kind);
+  if(!list)return;
+  if(list.classList.contains("open")){list.classList.remove("open");return;}
+  if(input)input.focus();
+  onCatFocus(idx,kind);
+}
+
+function pickCombo(idx,kind,value){
+  const {wrap,list,input}=comboEls(idx,kind);
+  if(!input)return;
+  input.value=value;
+  if(kind==='sub'){
+    const hit=canonSub(value,null);
+    if(hit){
+      const mainInput=$(`edit-maincat-${idx}`);
+      if(mainInput)mainInput.value=hit.main;
+    }
+  }else{
+    // If main category changed, drop an incompatible subcategory so the user re-picks.
+    const subInput=$(`edit-subcat-${idx}`);
+    if(subInput&&subInput.value.trim()&&!subcategoryExists(subInput.value,value)){
+      subInput.value="";
+    }
+  }
+  if(list)list.classList.remove("open");
+  if(wrap)wrap.classList.remove("combo-invalid");
+  if(input)input.focus();
+}
+
+function commitCategoryField(idx,kind,onBlur){
+  const input=$(`edit-${kind==='main'?'maincat':'subcat'}-${idx}`);
+  const wrap=$(`combo-${kind}-${idx}`);
+  if(!input||!wrap)return true;
+  const val=input.value.trim();
+  const mainInput=$(`edit-maincat-${idx}`);
+  if(kind==='main'){
+    const ok=canonMain(val);
+    if(!ok){
+      wrap.classList.add("combo-invalid");
+      if(onBlur&&val){
+        alert(`“${val}” is not a valid main category. Please choose one of the existing categories.`);
+      }
+      return false;
+    }
+    wrap.classList.remove("combo-invalid");
+    input.value=ok;
+    return true;
+  }else{
+    if(!val){wrap.classList.remove("combo-invalid");return true;}
+    const mainHint=mainInput?canonMain(mainInput.value):null;
+    const info=canonSub(val,mainHint);
+    if(!info){
+      wrap.classList.add("combo-invalid");
+      if(onBlur){
+        alert(`“${val}” is not a valid subcategory. Please pick one from the list.`);
+      }
+      return false;
+    }
+    wrap.classList.remove("combo-invalid");
+    input.value=info.sub;
+    if(mainInput)mainInput.value=info.main;
+    return true;
+  }
+}
+
+function validateCategoriesForSave(idx){
+  const okMain=commitCategoryField(idx,'main',false);
+  const okSub=commitCategoryField(idx,'sub',false);
+  if(!okMain){alert("Main category is invalid. Please choose one of the existing categories.");return false;}
+  if(!okSub){alert("Subcategory is invalid. Please choose one of the existing subcategories (the main category will auto-fill).");return false;}
+  const main=canonMain($(`edit-maincat-${idx}`).value);
+  const subInput=$(`edit-subcat-${idx}`);
+  const subVal=subInput?subInput.value.trim():"";
+  if(!subVal){alert("Please enter a subcategory.");return false;}
+  if(!subcategoryExists(subVal,main)){alert(`“${subVal}” is not valid under “${main}”. Please pick a subcategory from that category.`);return false;}
+  return true;
+}
+
 function applySearchFilter(){searchTerm=$("searchFilter").value.trim();activeEditIndex=-1;renderItemList();}
 function toggleDevMode(){
   devModeEnabled=$("devModeToggle").checked;
   if(!devModeEnabled)baseOverrides.clear();
   renderItemList();
-}
-function onMainCategoryChange(i){
-  const cat=$(`edit-maincat-${i}`).value;
-  const list=SUB_CATEGORY_MAP[cat]||["Other"];
-  $(`edit-subcat-${i}`).innerHTML=subOptions(cat,list[0]);
 }
 function toggleEdit(i){activeEditIndex=activeEditIndex===i?-1:i;renderItemList();}
 function cancelEdit(){activeEditIndex=-1;renderItemList();}
@@ -1102,6 +1466,7 @@ function moveItem(index,direction){
   renderItemList();
 }
 function saveItem(i){
+  if(!validateCategoriesForSave(i))return;
   const get=id=>$(`${id}-${i}`),item=currentItems[i],dirInput=get("edit-image-directory").value.trim().replace(/\\/g,"/").replace(/\/+$/,"")+"/";
   const base=get("edit-image-base").value.trim();
   const count=parseInt(get("edit-image-count").value,10),main=+get("edit-image-main").value;
@@ -1115,7 +1480,15 @@ function saveItem(i){
   const valid=[];const seen=new Set();
   extraOrder.forEach(n=>{if(n!==main&&n>=1&&n<=count&&!seen.has(n)){seen.add(n);valid.push(n);}});
   for(let n=1;n<=count;n++){if(n!==main&&!seen.has(n)){valid.push(n);seen.add(n);}}
-  item.name=get("edit-name").value;item.game=get("edit-game").value;item.category=get("edit-maincat").value;item.subcategory=get("edit-subcat").value;item.description=get("edit-description").value;item.year=get("edit-year").value;item.rarity=get("edit-rarity").value;
+  item.name=get("edit-name").value;
+  item.game=get("edit-game").value;
+  item.category=canonMain(get("edit-maincat").value);
+  const subInfo=canonSub(get("edit-subcat").value,item.category);
+  item.subcategory=subInfo?subInfo.sub:get("edit-subcat").value;
+  if(subInfo)item.category=subInfo.main;
+  item.description=get("edit-description").value;
+  item.year=get("edit-year").value;
+  item.rarity=get("edit-rarity").value;
   item.price=get("edit-price").value.trim();
   item.availability=get("edit-availability").value;
   if(item.availability&&!item.availability.startsWith("Available for purchase"))item.availability="Available for purchase - "+item.availability;
@@ -1123,10 +1496,12 @@ function saveItem(i){
   item.extraImages=valid.map(n=>enforceGameRoot(`${dirInput}${base}_${n}.jpg`,item.game));
   item.link=get("edit-link").value;
   if(devModeEnabled && base)baseOverrides.set(i,base);
-  activeEditIndex=-1;renderItemList();
+  activeEditIndex=-1;
+  renderCategoryWarnings();
+  renderItemList();
   $("saveReminder").style.display="none";
 }
-function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;baseOverrides.delete(i);buildGameChips();renderItemList();}}
+function deleteItem(i){if(confirm("Delete this item permanently?")){currentItems.splice(i,1);activeEditIndex=-1;baseOverrides.delete(i);buildGameChips();renderCategoryWarnings();renderItemList();}}
 function addNewItem(){
   currentItems.push({name:"New item",game:"Grand Theft Auto V (2013)",category:"Clothing",subcategory:"T-shirts",description:"",year:String(new Date().getFullYear()),rarity:"Common",price:"",availability:"Available for purchase - Yes",image:"images/GTAV/new-item/new-item_1.jpg",extraImages:[],link:""});
   const newIndex=currentItems.length-1;
@@ -1134,6 +1509,7 @@ function addNewItem(){
   searchTerm="New item";
   $("searchFilter").value=searchTerm;
   buildGameChips();
+  renderCategoryWarnings();
   renderItemList();
 }
 function validateAndWarn(){
@@ -1151,6 +1527,13 @@ function validateAndWarn(){
     if(!item.image)missing.push("image");
     if(missing.length)warnings.push(`Item ${i+1} (${item.name||"Untitled"}) has empty fields: ${missing.join(", ")}`);
   });
+  const problems=findCategoryProblems(currentItems);
+  if(problems.length){
+    warnings.push(`⚠️ ${problems.length} item${problems.length===1?"":"s"} still have invalid categories. Fix them before using the output.`);
+    problems.forEach(p=>{
+      warnings.push(`• ${p.name}: category “${p.currentCategory}” / subcategory “${p.currentSubcategory}” is not valid.`);
+    });
+  }
   const generated=$("output").textContent;
   const inputText=$("catalogInput").value;
   if(generated && inputText && generated.trim()===inputText.trim()){
@@ -1189,11 +1572,18 @@ async function fetchFromGithub(){
   let url=$("githubUrl").value.trim();if(!url){$("fetchStatus").textContent="Enter a GitHub URL first.";return;}
   if(url.includes("github.com")&&url.includes("/blob/"))url=url.replace("github.com","raw.githubusercontent.com").replace("/blob/","/");
   $("fetchStatus").textContent="Fetching…";
-  try{const response=await fetch(url);if(!response.ok)throw Error("HTTP "+response.status);const text=await response.text();$("catalogInput").value=text;parseAndRenderItems();$("fetchStatus").textContent="Loaded catalog.";}
-  catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}}
+  try{
+    const response=await fetch(url);
+    if(!response.ok)throw Error("HTTP "+response.status);
+    const text=await response.text();
+    loadCatalogFromText(text);
+    $("fetchStatus").textContent="Loaded catalog.";
+  }
+  catch(e){$("fetchStatus").textContent="Could not fetch: "+e.message+". Paste the file manually.";}
+}
 async function copyOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}try{await navigator.clipboard.writeText(text);alert("Copied to clipboard.");}catch(e){alert("Clipboard access failed. Select and copy the output manually.");}}
 function downloadOutput(){const text=$("output").textContent;if(!text){alert("Generate the catalog first.");return;}const blob=new Blob([text],{type:"text/javascript"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="catalog.js";a.click();URL.revokeObjectURL(url);}
-window.fetchFromGithub=fetchFromGithub;window.parseAndRenderItems=parseAndRenderItems;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.onMainCategoryChange=onMainCategoryChange;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;window.setSearch=setSearch;window.moveExtra=moveExtra;window.onMainImageChange=onMainImageChange;
+window.fetchFromGithub=fetchFromGithub;window.onCatalogInputChanged=onCatalogInputChanged;window.addNewItem=addNewItem;window.generateCatalog=generateCatalog;window.copyOutput=copyOutput;window.downloadOutput=downloadOutput;window.toggleEdit=toggleEdit;window.saveItem=saveItem;window.cancelEdit=cancelEdit;window.deleteItem=deleteItem;window.updateImageControls=updateImageControls;window.moveItem=moveItem;window.toggleDevMode=toggleDevMode;window.applySearchFilter=applySearchFilter;window.setSearch=setSearch;window.moveExtra=moveExtra;window.onMainImageChange=onMainImageChange;window.onCatFocus=onCatFocus;window.onCatBlur=onCatBlur;window.onCatTyping=onCatTyping;window.onCatKeyDown=onCatKeyDown;window.pickCombo=pickCombo;window.toggleCombo=toggleCombo;window.openProblemItem=openProblemItem;
 window.openGhBrowser=openGhBrowser;window.closeGhModal=closeGhModal;window.selectMainImage=selectMainImage;window.applyFolderToItem=applyFolderToItem;window.suggestNewFolder=suggestNewFolder;window.renderGhModal=renderGhModal;window.loadFolder=loadFolder;
 </script>
 </body>
